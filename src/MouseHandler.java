@@ -6,13 +6,11 @@ import java.awt.event.MouseMotionListener;
 public class MouseHandler implements MouseMotionListener, MouseListener {
 
     private final JPanel panel;
-    private final int gridWidth;
-    private final int gridHeight;
+    private Grid grid;
 
-    public MouseHandler(JPanel panel, int gridWidth, int gridHeight) {
+    public MouseHandler(JPanel panel, Grid grid) {
         this.panel = panel;
-        this.gridWidth = gridWidth;
-        this.gridHeight = gridHeight;
+        this.grid = grid;
     }
 
     @Override
@@ -40,6 +38,10 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         // size of panel
         int width = panel.getWidth();
         int height = panel.getHeight();
+
+        // width and height of grid in pixels
+        int gridWidth = grid.getWidth();
+        int gridHeight = grid.getHeight();
 
         // units per square
         int pixelsPerSquare = Math.min(width / gridWidth, height / gridHeight);
