@@ -12,7 +12,8 @@ public class PixelSandbox {
     private PixelSandbox() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout());
-        frame.setSize(250, 250);
+        frame.setSize(1500, 750);
+        frame.setBackground(Color.black);
 
         frame.add(renderer);
 
