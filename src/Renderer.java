@@ -23,7 +23,7 @@ public class Renderer extends JPanel {
         int xOffset = (getWidth() - gridWidth * pixelsPerSquare) / 2;
         int yOffset = (getHeight() - gridHeight * pixelsPerSquare) / 2;
 
-        for (double y = 0; y < gridHeight * pixelsPerSquare; y += pixelsPerSquare) {
+        /*for (double y = 0; y < gridHeight * pixelsPerSquare; y += pixelsPerSquare) {
             for (double x = 0; x < gridWidth * pixelsPerSquare; x += pixelsPerSquare) {
                 // alternate colors
                 if(coloredBlack) {
@@ -37,13 +37,13 @@ public class Renderer extends JPanel {
             }
             // also alternate color on y change so it is a checkerboard rather than lines
             coloredBlack = !coloredBlack;
-        }
+        }*/
         //g.drawString("Hello, World!", 90, 100);
         for (int x = 0; x < PixelSandbox.grid.length; x++){
             for (int y = 0; y < PixelSandbox.grid.length; y++){
                 if (PixelSandbox.grid[x][y].type == "sand"){
-                    g.setColor(Color.black);
-                    g.drawRect(x, y, PixelSandbox.pixelSize, PixelSandbox.pixelSize);
+                    g.setColor(Color.white);
+                    g.fillRect(x, y, PixelSandbox.pixelSize, PixelSandbox.pixelSize);
                 }
             }
         }
