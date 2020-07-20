@@ -3,6 +3,8 @@ import java.awt.*;
 
 public class PixelSandbox {
     JFrame frame = new JFrame();
+    Renderer renderer = new Renderer(100, 50);
+    MouseHandler mouseHandler = new MouseHandler(renderer, 100, 50);
     Renderer renderer = new Renderer();
     public static Pixel[][] grid;
     static int w = 500;
@@ -26,9 +28,12 @@ public class PixelSandbox {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout());
         frame.setSize(w, h);
+        frame.setBackground(Color.black);
 
         frame.add(renderer);
 
         frame.setVisible(true);
+
+        renderer.addMouseMotionListener(mouseHandler);
     }
 }
