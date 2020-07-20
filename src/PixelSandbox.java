@@ -5,7 +5,6 @@ public class PixelSandbox {
     JFrame frame = new JFrame();
     Renderer renderer = new Renderer(100, 50);
     MouseHandler mouseHandler = new MouseHandler(renderer, 100, 50);
-    Renderer renderer = new Renderer();
     public static Pixel[][] grid;
     static int w = 500;
     static int h = 500;
