@@ -1,11 +1,32 @@
-public class Pixel{
-  public boolean isStable;
-  public int x, y;
-  public String type;
-  public Pixel(String t, int xpos, int ypos){
-    isStable = false;
-    x = xpos;
-    y = ypos;
-    type = t;
+import java.awt.*;
+
+public class Pixel {
+
+  protected boolean isStable;
+
+  protected int x;
+  protected int y;
+
+  private String type;
+  protected Color color;
+
+  public Pixel(String type, int xpos, int ypos, Color color){
+    this.isStable = false;
+    this.x = xpos;
+    this.y = ypos;
+    this.type = type;
+    this.color = color;
+  }
+
+  public Color getColor() {
+    return color;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 }
