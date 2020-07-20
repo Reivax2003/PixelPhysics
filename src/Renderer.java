@@ -38,5 +38,14 @@ public class Renderer extends JPanel {
             // also alternate color on y change so it is a checkerboard rather than lines
             coloredBlack = !coloredBlack;
         }
+        //g.drawString("Hello, World!", 90, 100);
+        for (int x = 0; x < PixelSandbox.grid.length; x++){
+            for (int y = 0; y < PixelSandbox.grid.length; y++){
+                if (PixelSandbox.grid[x][y].type == "sand"){
+                    g.setColor(Color.black);
+                    g.drawRect(x, y, PixelSandbox.pixelSize, PixelSandbox.pixelSize);
+                }
+            }
+        }
     }
 }
