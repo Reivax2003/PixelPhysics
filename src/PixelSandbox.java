@@ -21,5 +21,6 @@ public class PixelSandbox {
         frame.setVisible(true);
 
         renderer.addMouseMotionListener(mouseHandler);
+        renderer.addMouseListener(mouseHandler);
     }
 }
