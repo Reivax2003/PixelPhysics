@@ -1,5 +1,7 @@
 import java.awt.*; 
 import javax.swing.*; 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class test extends JFrame{
 
@@ -9,6 +11,6 @@ public class test extends JFrame{
         f.add(testCanvas);
         f.setSize(400, 400);
         f.setVisible(true);
+        
     }
-
 }
