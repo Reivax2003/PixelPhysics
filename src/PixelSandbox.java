@@ -3,7 +3,8 @@ import java.awt.*;
 
 public class PixelSandbox {
     JFrame frame = new JFrame();
-    Renderer renderer = new Renderer();
+    Renderer renderer = new Renderer(100, 50);
+    MouseHandler mouseHandler = new MouseHandler(renderer, 100, 50);
 
     public static void main(String[] args) {
         new PixelSandbox();
@@ -18,5 +19,7 @@ public class PixelSandbox {
         frame.add(renderer);
 
         frame.setVisible(true);
+
+        renderer.addMouseMotionListener(mouseHandler);
     }
 }

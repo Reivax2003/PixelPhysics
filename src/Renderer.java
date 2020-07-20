@@ -2,22 +2,29 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Renderer extends JPanel {
+
+    private final int gridWidth;
+    private final int gridHeight;
+
+    public Renderer(int width, int height) {
+        this.gridWidth = width;
+        this.gridHeight = height;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
-        int width = 100;
-        int height = 50;
 
         // set pixels per square to the smallest dimension, so
-        int pixelsPerSquare = Math.min(getWidth() / width, getHeight() / height);
+        int pixelsPerSquare = Math.min(getWidth() / gridWidth, getHeight() / gridHeight);
 
         boolean coloredBlack = true;
 
         // get the size of the unused margins (getWidth - used space), then divide it by two to get the center
-        int xOffset = (getWidth() - width * pixelsPerSquare) / 2;
-        int yOffset = (getHeight() - height * pixelsPerSquare) / 2;
+        int xOffset = (getWidth() - gridWidth * pixelsPerSquare) / 2;
+        int yOffset = (getHeight() - gridHeight * pixelsPerSquare) / 2;
 
-        for (double y = 0; y < height * pixelsPerSquare; y += pixelsPerSquare) {
-            for (double x = 0; x < width * pixelsPerSquare; x += pixelsPerSquare) {
+        for (double y = 0; y < gridHeight * pixelsPerSquare; y += pixelsPerSquare) {
+            for (double x = 0; x < gridWidth * pixelsPerSquare; x += pixelsPerSquare) {
                 // alternate colors
                 if(coloredBlack) {
                     g.setColor(Color.black);
