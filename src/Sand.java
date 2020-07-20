@@ -1,14 +1,18 @@
-public class Sand extends Pixel{
-  public Sand(int xpos, int ypos){
-    super("sand", xpos, ypos);
-  }
-  public int[] update(Pixel[][] grid){
-    int[] newPosition = new int[]{super.x, super.y};
+import java.awt.*;
 
-    if (grid[super.x][super.y-1].type == "air"){
-      newPosition[0] = super.x;
-      newPosition[1] = super.y-1;
+public class Sand extends Pixel {
+
+    public Sand(int xpos, int ypos) {
+        super("sand", xpos, ypos, Color.yellow);
     }
-    return(newPosition);
-  }
+
+    public int[] update(Grid grid) {
+        int[] newPosition = new int[] {x, y};
+
+        if (grid.getPixel(x, y - 1).getType().equals("air")) {
+            newPosition[0] = x;
+            newPosition[1] = y - 1;
+        }
+        return newPosition;
+    }
 }
