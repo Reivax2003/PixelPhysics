@@ -14,7 +14,7 @@ public class Water extends Pixel implements Liquid {
     public int[] update(Grid grid) {
         int[] newPosition = new int[] {x, y};
 
-        if (y < grid.getHeight()-1 && (grid.getPixel(x, y+1) instanceof Empty || grid.getPixel(x, y+1) instanceof Empty)) {
+        if (y < grid.getHeight()-1 && (grid.getPixel(x, y+1) instanceof Empty || grid.getPixel(x, y+1) instanceof Gas)) {
             newPosition[0] = x;
             newPosition[1] = y + 1;
         }

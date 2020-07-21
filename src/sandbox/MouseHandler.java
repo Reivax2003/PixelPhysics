@@ -1,8 +1,6 @@
 package sandbox;
 
-import sandbox.pixels.Pixel;
-import sandbox.pixels.Sand;
-import sandbox.pixels.Water;
+import sandbox.pixels.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -92,7 +90,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         } else if(button == MouseEvent.BUTTON2) {
             grid.setPixel(squareX, squareY, new Water(squareX, squareY));
         } else if(button == MouseEvent.BUTTON3) {
-            grid.setPixel(squareX, squareY, new Pixel("air", squareX, squareY, Color.black));
+            grid.setPixel(squareX, squareY, new Air(squareX, squareY));
         }
 
         // repaint panel so it displays
