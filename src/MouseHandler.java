@@ -68,6 +68,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
         // do something here
         System.out.println(squareX + ", " + squareY);
+        System.out.println(grid.getPixel(squareX,squareY).getType());//DELETE in merge test code
     }
 
     @Override
