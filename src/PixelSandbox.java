@@ -52,4 +52,15 @@ public class PixelSandbox {
         renderer = new Renderer(grid);
         mouseHandler = new MouseHandler(renderer, grid);
     }
+
+    private void update() {
+      for (int y = grid.getHeight() -1; y > -1; y--){
+          for (int x = 0; y < grid.getWidth(); x++){
+              curPixel = grid.getPixel(x,y);
+              newPos = curPixel.update(grid)
+              grid.setPixel(x, y, grid.getPixel(newPos[0], newPos[1])); //If no movement it gets set to itself twice
+              grid.setPixel(newPos[0], newPos[1], curPixel);
+          }
+      }
+    }
 }
