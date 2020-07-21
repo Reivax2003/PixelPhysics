@@ -70,16 +70,16 @@ public class PixelSandbox {
                   curPixel.y = newPos[1];
                   grid.setPixel(newPos[0], newPos[1], curPixel);
                   if(curPixel.getType().equals("sand")){
-                    System.out.println(newPos[1]+"NEW from" + y);
+                    //System.out.println(newPos[1]+"NEW from" + y);
                   }
               }
-              System.out.println(y);
+              //System.out.println(y);
           }
         }
       };
-      final ScheduledFuture<?> updateTimer = scheduler.scheduleAtFixedRate(updateFunction, 1, 1, TimeUnit.SECONDS);
+      final ScheduledFuture<?> updateTimer = scheduler.scheduleAtFixedRate(updateFunction, 1000, 500, TimeUnit.MILLISECONDS);
       scheduler.schedule(new Runnable() { //Kills loop at a minutes
         public void run() { updateTimer.cancel(true); scheduler.shutdown(); }
-      }, 5 * 1, TimeUnit.SECONDS);
+      }, 60 * 1, TimeUnit.SECONDS);
     }
 }
