@@ -1,3 +1,7 @@
+package sandbox.pixels;
+
+import sandbox.Grid;
+
 import java.awt.*;
 import java.util.Random;
 import java.util.ArrayList;
@@ -12,9 +16,6 @@ public class Fire extends Pixel {
         int[] newPositions;
 
         ArrayList<Integer> positions = new ArrayList<Integer>();
-
-        x = super.x;
-        y = super.y;
 
         if (grid.getPixel(x-1,y-1).getType().equals("wood")) {
             positions.add(x-1);

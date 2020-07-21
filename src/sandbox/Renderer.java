@@ -1,3 +1,7 @@
+package sandbox;
+
+import sandbox.pixels.Pixel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,7 +19,7 @@ public class Renderer extends JPanel {
         int gridWidth = grid.getWidth();
         int gridHeight = grid.getHeight();
 
-        // set pixels per square to the smallest dimension, so
+        // set sandbox.pixels per square to the smallest dimension, so
         int pixelsPerSquare = Math.min(getWidth() / gridWidth, getHeight() / gridHeight);
 
         boolean coloredBlack = true;
