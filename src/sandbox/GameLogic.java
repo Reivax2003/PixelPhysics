@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.util.TimerTask;
 
 public class GameLogic extends TimerTask {
+
+    private final int DEFAULT_DENSITY = 10000;
+
     private final Grid grid;
     private final JPanel panel;
 
@@ -18,18 +21,33 @@ public class GameLogic extends TimerTask {
     public void run() {
         for (int y = grid.getHeight() - 1; y > -1; y--) {
             for (int x = 0; x < grid.getWidth(); x++) {
-                Pixel curPixel = grid.getPixel(x, y);
+                Pixel currentPixel = grid.getPixel(x, y);
+                int currentX = currentPixel.getX();
+                int currentY = currentPixel.getY();
 
-                int[] newPos = curPixel.update(grid);
-                Pixel newPixel = grid.getPixel(newPos[0], newPos[1]);
+                int density = currentPixel.getPropOrDefault("density", Integer.MAX_VALUE);
 
-                newPixel.setX(x);
-                newPixel.setY(y);
-                grid.setPixel(x, y, newPixel); //If no movement it gets set to itself twice
+                if(currentPixel.hasProperty("gravity")) {
+                    int gravity = currentPixel.getProperty("gravity");
 
-                curPixel.setX(newPos[0]);
-                curPixel.setY(newPos[1]);
-                grid.setPixel(newPos[0], newPos[1], curPixel);
+                    if(currentY + gravity < grid.getHeight() && currentY + gravity >= 0) {
+                        if(grid.getPixel(currentX, currentY + gravity).getPropOrDefault("density", DEFAULT_DENSITY) < density) {
+                            grid.swapPositions(currentX, currentY, currentX, currentY + gravity);
+                        }
+                    }
+                }
+
+                if(currentPixel.hasProperty("fluidity")) {
+                    int fluidity = currentPixel.getProperty("fluidity");
+
+                    if(Math.random() < fluidity / 100.0) {
+                        if(currentX > 0 && grid.getPixelLeft(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && Math.random() >= 0.5) {
+                            grid.swapPositions(currentX, currentY, currentX - 1, currentY);
+                        } else if(currentX < grid.getWidth() - 1 && grid.getPixelRight(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density) {
+                            grid.swapPositions(currentX, currentY, currentX + 1, currentY);
+                        }
+                    }
+                }
             }
         }
 
