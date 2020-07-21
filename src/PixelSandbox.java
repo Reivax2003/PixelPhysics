@@ -18,7 +18,7 @@ public class PixelSandbox {
         initializeRenderer();
         initializeFrame();
         update();
-        grid.setPixel(23, 23, new Sand(23, 23));
+        grid.setPixel(23, 23, new Water(23, 23));
     }
 
     private void initializeGrid() {
@@ -77,9 +77,9 @@ public class PixelSandbox {
           }
         }
       };
-      final ScheduledFuture<?> updateTimer = scheduler.scheduleAtFixedRate(updateFunction, 1, 1, TimeUnit.SECONDS);
+      final ScheduledFuture<?> updateTimer = scheduler.scheduleAtFixedRate(updateFunction, 1, 100, TimeUnit.MILLISECONDS);
       scheduler.schedule(new Runnable() { //Kills loop at a minutes
         public void run() { updateTimer.cancel(true); scheduler.shutdown(); }
-      }, 5 * 1, TimeUnit.SECONDS);
+      }, 5 * 100, TimeUnit.SECONDS);
     }
 }
