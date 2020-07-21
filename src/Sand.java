@@ -14,11 +14,11 @@ public class Sand extends Pixel {
             newPosition[1] = y - 1;
         }
         else if (grid.getPixel(x-1, y - 1).getType().equals("air")) {
-            newPosition[0] = x;
+            newPosition[0] = x - 1;
             newPosition[1] = y - 1;
         }
         else if (grid.getPixel(x+1, y - 1).getType().equals("air")) {
-            newPosition[0] = x;
+            newPosition[0] = x + 1;
             newPosition[1] = y - 1;
         }
         return newPosition;
