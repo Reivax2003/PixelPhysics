@@ -27,9 +27,6 @@ public class PixelSandbox {
                 grid.setPixel(x, y, new Pixel("air", x, y, Color.black));
             }
         }
-
-        // test
-        grid.setPixel(25, 25, new Sand(25, 25));
     }
 
     private void initializeFrame() {
