@@ -75,6 +75,7 @@ public class PixelSandbox {
               }
               System.out.println(y);
           }
+          renderer.repaint();
         }
       };
       final ScheduledFuture<?> updateTimer = scheduler.scheduleAtFixedRate(updateFunction, 1, 100, TimeUnit.MILLISECONDS);
