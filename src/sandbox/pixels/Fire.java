@@ -87,6 +87,7 @@ public class Fire extends Pixel {
             else{
               positions.remove(i+1);
               positions.remove(i);
+              i -= 2 //Goes back to positions now at this index
             }
         }
         newPositions = new int[count];
