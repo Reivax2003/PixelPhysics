@@ -1,3 +1,9 @@
+package sandbox;
+
+import sandbox.pixels.Pixel;
+import sandbox.pixels.Sand;
+import sandbox.pixels.Water;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;

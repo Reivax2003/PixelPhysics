@@ -1,6 +1,14 @@
+package sandbox.pixels;
+
+import sandbox.Grid;
+
 import java.awt.*;
 
-public class Granular {
+public class Sand extends Pixel {
+
+    public Sand(int xpos, int ypos) {
+        super("sand", xpos, ypos, Color.yellow);
+    }
 
     public int[] update(Grid grid) {
         int[] newPosition = new int[] {x, y};
