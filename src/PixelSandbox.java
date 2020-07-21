@@ -64,8 +64,8 @@ public class PixelSandbox {
                   int[] newPos = curPixel.update(grid);
                   newPos[0] = Math.max(newPos[0], 0);
                   newPos[1] = Math.max(newPos[1], 0);
-                  newPos[0] = Math.min(newPos[0], grid.getHeight());
-                  newPos[1] = Math.min(newPos[1], grid.getHeight());
+                  newPos[0] = Math.min(newPos[0], grid.getWidth()-1); //Counting from 0
+                  newPos[1] = Math.min(newPos[1], grid.getHeight()-1);
                   Pixel newPixel = grid.getPixel(newPos[0], newPos[1]);
                   newPixel.x = x;
                   newPixel.y = y;
