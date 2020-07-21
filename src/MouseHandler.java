@@ -31,7 +31,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
             button = MouseEvent.BUTTON3;
         } else {
             // other (i.e. scroll wheel click)
-            button = 0;
+            button = MouseEvent.BUTTON2;
         }
 
         clickPoint(x, y, button);
@@ -83,6 +83,8 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
         if(button == MouseEvent.BUTTON1) {
             grid.setPixel(squareX, squareY, new Sand(squareX, squareY));
+        } else if(button == MouseEvent.BUTTON2) {
+            grid.setPixel(squareX, squareY, new Water(squareX, squareY));
         } else if(button == MouseEvent.BUTTON3) {
             grid.setPixel(squareX, squareY, new Pixel("air", squareX, squareY, Color.black));
         }
