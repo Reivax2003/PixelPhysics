@@ -16,49 +16,49 @@ public class Fire extends Pixel {
         x = super.x;
         y = super.y;
 
-        if (grid.getPixel(x-1,y-1).getType() == "wood"){
+        if (grid.getPixel(x-1,y-1).getType().equals("wood")) {
             positions.add(x-1);
             positions.add(y);
             positions.add(x);
             positions.add(y-1);
         }
-        if (grid.getPixel(x+1,y-1).getType() == "wood"){
+        if (grid.getPixel(x+1,y-1).getType().equals("wood")) {
             positions.add(x+1);
             positions.add(y);
             positions.add(x);
             positions.add(y-1);
         }
-        if (grid.getPixel(x-1,y+1).getType() == "wood") {
+        if (grid.getPixel(x-1,y+1).getType().equals("wood")) {
             positions.add(x-1);
             positions.add(y);
             positions.add(x);
             positions.add(y+1);
         }
-        if (grid.getPixel(x+1,y+1).getType() == "wood") {
+        if (grid.getPixel(x+1,y+1).getType().equals("wood")) {
             positions.add(x);
             positions.add(y+1);
             positions.add(x+1);
             positions.add(y);
         }
-        if (grid.getPixel(x-1,y).getType() == "wood") {
+        if (grid.getPixel(x-1,y).getType().equals("wood")) {
             positions.add(x-1);
             positions.add(y+1);
             positions.add(x);
             positions.add(y);
         }
-        if (grid.getPixel(x+1,y).getType() == "wood") {
+        if (grid.getPixel(x+1,y).getType().equals("wood")) {
             positions.add(x+1);
             positions.add(y+1);
             positions.add(x);
             positions.add(y);
         }
-        if (grid.getPixel(x,y+1).getType() == "wood") {
+        if (grid.getPixel(x,y+1).getType().equals("wood")) {
             positions.add(x-1);
             positions.add(y+1);
             positions.add(x+1);
             positions.add(y+1);
         }
-        if (grid.getPixel(x,y-1).getType() == "wood") {
+        if (grid.getPixel(x,y-1).getType().equals("wood")) {
             positions.add(x-1);
             positions.add(y-1);
             positions.add(x+1);
@@ -98,6 +98,6 @@ public class Fire extends Pixel {
     }
 
     public boolean check(Grid grid, int x, int y){
-        return (grid.getPixel(x,y).type == "air");
+        return (grid.getPixel(x,y).type.equals("air"));
     }
 }
