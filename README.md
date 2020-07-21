@@ -7,3 +7,5 @@ List of planned substances: Sand, Water, Stone, Metal, wet sand, fire, wood, pla
 We plan on using java.
 
 In the future if that can be completed, it would be interesting to turn it into some sort of game.
+
+Trello: https://trello.com/b/vTjLOnEO/pixel-physics
