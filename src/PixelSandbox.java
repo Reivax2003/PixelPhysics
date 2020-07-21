@@ -74,6 +74,7 @@ public class PixelSandbox {
                   }
               }
               System.out.println(y);
+              renderer.repaint();
           }
           renderer.repaint();
         }
