@@ -3,9 +3,9 @@
 Our goal is to make a realtime physics simulation built around sandbox.pixels, each pixel is one unit of a substance and there are different substances that behave differently and can interact with each other.
 
 List of planned substances:  
-sandbox.pixels.sandbox.pixels.Sand (falls downwards or diagonally),  
-sandbox.sandbox.pixels.Water (falls down, diagonally, or moves left/right),  
-sandbox.Stone (does nothing),  
+Sand (falls downwards or diagonally),  
+Water (falls down, diagonally, or moves left/right),  
+Stone (does nothing),  
 Metal (does nothing),  
 wet sand (created with sand+water, can stack at a higher angle than sand),  
 fire (Burns flammables),  
