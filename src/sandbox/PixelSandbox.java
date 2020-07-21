@@ -1,6 +1,6 @@
 package sandbox;
 
-import sandbox.pixels.Pixel;
+import sandbox.pixels.Air;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +34,7 @@ public class PixelSandbox {
 
         for (int x = 0; x < grid.getWidth(); x++){
             for (int y = 0; y < grid.getHeight(); y++){
-                grid.setPixel(x, y, new Pixel("air", x, y, Color.black));
+                grid.setPixel(x, y, new Air(x, y));
             }
         }
     }
