@@ -18,7 +18,7 @@ public class PixelSandbox {
         initializeRenderer();
         initializeFrame();
         update();
-        grid.setPixel(23, 23, new Sand(23, 23));
+        grid.setPixel(23, 23, new Water(23, 23));
     }
 
     private void initializeGrid() {
@@ -62,6 +62,10 @@ public class PixelSandbox {
               for (int x = 0; x < grid.getWidth(); x++){
                   Pixel curPixel = grid.getPixel(x,y);
                   int[] newPos = curPixel.update(grid);
+                  newPos[0] = Math.max(newPos[0], 0);
+                  newPos[1] = Math.max(newPos[1], 0);
+                  newPos[0] = Math.min(newPos[0], grid.getHeight());
+                  newPos[1] = Math.min(newPos[1], grid.getHeight());
                   Pixel newPixel = grid.getPixel(newPos[0], newPos[1]);
                   newPixel.x = x;
                   newPixel.y = y;
@@ -69,17 +73,19 @@ public class PixelSandbox {
                   curPixel.x = newPos[0];
                   curPixel.y = newPos[1];
                   grid.setPixel(newPos[0], newPos[1], curPixel);
-                  if(curPixel.getType().equals("sand")){
+                  //if(curPixel.getType().equals("sand")){
                     //System.out.println(newPos[1]+"NEW from" + y);
-                  }
+                  //}
               }
               //System.out.println(y);
+              renderer.repaint();
           }
+          renderer.repaint();
         }
       };
-      final ScheduledFuture<?> updateTimer = scheduler.scheduleAtFixedRate(updateFunction, 1000, 500, TimeUnit.MILLISECONDS);
+      final ScheduledFuture<?> updateTimer = scheduler.scheduleAtFixedRate(updateFunction, 1, 100, TimeUnit.MILLISECONDS);
       scheduler.schedule(new Runnable() { //Kills loop at a minutes
         public void run() { updateTimer.cancel(true); scheduler.shutdown(); }
-      }, 60 * 1, TimeUnit.SECONDS);
+      }, 5 * 100, TimeUnit.SECONDS);
     }
 }
