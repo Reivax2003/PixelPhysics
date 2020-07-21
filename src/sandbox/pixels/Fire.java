@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Fire extends Pixel {
 
     public Fire(int xpos, int ypos) {
-        super("sand", xpos, ypos, Color.yellow);
+        super("fire", xpos, ypos, Color.yellow);
     }
 
     public int[] update(Grid grid) {
