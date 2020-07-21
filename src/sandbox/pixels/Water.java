@@ -1,10 +1,11 @@
 package sandbox.pixels;
 
 import sandbox.Grid;
+import sandbox.pixels.types.Liquid;
 
 import java.awt.Color;
 
-public class Water extends Pixel {
+public class Water extends Pixel implements Liquid {
 
     public Water(int xpos, int ypos) {
         super("water", xpos, ypos, Color.blue);
