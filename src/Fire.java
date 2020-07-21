@@ -1,82 +1,86 @@
 import java.awt.*;
+import java.util.Random;
+import java.util.ArrayList;
 
 public class Fire extends Pixel {
 
-    public Sand(int xpos, int ypos) {
+    public Fire(int xpos, int ypos) {
         super("sand", xpos, ypos, Color.yellow);
     }
 
     public int[] update(Grid grid) {
         int[] newPositions;
 
-        List<int> positions = new ArrayList<int>();
+        ArrayList<Integer> positions = new ArrayList<Integer>();
 
         x = super.x;
         y = super.y;
 
-        if (grid[x-1][y-1].getType() == "wood"){
+        if (grid.getPixel(x-1,y-1).getType() == "wood"){
             positions.add(x-1);
             positions.add(y);
             positions.add(x);
             positions.add(y-1);
         }
-        if (grid[x+1][y-1].getType() == "wood"){
+        if (grid.getPixel(x+1,y-1).getType() == "wood"){
             positions.add(x+1);
             positions.add(y);
             positions.add(x);
             positions.add(y-1);
         }
-        if (grid[x-1][y+1].getType() == "wood") {
+        if (grid.getPixel(x-1,y+1).getType() == "wood") {
             positions.add(x-1);
             positions.add(y);
             positions.add(x);
             positions.add(y+1);
         }
-        if (grid[x+1][y+1].getType() == "wood") {
+        if (grid.getPixel(x+1,y+1).getType() == "wood") {
             positions.add(x);
             positions.add(y+1);
             positions.add(x+1);
             positions.add(y);
         }
-        if (grid[x-1][y].getType() == "wood") {
+        if (grid.getPixel(x-1,y).getType() == "wood") {
             positions.add(x-1);
             positions.add(y+1);
             positions.add(x);
             positions.add(y);
         }
-        if (grid[x+1][y].getType() == "wood") {
+        if (grid.getPixel(x+1,y).getType() == "wood") {
             positions.add(x+1);
             positions.add(y+1);
             positions.add(x);
             positions.add(y);
         }
-        if (grid[x][y+1].getType() == "wood") {
+        if (grid.getPixel(x,y+1).getType() == "wood") {
             positions.add(x-1);
             positions.add(y+1);
             positions.add(x+1);
             positions.add(y+1);
         }
-        if (grid[x1][y-1].getType() == "wood") {
+        if (grid.getPixel(x,y-1).getType() == "wood") {
             positions.add(x-1);
             positions.add(y-1);
             positions.add(x+1);
             positions.add(y-1);
             positions.add(x);
             positions.add(y);
-        }
-        if (math.random() > 0.5){
-            positions.add(x)
-            positions.add(y)
-        }
-        if (math.random() > 0.5){
-            positions.add(x)
-            positions.add(y+1)
         }
 
-        boolean stays == false;
+        Random rand = new Random();
+        if (rand.nextDouble() > 0.5){
+            positions.add(x);
+            positions.add(y);
+        }
+        if (rand.nextDouble() > 0.5){
+            positions.add(x);
+            positions.add(y+1);
+        }
+
+        boolean stays = false;
         int count = 0;
         for (int i = 0; i < positions.size(); i+= 2){
-            if (check(grid, positions[i], positions[i+1])){
+            if (check(grid, positions.get(i), positions.get(i+1))){
               count++;
             }
             else{
@@ -87,13 +91,13 @@ public class Fire extends Pixel {
         newPositions = new int[count];
 
         for (int i = 0; i < positions.size(); i++){
-            newPositions[i] = positions[i];
+            newPositions[i] = positions.get(i);
         }
 
         return newPositions;
     }
 
     public boolean check(Grid grid, int x, int y){
-        return (grid[x][y].type == air)
+        return (grid.getPixel(x,y).type == "air");
     }
 }
