@@ -1,3 +1,7 @@
+package sandbox.pixels;
+
+import sandbox.Grid;
+
 import java.awt.*;
 
 public class Sand extends Pixel {
