@@ -2,7 +2,7 @@ package sandbox.pixels.types;
 
 import sandbox.Grid;
 
-public class Granular {
+public interface Granular {
 
-    // this needs to be an interface - not a class
+    public int[] update(Grid grid);
 }
