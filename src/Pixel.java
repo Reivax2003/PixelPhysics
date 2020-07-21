@@ -10,6 +10,8 @@ public class Pixel {
   public String type;
   protected Color color;
 
+  public ArrayList<String> tags = new ArrayList<String>();
+
   public Pixel(String type, int xpos, int ypos, Color color){
     this.isStable = false;
     this.x = xpos;
@@ -30,7 +32,7 @@ public class Pixel {
     this.type = type;
   }
 
-  public int[] update(Grid grid) {  
+  public int[] update(Grid grid) {
       int[] newPosition = new int[] {x, y};
       return newPosition;
   }
