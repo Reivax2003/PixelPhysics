@@ -63,11 +63,11 @@ public class PixelSandbox {
                   Pixel curPixel = grid.getPixel(x,y);
                   int[] newPos = curPixel.update(grid);
                   Pixel newPixel = grid.getPixel(newPos[0], newPos[1]);
-                  newPixel.x = newPos[0];
-                  newPixel.y = newPos[1];
+                  newPixel.x = x;
+                  newPixel.y = y;
                   grid.setPixel(x, y, newPixel); //If no movement it gets set to itself twice
-                  curPixel.x = x;
-                  curPixel.y = y;
+                  curPixel.x = newPos[0];
+                  curPixel.y = newPos[1];
                   grid.setPixel(newPos[0], newPos[1], curPixel);
                   if(curPixel.getType().equals("sand")){
                     System.out.println(newPos[1]+"NEW from" + y);
