@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -6,7 +7,7 @@ import java.awt.event.MouseMotionListener;
 public class MouseHandler implements MouseMotionListener, MouseListener {
 
     private final JPanel panel;
-    private Grid grid;
+    private final Grid grid;
 
     public MouseHandler(JPanel panel, Grid grid) {
         this.panel = panel;
@@ -20,7 +21,20 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         int x = e.getX();
         int y = e.getY();
 
-        clickPoint(x, y);
+        int button;
+
+        if((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK) {
+            // left mouse button
+            button = MouseEvent.BUTTON1;
+        } else if((e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) == MouseEvent.BUTTON3_DOWN_MASK) {
+            // right mouse button
+            button = MouseEvent.BUTTON3;
+        } else {
+            // other (i.e. scroll wheel click)
+            button = 0;
+        }
+
+        clickPoint(x, y, button);
     }
 
     @Override
@@ -30,10 +44,11 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         int x = e.getX();
         int y = e.getY();
 
-        clickPoint(x, y);
+        clickPoint(x, y, e.getButton());
     }
 
-    private void clickPoint(int x, int y) {
+    // FIXME: misses pixels if mouse moves too fast
+    private void clickPoint(int x, int y, int button) {
 
         // size of panel
         int width = panel.getWidth();
@@ -58,17 +73,22 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         int squareX = adjustedX / pixelsPerSquare;
         int squareY = adjustedY / pixelsPerSquare;
 
-        // -1 means "out of bounds"
+        // out of bounds
         if(squareX < 0 || squareX > gridWidth - 1) {
-            squareX = -1;
+            return;
         }
         if(squareY < 0 || squareY > gridHeight - 1) {
-            squareY = -1;
+            return;
         }
 
-        // do something here
-        System.out.println(squareX + ", " + squareY);
-        System.out.println(grid.getPixel(squareX,squareY).getType());//DELETE in merge test code
+        if(button == MouseEvent.BUTTON1) {
+            grid.setPixel(squareX, squareY, new Sand(squareX, squareY));
+        } else if(button == MouseEvent.BUTTON3) {
+            grid.setPixel(squareX, squareY, new Pixel("air", squareX, squareY, Color.black));
+        }
+
+        // repaint panel so it displays
+        panel.repaint();
     }
 
     @Override

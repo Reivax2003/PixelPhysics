@@ -7,7 +7,7 @@ public class Pixel {
   protected int x;
   protected int y;
 
-  private String type;
+  public String type;
   protected Color color;
 
   public Pixel(String type, int xpos, int ypos, Color color){
