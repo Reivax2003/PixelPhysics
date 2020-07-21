@@ -29,9 +29,4 @@ public class Pixel {
   public void setType(String type) {
     this.type = type;
   }
-
-  public int[] update(Grid grid) {  
-      int[] newPosition = new int[] {x, y};
-      return newPosition;
-  }
 }
