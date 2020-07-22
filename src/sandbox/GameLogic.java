@@ -24,7 +24,7 @@ public class GameLogic extends TimerTask {
                 Pixel currentPixel = grid.getPixel(x, y);
                 int currentX = currentPixel.getX();
                 int currentY = currentPixel.getY();
-
+                currentPixel.setMoved(false);
                 int density = currentPixel.getPropOrDefault("density", Integer.MAX_VALUE);
 
                 if(currentPixel.hasProperty("support")) {
@@ -34,11 +34,11 @@ public class GameLogic extends TimerTask {
                         double random = Math.random();
 
                         // down + left
-                        if(currentX > 0 && grid.getPixel(currentX - 1, currentY + 1).getPropOrDefault("density", DEFAULT_DENSITY) < density && random < 0.5) {
+                        if(currentX > 0 && !grid.getPixel(currentX - 1, currentY + 1).getMoved() && grid.getPixel(currentX - 1, currentY + 1).getPropOrDefault("density", DEFAULT_DENSITY) < density && random < 0.5) {
                             grid.swapPositions(currentX, currentY, currentX - 1, currentY + 1);
                         }
                         // down + right
-                        else if(currentX < grid.getWidth() - 1 && grid.getPixel(currentX + 1, currentY + 1).getPropOrDefault("density", DEFAULT_DENSITY) < density && random >= 0.5) {
+                        else if(currentX < grid.getWidth() - 1 && !grid.getPixel(currentX + 1, currentY + 1).getMoved() && grid.getPixel(currentX + 1, currentY + 1).getPropOrDefault("density", DEFAULT_DENSITY) < density && random >= 0.5) {
                             // TODO: displacement instead of swapping
                             grid.swapPositions(currentX, currentY, currentX + 1, currentY + 1);
                         }
@@ -49,7 +49,7 @@ public class GameLogic extends TimerTask {
                     int gravity = currentPixel.getProperty("gravity");
 
                     if(currentY + gravity < grid.getHeight() && currentY + gravity >= 0) {
-                        if(grid.getPixel(currentX, currentY + gravity).getPropOrDefault("density", DEFAULT_DENSITY) < density) {
+                        if(grid.getPixel(currentX, currentY + gravity).getPropOrDefault("density", DEFAULT_DENSITY) < density && !grid.getPixel(currentX, currentY + gravity).getMoved()) {
                             grid.swapPositions(currentX, currentY, currentX, currentY + gravity);
                         }
                     }
@@ -62,11 +62,11 @@ public class GameLogic extends TimerTask {
                         double random = Math.random();
 
                         // left
-                        if(currentX > 0 && grid.getPixelLeft(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && random < 0.5) {
+                        if(currentX > 0 && !grid.getPixelLeft(currentX, currentY).getMoved() && grid.getPixelLeft(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && random < 0.5) {
                             grid.swapPositions(currentX, currentY, currentX - 1, currentY);
                         }
                         // right
-                        else if(currentX < grid.getWidth() - 1 && grid.getPixelRight(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && random >= 0.5) {
+                        else if(currentX < grid.getWidth() - 1 && !grid.getPixelRight(currentX, currentY).getMoved() && grid.getPixelRight(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && random >= 0.5) {
                             grid.swapPositions(currentX, currentY, currentX + 1, currentY);
                         }
                     }
