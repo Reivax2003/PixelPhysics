@@ -17,7 +17,7 @@ public class Pixel {
 
     protected boolean moved;
 
-    public Pixel(String type, int xpos, int ypos, Color color){
+    public Pixel(String type, int xpos, int ypos, Color color) {
         this.x = xpos;
         this.y = ypos;
         this.type = type;
@@ -25,10 +25,10 @@ public class Pixel {
         this.moved = false;
     }
 
-    public Pixel duplicate(){
+    public Pixel duplicate() {
         Pixel copy = new Pixel(type, x, y, color);
         copy.properties = this.properties;
-        return(copy);
+        return (copy);
     }
 
     public int getX() {

@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.Random;
 import java.util.ArrayList;
 
-public class Fire extends Pixel{
+public class Fire extends Pixel {
 
     public Fire(int xpos, int ypos) {
         super("fire", xpos, ypos, new Color(255, 81, 0));
@@ -101,7 +101,7 @@ public class Fire extends Pixel{
 //        return newPositions;
 //    }
 
-    public boolean check(Grid grid, int x, int y){
-        return (grid.getPixel(x,y).type.equals("air"));
+    public boolean check(Grid grid, int x, int y) {
+        return (grid.getPixel(x, y).type.equals("air"));
     }
 }

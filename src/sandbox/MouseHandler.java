@@ -13,8 +13,8 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
     private final Grid grid;
     private KeyHandler keyHandler;
 
-    private int lastMouseX=-1;
-    private int lastMouseY=-1;
+    private int lastMouseX = -1;
+    private int lastMouseY = -1;
 
     public MouseHandler(JPanel panel, Grid grid, KeyHandler keyHandler) {
         this.panel = panel;
@@ -31,10 +31,10 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
         int button;
 
-        if((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK) {
+        if ((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK) {
             // left mouse button
             button = MouseEvent.BUTTON1;
-        } else if((e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) == MouseEvent.BUTTON3_DOWN_MASK) {
+        } else if ((e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) == MouseEvent.BUTTON3_DOWN_MASK) {
             // right mouse button
             button = MouseEvent.BUTTON3;
         } else {
@@ -81,36 +81,33 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         int squareY = adjustedY / pixelsPerSquare;
 
         // out of bounds
-        if(squareX < 0 || squareX > gridWidth - 1) {
+        if (squareX < 0 || squareX > gridWidth - 1) {
             return;
         }
-        if(squareY < 0 || squareY > gridHeight - 1) {
+        if (squareY < 0 || squareY > gridHeight - 1) {
             return;
         }
 
-        if(lastMouseX == -1)
-        {
-            if(button == MouseEvent.BUTTON1) {
+        if (lastMouseX == -1) {
+            if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
                 grid.setPixel(squareX, squareY, pixel);
                 pixel.setX(squareX);
                 pixel.setY(squareY);
-            } else if(button == MouseEvent.BUTTON2) {
+            } else if (button == MouseEvent.BUTTON2) {
                 grid.setPixel(squareX, squareY, new Water(squareX, squareY));
-            } else if(button == MouseEvent.BUTTON3) {
+            } else if (button == MouseEvent.BUTTON3) {
                 grid.setPixel(squareX, squareY, new Air(squareX, squareY));
             }
-        }
-        else
-        {
-            if(button == MouseEvent.BUTTON1) {
+        } else {
+            if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
                 pixel.setX(squareX);
                 pixel.setY(squareY);
-            } else if(button == MouseEvent.BUTTON2) {
+            } else if (button == MouseEvent.BUTTON2) {
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Water(squareX, squareY));
-            } else if(button == MouseEvent.BUTTON3) {
+            } else if (button == MouseEvent.BUTTON3) {
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(squareX, squareY));
             }
         }

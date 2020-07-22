@@ -9,7 +9,7 @@ public class PixelSandbox {
     private final JFrame frame = new JFrame();
     private Renderer renderer;
     private MouseHandler mouseHandler;
-    private  KeyHandler keyHandler;
+    private KeyHandler keyHandler;
     private GameLogic gameLogic;
 
     public Grid grid;
@@ -33,8 +33,8 @@ public class PixelSandbox {
 
         grid = new Grid(100, 50);
 
-        for (int x = 0; x < grid.getWidth(); x++){
-            for (int y = 0; y < grid.getHeight(); y++){
+        for (int x = 0; x < grid.getWidth(); x++) {
+            for (int y = 0; y < grid.getHeight(); y++) {
                 grid.setPixel(x, y, new Air(x, y));
             }
         }
