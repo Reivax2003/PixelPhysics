@@ -108,6 +108,9 @@ public class GameLogic extends TimerTask {
                     Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelLeft(currentX, currentY).getType(), null);
                     if(product != null)
                     {
+                        product = product.duplicate();
+                        product.setX(currentX);
+                        product.setY(currentY);
                         grid.setPixel(currentX, currentY, product);
                         grid.setPixel(currentX-1, currentY, new Air(currentX-1, currentY));
                         reacted = true;
@@ -118,6 +121,9 @@ public class GameLogic extends TimerTask {
                     Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelRight(currentX, currentY).getType(), null);
                     if(product != null)
                     {
+                        product = product.duplicate();
+                        product.setX(currentX);
+                        product.setY(currentY);
                         grid.setPixel(currentX, currentY, product);
                         grid.setPixel(currentX+1, currentY, new Air(currentX+1, currentY));
                         reacted = true;
@@ -128,6 +134,9 @@ public class GameLogic extends TimerTask {
                     Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelUp(currentX, currentY).getType(), null);
                     if(product != null)
                     {
+                        product = product.duplicate();
+                        product.setX(currentX);
+                        product.setY(currentY);
                         grid.setPixel(currentX, currentY, product);
                         grid.setPixel(currentX, currentY-1, new Air(currentX, currentY-1));
                         reacted = true;
@@ -138,6 +147,9 @@ public class GameLogic extends TimerTask {
                     Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelDown(currentX, currentY).getType(), null);
                     if(product != null)
                     {
+                        product = product.duplicate();
+                        product.setX(currentX);
+                        product.setY(currentY);
                         grid.setPixel(currentX, currentY, product);
                         grid.setPixel(currentX, currentY+1, new Air(currentX, currentY+1));
                         reacted = true;
