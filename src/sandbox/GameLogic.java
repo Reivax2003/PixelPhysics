@@ -12,6 +12,8 @@ public class GameLogic extends TimerTask {
     private final Grid grid;
     private final JPanel panel;
 
+    private boolean reverse;
+
     public GameLogic(Grid grid, JPanel panel) {
         this.grid = grid;
         this.panel = panel;
@@ -19,8 +21,9 @@ public class GameLogic extends TimerTask {
 
     @Override
     public void run() {
+        reverse = false;
         for (int y = grid.getHeight() - 1; y > -1; y--) {
-            for (int x = 0; x < grid.getWidth(); x++) {
+            for (int x = (reverse? 1:0) * (grid.getWidth() -1); -1 < x && x < grid.getWidth(); x+= reverse? -1:1 ) {
                 Pixel currentPixel = grid.getPixel(x, y);
                 int currentX = currentPixel.getX();
                 int currentY = currentPixel.getY();
@@ -72,6 +75,7 @@ public class GameLogic extends TimerTask {
                     }
                 }
             }
+            reverse = !reverse;
         }
 
         panel.repaint();
