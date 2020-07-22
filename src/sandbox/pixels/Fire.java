@@ -16,7 +16,4 @@ public class Fire extends Pixel{
                 .setProperty("strength", 100); //property for fire to make flickering flames
     }
 
-    public boolean check(Grid grid, int x, int y){
-        return (grid.getPixel(x,y).type.equals("air"));
-    }
 }
