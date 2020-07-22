@@ -105,7 +105,10 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         else
         {
             if(button == MouseEvent.BUTTON1) {
-                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Sand(squareX, squareY));
+                Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
+                grid.setPixel(squareX, squareY, pixel);
+                pixel.setX(squareX);
+                pixel.setY(squareY);
             } else if(button == MouseEvent.BUTTON2) {
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Water(squareX, squareY));
             } else if(button == MouseEvent.BUTTON3) {
