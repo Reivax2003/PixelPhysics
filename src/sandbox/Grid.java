@@ -68,7 +68,7 @@ public class Grid {
 
         for (double i = 0; i < length; i++) {
             int x = (int)(x1+dirX*i), y = (int)(y1+dirY*i);            
-            Pixel p = pixel.Clone();
+            Pixel p = pixel.duplicate();
             p.setX(x);
             p.setY(y);
             this.grid[x][y] = p;
