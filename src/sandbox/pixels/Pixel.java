@@ -15,11 +15,14 @@ public class Pixel {
     public String type;
     protected Color color;
 
+    protected boolean moved;
+
     public Pixel(String type, int xpos, int ypos, Color color){
         this.x = xpos;
         this.y = ypos;
         this.type = type;
         this.color = color;
+        this.moved = false;
     }
 
     public Pixel duplicate(){
@@ -74,7 +77,19 @@ public class Pixel {
         return properties.containsKey(property);
     }
 
+    public boolean getMoved() {
+        return moved;
+    }
+
+    public void setMoved(boolean truefalse) {
+        this.moved = truefalse;
+    }
+
     public void update(Grid grid) {
 
+    }
+
+    public Pixel Clone() {
+        return new Pixel(type, x, y, color);
     }
 }
