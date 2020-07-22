@@ -85,7 +85,7 @@ public class Pixel {
         return properties.containsKey(property);
     }
 
-    public boolean getMoved() {
+    public boolean hasMoved() {
         return moved;
     }
 
@@ -95,9 +95,5 @@ public class Pixel {
 
     public void update(Grid grid) {
 
-    }
-
-    public Pixel Clone() {
-        return new Pixel(type, x, y, color);
     }
 }
