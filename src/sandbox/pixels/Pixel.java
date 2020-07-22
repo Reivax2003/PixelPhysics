@@ -83,4 +83,8 @@ public class Pixel {
     public void update(Grid grid) {
 
     }
+
+    public Pixel Clone() {
+        return new Pixel(type, x, y, color);
+    }
 }
