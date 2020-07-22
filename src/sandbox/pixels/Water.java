@@ -11,4 +11,8 @@ public class Water extends Pixel {
                 .setProperty("density", 50)
                 .setProperty("fluidity", 100);
     }
+
+    public Water Clone() {
+        return new Water(x, y);
+    }
 }
