@@ -1,7 +1,5 @@
 package sandbox.pixels;
 
-import sandbox.Grid;
-
 import java.awt.*;
 import java.util.HashMap;
 
@@ -84,9 +82,5 @@ public class Pixel {
 
     public void setMoved(boolean truefalse) {
         this.moved = truefalse;
-    }
-
-    public void update(Grid grid) {
-
     }
 }
