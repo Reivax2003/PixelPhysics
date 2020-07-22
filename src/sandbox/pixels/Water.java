@@ -9,7 +9,6 @@ public class Water extends Pixel {
         this
                 .setProperty("gravity", 1)
                 .setProperty("density", 50)
-                .setProperty("fluidity", 100)
-                .setProperty("wet", 1);
+                .setProperty("fluidity", 100);
     }
 }
