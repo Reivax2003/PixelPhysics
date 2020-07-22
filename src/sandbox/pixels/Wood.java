@@ -5,7 +5,9 @@ import java.awt.*;
 public class Wood extends Pixel {
 
     public Wood(int xpos, int ypos) {
-        super("wood", xpos, ypos, new Color(158, 78, 39));
+        super("wood", xpos, ypos, Color.orange.darker());
+        this
+                .setProperty("flammable", 1);
     }
 
 }
