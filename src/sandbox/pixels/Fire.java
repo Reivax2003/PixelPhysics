@@ -12,9 +12,6 @@ public class Fire extends Pixel{
         super("fire", xpos, ypos, Color.orange);
     }
 
-    public Fire Clone() {
-        return new Fire(x, y);
-    }
 
     // to do: reimplement in GameLogic
 

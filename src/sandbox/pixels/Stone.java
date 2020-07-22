@@ -8,7 +8,4 @@ public class Stone extends Pixel {
         super("stone", xpos, ypos, Color.gray);
     }
 
-    public Stone Clone() {
-        return new Stone(x, y);
-    }
 }

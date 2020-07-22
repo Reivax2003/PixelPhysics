@@ -92,7 +92,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         if(lastMouseX == -1)
         {
             if(button == MouseEvent.BUTTON1) {
-                Pixel pixel = keyHandler.pixels[keyHandler.chosen].Clone();
+                Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
                 grid.setPixel(squareX, squareY, pixel);
                 pixel.setX(squareX);
                 pixel.setY(squareY);
@@ -105,7 +105,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         else
         {
             if(button == MouseEvent.BUTTON1) {
-                Pixel pixel = keyHandler.pixels[keyHandler.chosen].Clone();
+                Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
                 grid.setPixel(squareX, squareY, pixel);
                 pixel.setX(squareX);
                 pixel.setY(squareY);

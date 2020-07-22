@@ -36,7 +36,6 @@ public class KeyHandler implements KeyListener{
 
         if (keyChar == '0' || keyChar == '1' || keyChar == '2' || keyChar == '3' || keyChar == '4' || keyChar == '5' || keyChar == '6' || keyChar == '7' || keyChar == '8' || keyChar == '9') {
             chosen = Integer.parseInt(String.valueOf(keyChar));
-            System.out.println(chosen);
         }
     }
 }

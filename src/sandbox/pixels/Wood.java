@@ -8,7 +8,4 @@ public class Wood extends Pixel {
         super("wood", xpos, ypos, Color.orange.darker());
     }
 
-    public Wood Clone() {
-        return new Wood(x, y);
-    }
 }
