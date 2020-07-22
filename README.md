@@ -3,12 +3,13 @@
 Our goal is to make a realtime physics simulation built around pixels, each pixel is one unit of a substance and there are different substances that behave differently and can interact with each other.
 
 List of planned substances:  
-Sand (falls downwards or diagonally),  
+Sand (falls downwards or diagonally),
+Soil (acts like sand, but heavier),
 Water (falls down, diagonally, or moves left/right),  
 Stone (does nothing),  
 Metal (does nothing),  
 wet sand (created with sand+water, can stack at a higher angle than sand),  
-fire (Burns flammables),  
+fire (burns flammables),  
 wood (can burn),  
 plants (grow on sand?),  
 lava (burns flammables and melts through stone/metal),

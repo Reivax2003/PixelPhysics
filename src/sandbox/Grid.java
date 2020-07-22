@@ -48,13 +48,12 @@ public class Grid {
 
         position1.setX(x2);
         position1.setY(y2);
-        position1.setMoved(true);
 
         position2.setX(x1);
         position2.setY(y1);
-        if (position2.getProperty("density") > 0) { //Air exception made assumption second pos is the acted upon not the actor
-          position2.setMoved(true);
-        }
+
+        position1.setMoved(true);
+        position2.setMoved(true);
 
         grid[x1][y1] = position2;
         grid[x2][y2] = position1;
@@ -68,7 +67,7 @@ public class Grid {
 
         for (double i = 0; i < length; i++) {
             int x = (int)(x1+dirX*i), y = (int)(y1+dirY*i);            
-            Pixel p = pixel.Clone();
+            Pixel p = pixel.duplicate();
             p.setX(x);
             p.setY(y);
             this.grid[x][y] = p;
