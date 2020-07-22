@@ -7,4 +7,8 @@ public class Wood extends Pixel {
     public Wood(int xpos, int ypos) {
         super("wood", xpos, ypos, Color.orange.darker());
     }
+
+    public Wood Clone() {
+        return new Wood(x, y);
+    }
 }

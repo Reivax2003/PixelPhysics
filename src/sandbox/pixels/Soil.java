@@ -11,4 +11,8 @@ public class Soil extends Pixel {
                 .setProperty("density", 80)
                 .setProperty("support", 1);
     }
+
+    public Soil Clone() {
+        return new Soil(x, y);
+    }
 }

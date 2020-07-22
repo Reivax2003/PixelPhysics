@@ -1,6 +1,7 @@
 package sandbox;
 
 import sandbox.pixels.Pixel;
+import sandbox.pixels.Sand;
 
 public class Grid {
     private final Pixel[][] grid;
@@ -47,11 +48,30 @@ public class Grid {
 
         position1.setX(x2);
         position1.setY(y2);
+        position1.setMoved(true);
 
         position2.setX(x1);
         position2.setY(y1);
+        if (position2.getProperty("density") > 0) { //Air exception made assumption second pos is the acted upon not the actor
+          position2.setMoved(true);
+        }
 
         grid[x1][y1] = position2;
         grid[x2][y2] = position1;
+    }
+
+    public void drawLine(int x1, int y1, int x2, int y2, Pixel pixel) {
+        double dirX = x2-x1, dirY = y2-y1;
+        double length = Math.sqrt(dirX*dirX+dirY*dirY);
+        dirX/=length;
+        dirY/=length;
+
+        for (double i = 0; i < length; i++) {
+            int x = (int)(x1+dirX*i), y = (int)(y1+dirY*i);            
+            Pixel p = pixel.Clone();
+            p.setX(x);
+            p.setY(y);
+            this.grid[x][y] = p;
+        }
     }
 }
