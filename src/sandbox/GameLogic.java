@@ -215,7 +215,7 @@ public class GameLogic extends TimerTask {
                 check = grid.getPixel(x+i, y);
             }
 
-            if (check.hasProperty("density") && check.getProperty("density") == -1) {
+            if (check.hasProperty("density") && check.getProperty("density") == -1000) {
                 Pixel clone = original.duplicate();
                 clone.setY(check.getY());
                 clone.setX(check.getX());
