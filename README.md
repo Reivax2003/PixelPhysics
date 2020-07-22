@@ -13,7 +13,7 @@ wood (can burn),
 plants (grow on sand?),  
 lava (burns flammables and melts through stone/metal),
 
-We plan on using java.
+We plan on using java because most of the team knows it and it has a library for simple 2d rendering.
 
 In the future if that can be completed, it would be interesting to turn it into some sort of game.
 
