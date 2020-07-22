@@ -48,13 +48,12 @@ public class Grid {
 
         position1.setX(x2);
         position1.setY(y2);
-        position1.setMoved(true);
 
         position2.setX(x1);
         position2.setY(y1);
-        if (position2.getProperty("density") > 0) { //Air exception made assumption second pos is the acted upon not the actor
-          position2.setMoved(true);
-        }
+
+        position1.setMoved(true);
+        position2.setMoved(true);
 
         grid[x1][y1] = position2;
         grid[x2][y2] = position1;
