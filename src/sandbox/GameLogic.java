@@ -1,12 +1,12 @@
 package sandbox;
 
-import sandbox.pixels.Air;
-import sandbox.pixels.Pixel;
-import sandbox.pixels.Air;
+import sandbox.pixels.*;
 
 import javax.swing.*;
 import java.util.TimerTask;
 import java.util.ArrayList;
+import java.util.Random;
+import java.awt.Color;
 
 public class GameLogic extends TimerTask {
 
@@ -107,7 +107,10 @@ public class GameLogic extends TimerTask {
                 if(currentPixel.hasProperty("spreads")) {
                     if (currentPixel.getProperty("spreads") == 1){
                         if (currentPixel.getType() == "fire") {
-                            spread(currentPixel, "flammable");
+                            flicker(currentPixel);
+                            if (currentPixel.getProperty("strength") == 100) {
+                                spread(currentPixel, "flammable");
+                            }
                         }
                     }
                     else{
@@ -181,6 +184,37 @@ public class GameLogic extends TimerTask {
 
         panel.repaint();
     }
+    public void flicker(Pixel pixel){
+        int x = pixel.getX();
+        int y = pixel.getY();
+
+        Random r = new Random();
+
+        double spreadChance = 0.65;
+        double spreadDecrease = 0.05;
+        double decreaseAmount = 0;
+
+        double strength = pixel.getProperty("strength")/100.0;
+        Color color = pixel.getColor();
+
+        try {
+            if (r.nextDouble() <= strength * spreadChance && grid.getPixel(x, y - 1).type == "air") {
+                Pixel newFlame = new Fire(x, y - 1);
+                newFlame.changeProperty("strength", (int) ((strength - spreadDecrease) * 100));
+
+                color = new Color(color.getRed() / 255.0f, (float) ((color.getGreen() / 255.0f) * (newFlame.getProperty("strength") / 100.0f)), color.getBlue() / 255.0f);
+                newFlame.setColor(color);
+
+                grid.setPixel(x, y - 1, newFlame);
+            }
+        } catch (Exception e) {}
+        if (r.nextDouble() > strength){
+            strength *= decreaseAmount;
+            if (strength == 0){
+                grid.setPixel(x, y, new Air(x, y));
+            }
+        }
+    }
     public void spread(Pixel original, String fuel){
         int xpos = original.getX();
         int ypos = original.getY();
@@ -189,7 +223,7 @@ public class GameLogic extends TimerTask {
 
         for (int x = -1; x <= 1; x++){
             for (int y = -1; y <= 1; y++){
-                if (grid.getPixel(x+xpos, y+ypos).hasProperty("flammable")) {
+                if (x+xpos >= 0 && x+xpos < grid.getWidth() && y+ypos >= 0 && y+ypos < grid.getHeight() && grid.getPixel(x+xpos, y+ypos).hasProperty("flammable")) {
                     light(grid.getPixel(x+xpos, y+ypos), original);
                     if (x == 0 || y == 0) {
                         hasFuel = true;
@@ -208,104 +242,21 @@ public class GameLogic extends TimerTask {
         Pixel check;
 
         for (int i = -1; i <= 1; i++) {
-            if (i == 0) {
-                check = grid.getPixel(x, y - 1);
-            }
-            else{
-                check = grid.getPixel(x+i, y);
-            }
+            try {
+                if (i == 0) {
+                    check = grid.getPixel(x, y - 1);
+                } else {
+                    check = grid.getPixel(x + i, y);
+                }
 
-            if (check.hasProperty("density") && check.getProperty("density") == -1) {
-                Pixel clone = original.duplicate();
-                clone.setY(check.getY());
-                clone.setX(check.getX());
-                clone.changeProperty("spreads", 0);
-                grid.setPixel(check.getX(), check.getY(), clone);
-            }
+                if (check.hasProperty("density") && check.getProperty("density") < 0) {
+                    Pixel clone = original.duplicate();
+                    clone.setY(check.getY());
+                    clone.setX(check.getX());
+                    clone.changeProperty("spreads", 0);
+                    grid.setPixel(check.getX(), check.getY(), clone);
+                }
+            } catch(Exception e){}
         }
     }
-
-    /*public void spread(Pixel original, String spreadable, boolean staysWithoutFuel){
-        int[] newPositions;
-        boolean stays = staysWithoutFuel;
-
-        int x = original.getX();
-        int y = original.getY();
-
-        int h = grid.getHeight()-1;
-        int w = grid.getWidth()-1;
-
-        ArrayList<Integer> positions = new ArrayList<Integer>();
-
-        if ((x != 0 && y != 0) && grid.getPixel(x-1,y-1).hasProperty(spreadable)) {
-            positions.add(x-1);
-            positions.add(y);
-            positions.add(x);
-            positions.add(y-1);
-        }
-        if ((x != w && y != 0) && grid.getPixel(x+1,y-1).hasProperty(spreadable)) {
-            positions.add(x+1);
-            positions.add(y);
-            positions.add(x);
-            positions.add(y-1);
-        }
-        if ((x != 0 && y != h) && grid.getPixel(x-1,y+1).hasProperty(spreadable)) {
-            positions.add(x-1);
-            positions.add(y);
-            positions.add(x);
-            positions.add(y+1);
-        }
-        if ((x != w && y != h) && grid.getPixel(x+1,y+1).hasProperty(spreadable)) {
-            positions.add(x);
-            positions.add(y+1);
-            positions.add(x+1);
-            positions.add(y);
-        }
-        if ((x != 0) && grid.getPixel(x-1,y).hasProperty(spreadable)) {
-            positions.add(x-1);
-            positions.add(y+1);
-            positions.add(x);
-            positions.add(y);
-        }
-        if ((x != w) && grid.getPixel(x+1,y).hasProperty(spreadable)) {
-            positions.add(x+1);
-            positions.add(y+1);
-            positions.add(x);
-            positions.add(y);
-        }
-        if ((y != h) && grid.getPixel(x,y+1).hasProperty(spreadable)) {
-            positions.add(x-1);
-            positions.add(y+1);
-            positions.add(x+1);
-            positions.add(y+1);
-        }
-        if ((y != 0) && grid.getPixel(x,y-1).hasProperty(spreadable)) {
-            positions.add(x-1);
-            positions.add(y-1);
-            positions.add(x+1);
-            positions.add(y-1);
-            positions.add(x);
-            positions.add(y);
-        }
-
-        for (int i = 0; i < positions.size(); i+= 2){
-            if (!check(grid, positions.get(i), positions.get(i+1))){
-              positions.remove(i+1);
-              positions.remove(i);
-            }
-        }
-
-        for (int i = 0; i < positions.size(); i += 2){
-            Pixel newPixel = original.duplicate();
-            newPixel.setX(positions.get(i));
-            newPixel.setY(positions.get(i+1));
-            grid.setPixel(positions.get(i), positions.get(i+1), newPixel);
-        }
-        5if (!stays){
-            grid.setPixel(original.getX(), original.getY(), new Air(original.getX(), original.getY()));
-        }
-    }
-    public boolean check(Grid grid, int x, int y){
-        return (grid.getPixel(x,y).type.equals("air"));
-    }*/
 }
