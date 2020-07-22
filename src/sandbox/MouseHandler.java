@@ -1,8 +1,6 @@
 package sandbox;
 
-import sandbox.pixels.Air;
-import sandbox.pixels.Sand;
-import sandbox.pixels.Water;
+import sandbox.pixels.*;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -13,10 +11,12 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
     private final JPanel panel;
     private final Grid grid;
+    private KeyHandler keyHandler;
 
-    public MouseHandler(JPanel panel, Grid grid) {
+    public MouseHandler(JPanel panel, Grid grid, KeyHandler keyHandler) {
         this.panel = panel;
         this.grid = grid;
+        this.keyHandler = keyHandler;
     }
 
     @Override
@@ -87,9 +87,10 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         }
 
         if(button == MouseEvent.BUTTON1) {
-            grid.setPixel(squareX, squareY, new Sand(squareX, squareY));
-        } else if(button == MouseEvent.BUTTON2) {
-            grid.setPixel(squareX, squareY, new Water(squareX, squareY));
+            Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
+            grid.setPixel(squareX, squareY, pixel);
+            pixel.setX(squareX);
+            pixel.setY(squareY);
         } else if(button == MouseEvent.BUTTON3) {
             grid.setPixel(squareX, squareY, new Air(squareX, squareY));
         }
