@@ -78,7 +78,7 @@ public class Pixel {
         return properties.containsKey(property);
     }
 
-    public boolean getMoved() {
+    public boolean hasMoved() {
         return moved;
     }
 

@@ -16,7 +16,7 @@ public class KeyHandler implements KeyListener{
         new Stone(0,0),
         new Wood(0,0),
         new Fire(0,0),
-        new Sand(0,0),
+        new Smoke(0,0),
         new Sand(0,0),
         new Sand(0,0),
     };
