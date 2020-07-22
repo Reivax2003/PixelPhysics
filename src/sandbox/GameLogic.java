@@ -21,6 +21,7 @@ public class GameLogic extends TimerTask {
 
     @Override
     public void run() {
+        //Start left to right
         reverse = false;
         for (int y = grid.getHeight() - 1; y > -1; y--) {
             for (int x = (reverse? 1:0) * (grid.getWidth() -1); -1 < x && x < grid.getWidth(); x+= reverse? -1:1 ) {
@@ -75,6 +76,7 @@ public class GameLogic extends TimerTask {
                     }
                 }
             }
+            //Alternate direction of updating
             reverse = !reverse;
         }
 
