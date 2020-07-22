@@ -13,7 +13,4 @@ public class Sand extends Pixel {
                 .setProperty("support", 1);
     }
 
-    public Sand Clone() {
-        return new Sand(x, y);
-    }
 }

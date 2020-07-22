@@ -8,8 +8,4 @@ public class Air extends Pixel {
 
         this.setProperty("density", -1);
     }
-
-    public Air Clone() {
-        return new Air(x, y);
-    }
 }

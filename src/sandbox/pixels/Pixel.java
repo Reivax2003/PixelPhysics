@@ -27,6 +27,7 @@ public class Pixel {
 
     public Pixel duplicate(){
         Pixel copy = new Pixel(type, x, y, color);
+        copy.properties = this.properties;
         return(copy);
     }
 
