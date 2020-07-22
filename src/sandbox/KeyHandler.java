@@ -17,7 +17,7 @@ public class KeyHandler implements KeyListener{
         new Wood(0,0),
         new Fire(0,0),
         new Smoke(0,0),
-        new Sand(0,0),
+        new WetSand(0,0),
         new Sand(0,0),
     };
     private final char[] nums = {'0','1','2','3','4','5','6','7','8','9'};

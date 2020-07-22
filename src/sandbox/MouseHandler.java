@@ -55,7 +55,6 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         clickPoint(x, y, e.getButton());
     }
 
-    // FIXME: misses pixels if mouse moves too fast
     private void clickPoint(int x, int y, int button) {
 
         // size of panel

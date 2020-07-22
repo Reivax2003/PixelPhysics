@@ -1,5 +1,6 @@
 package sandbox;
 
+import sandbox.pixels.Air;
 import sandbox.pixels.Pixel;
 
 import javax.swing.*;
@@ -13,6 +14,8 @@ public class GameLogic extends TimerTask {
     private final JPanel panel;
 
     private boolean reverse;
+
+    Reactions reactions = new Reactions();
 
     public GameLogic(Grid grid, JPanel panel) {
         this.grid = grid;
@@ -33,18 +36,19 @@ public class GameLogic extends TimerTask {
 
                 if(currentPixel.hasProperty("support")) {
                     int support = currentPixel.getProperty("support");
+                    int steepness = currentPixel.getPropOrDefault("steepness", 1);
 
-                    if(!currentPixel.hasMoved() && currentY < grid.getHeight() - 1 && grid.getPixelDown(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) >= density) {
+                    if(!currentPixel.hasMoved() && currentY < grid.getHeight() - steepness && grid.getPixelDown(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) >= density) {
                         double random = Math.random();
 
                         // down + left
-                        if(currentX > 0 && !grid.getPixel(currentX - 1, currentY + 1).hasMoved() && grid.getPixelLeft(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && grid.getPixel(currentX - 1, currentY + 1).getPropOrDefault("density", DEFAULT_DENSITY) < density && random < 0.5) {
-                            grid.swapPositions(currentX, currentY, currentX - 1, currentY + 1);
+                        if(currentX > 0 && !grid.getPixel(currentX - 1, currentY + steepness).hasMoved() && grid.getPixelLeft(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && grid.getPixel(currentX - 1, currentY + steepness).getPropOrDefault("density", DEFAULT_DENSITY) < density && random < 0.5) {
+                            grid.swapPositions(currentX, currentY, currentX - 1, currentY + steepness);
                         }
                         // down + right
-                        else if(currentX < grid.getWidth() - 1 && !grid.getPixel(currentX + 1, currentY + 1).hasMoved() && grid.getPixelRight(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && grid.getPixel(currentX + 1, currentY + 1).getPropOrDefault("density", DEFAULT_DENSITY) < density && random >= 0.5) {
+                        else if(currentX < grid.getWidth() - 1 && !grid.getPixel(currentX + 1, currentY + steepness).hasMoved() && grid.getPixelRight(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && grid.getPixel(currentX + 1, currentY + steepness).getPropOrDefault("density", DEFAULT_DENSITY) < density && random >= 0.5) {
                             // TODO: displacement instead of swapping
-                            grid.swapPositions(currentX, currentY, currentX + 1, currentY + 1);
+                            grid.swapPositions(currentX, currentY, currentX + 1, currentY + steepness);
                         }
                     }
                 }
@@ -95,6 +99,48 @@ public class GameLogic extends TimerTask {
                         else if(currentX < grid.getWidth() - 1 && !grid.getPixelRight(currentX, currentY).hasMoved() && grid.getPixelRight(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && random >= 0.5) {
                             grid.swapPositions(currentX, currentY, currentX + 1, currentY);
                         }
+                    }
+                }
+
+                Boolean reacted = false;
+                if(currentX > 0 && !reacted)
+                {
+                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelLeft(currentX, currentY).getType(), null);
+                    if(product != null)
+                    {
+                        grid.setPixel(currentX, currentY, product);
+                        grid.setPixel(currentX-1, currentY, new Air(currentX-1, currentY));
+                        reacted = true;
+                    }
+                } 
+                if(currentX < grid.getWidth()-1 && !reacted)
+                {
+                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelRight(currentX, currentY).getType(), null);
+                    if(product != null)
+                    {
+                        grid.setPixel(currentX, currentY, product);
+                        grid.setPixel(currentX+1, currentY, new Air(currentX+1, currentY));
+                        reacted = true;
+                    }
+                } 
+                if(currentY > 0 && !reacted)
+                {
+                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelUp(currentX, currentY).getType(), null);
+                    if(product != null)
+                    {
+                        grid.setPixel(currentX, currentY, product);
+                        grid.setPixel(currentX, currentY-1, new Air(currentX, currentY-1));
+                        reacted = true;
+                    }
+                } 
+                if(currentY < grid.getHeight()-1 && !reacted)
+                {
+                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelDown(currentX, currentY).getType(), null);
+                    if(product != null)
+                    {
+                        grid.setPixel(currentX, currentY, product);
+                        grid.setPixel(currentX, currentY+1, new Air(currentX, currentY+1));
+                        reacted = true;
                     }
                 }
             }
