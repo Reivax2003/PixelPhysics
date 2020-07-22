@@ -66,6 +66,13 @@ public class Pixel {
         return this;
     }
 
+    public Pixel changeProperty(String property, int value) {
+        properties.replace(property, value);
+
+        // for chaining method calls
+        return this;
+    }
+
     public int getProperty(String property) {
         return properties.get(property);
     }
