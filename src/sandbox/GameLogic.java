@@ -63,7 +63,7 @@ public class GameLogic extends TimerTask {
                                   fall = false; //Block in way
                               }
                             }
-                            grid.swapPositions(currentX, currentY, currentX + 1, currentY + steepness);
+                            if(fall) {grid.swapPositions(currentX, currentY, currentX + 1, currentY + steepness);}
                         }
                     }
                 }
