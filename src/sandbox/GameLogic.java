@@ -52,10 +52,30 @@ public class GameLogic extends TimerTask {
                 if(currentPixel.hasProperty("gravity")) {
                     int gravity = currentPixel.getProperty("gravity");
 
-                    if(currentY + gravity < grid.getHeight() && currentY + gravity >= 0) {
-                        if(grid.getPixel(currentX, currentY + gravity).getPropOrDefault("density", DEFAULT_DENSITY) < density && !grid.getPixel(currentX, currentY + gravity).getMoved()) {
-                            grid.swapPositions(currentX, currentY, currentX, currentY + gravity);
+                    //Binds gravity to grid
+                    if (gravity > 0) {
+                      gravity = (currentY + gravity < grid.getHeight())? gravity:(grid.getHeight() - 1 - currentY);
+                    }
+                    else {
+                      gravity = (currentY + gravity >= 0)? gravity: -currentY;
+                    }
+                    //Fall to last air or swap with solid if touching
+                    int sign = (gravity > 0)? 1:-1;
+                    if(gravity * sign > 1) {
+                      //Fall to block above if a solid exist more than 1 away
+                      for (int gravityCheck = gravity * sign; gravityCheck > 1; gravityCheck --) {
+                        if (grid.getPixel(currentX, currentY + gravityCheck * sign).getPropOrDefault("density", DEFAULT_DENSITY) > 0) {
+                          gravity = gravityCheck * sign - sign;
                         }
+                      }
+                      //Check touching
+                      if (grid.getPixel(currentX, currentY + sign).getPropOrDefault("density", DEFAULT_DENSITY) > 0) {
+                        gravity = sign;
+                      }
+                    }
+
+                    if(grid.getPixel(currentX, currentY + gravity).getPropOrDefault("density", DEFAULT_DENSITY) < density && !grid.getPixel(currentX, currentY + gravity).getMoved()) {
+                        grid.swapPositions(currentX, currentY, currentX, currentY + gravity);
                     }
                 }
 
