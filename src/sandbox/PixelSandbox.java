@@ -9,6 +9,7 @@ public class PixelSandbox {
     private final JFrame frame = new JFrame();
     private Renderer renderer;
     private MouseHandler mouseHandler;
+    private  KeyHandler keyHandler;
     private GameLogic gameLogic;
 
     public Grid grid;
@@ -57,6 +58,7 @@ public class PixelSandbox {
     private void initializeRenderer() {
 
         renderer = new Renderer(grid);
-        mouseHandler = new MouseHandler(renderer, grid);
+        keyHandler = new KeyHandler();
+        mouseHandler = new MouseHandler(renderer, grid, keyHandler);
     }
 }
