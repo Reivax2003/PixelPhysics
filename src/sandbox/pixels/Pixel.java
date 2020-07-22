@@ -25,6 +25,11 @@ public class Pixel {
         this.moved = false;
     }
 
+    public Pixel duplicate(){
+        Pixel copy = new Pixel(type, x, y, color);
+        return(copy);
+    }
+
     public int getX() {
         return x;
     }
