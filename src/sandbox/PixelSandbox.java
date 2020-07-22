@@ -53,6 +53,7 @@ public class PixelSandbox {
 
         renderer.addMouseMotionListener(mouseHandler);
         renderer.addMouseListener(mouseHandler);
+        frame.addKeyListener(keyHandler);
     }
 
     private void initializeRenderer() {
