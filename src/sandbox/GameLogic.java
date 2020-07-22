@@ -46,12 +46,24 @@ public class GameLogic extends TimerTask {
 
                         // down + left
                         if(currentX > 0 && !grid.getPixel(currentX - 1, currentY + steepness).hasMoved() && grid.getPixelLeft(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && grid.getPixel(currentX - 1, currentY + steepness).getPropOrDefault("density", DEFAULT_DENSITY) < density && random < 0.5) {
-                            grid.swapPositions(currentX, currentY, currentX - 1, currentY + steepness);
+                            boolean fall = true;
+                            for (int steepCheck = steepness - 1; steepCheck > 0; steepCheck --) { //Acctual position and immediate side already checked
+                              if (grid.getPixel(currentX - 1, currentY + steepCheck).getPropOrDefault("density", DEFAULT_DENSITY) >= density) {
+                                  fall = false; //Block in way
+                              }
+                            }
+                            if(fall) {grid.swapPositions(currentX, currentY, currentX - 1, currentY + steepness);}
                         }
                         // down + right
                         else if(currentX < grid.getWidth() - 1 && !grid.getPixel(currentX + 1, currentY + steepness).hasMoved() && grid.getPixelRight(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) < density && grid.getPixel(currentX + 1, currentY + steepness).getPropOrDefault("density", DEFAULT_DENSITY) < density && random >= 0.5) {
                             // TODO: displacement instead of swapping
-                            grid.swapPositions(currentX, currentY, currentX + 1, currentY + steepness);
+                            boolean fall = true;
+                            for (int steepCheck = steepness - 1; steepCheck > 0; steepCheck --) { //Acctual position and immediate side already checked
+                              if (grid.getPixel(currentX + 1, currentY + steepCheck).getPropOrDefault("density", DEFAULT_DENSITY) >= density) {
+                                  fall = false; //Block in way
+                              }
+                            }
+                            if(fall) {grid.swapPositions(currentX, currentY, currentX + 1, currentY + steepness);}
                         }
                     }
                 }
@@ -249,14 +261,14 @@ public class GameLogic extends TimerTask {
                     check = grid.getPixel(x + i, y);
                 }
 
-                if (check.hasProperty("density") && check.getProperty("density") < 0) {
+                if (check.hasProperty("density") && check.getProperty("density") == -1000) {
                     Pixel clone = original.duplicate();
                     clone.setY(check.getY());
                     clone.setX(check.getX());
                     clone.changeProperty("spreads", 0);
                     grid.setPixel(check.getX(), check.getY(), clone);
                 }
-            } catch(Exception e){}
+            }
         }
     }
 }
