@@ -14,6 +14,9 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
     private final JPanel panel;
     private final Grid grid;
 
+    private int lastMouseX=-1;
+    private int lastMouseY=-1;
+
     public MouseHandler(JPanel panel, Grid grid) {
         this.panel = panel;
         this.grid = grid;
@@ -86,13 +89,28 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
             return;
         }
 
-        if(button == MouseEvent.BUTTON1) {
-            grid.setPixel(squareX, squareY, new Sand(squareX, squareY));
-        } else if(button == MouseEvent.BUTTON2) {
-            grid.setPixel(squareX, squareY, new Water(squareX, squareY));
-        } else if(button == MouseEvent.BUTTON3) {
-            grid.setPixel(squareX, squareY, new Air(squareX, squareY));
+        if(lastMouseX == -1)
+        {
+            if(button == MouseEvent.BUTTON1) {
+                grid.setPixel(squareX, squareY, new Sand(squareX, squareY));
+            } else if(button == MouseEvent.BUTTON2) {
+                grid.setPixel(squareX, squareY, new Water(squareX, squareY));
+            } else if(button == MouseEvent.BUTTON3) {
+                grid.setPixel(squareX, squareY, new Air(squareX, squareY));
+            }
         }
+        else
+        {
+            if(button == MouseEvent.BUTTON1) {
+                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Sand(squareX, squareY));
+            } else if(button == MouseEvent.BUTTON2) {
+                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Water(squareX, squareY));
+            } else if(button == MouseEvent.BUTTON3) {
+                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(squareX, squareY));
+            }
+        }
+        lastMouseX = squareX;
+        lastMouseY = squareY;
 
         // repaint panel so it displays
         panel.repaint();
@@ -110,7 +128,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        lastMouseX = lastMouseY = -1;
     }
 
     @Override

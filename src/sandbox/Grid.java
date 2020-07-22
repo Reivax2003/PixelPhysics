@@ -1,6 +1,7 @@
 package sandbox;
 
 import sandbox.pixels.Pixel;
+import sandbox.pixels.Sand;
 
 public class Grid {
     private final Pixel[][] grid;
@@ -57,5 +58,20 @@ public class Grid {
 
         grid[x1][y1] = position2;
         grid[x2][y2] = position1;
+    }
+
+    public void drawLine(int x1, int y1, int x2, int y2, Pixel pixel) {
+        double dirX = x2-x1, dirY = y2-y1;
+        double length = Math.sqrt(dirX*dirX+dirY*dirY);
+        dirX/=length;
+        dirY/=length;
+
+        for (double i = 0; i < length; i++) {
+            int x = (int)(x1+dirX*i), y = (int)(y1+dirY*i);            
+            Pixel p = pixel.Clone();
+            p.setX(x);
+            p.setY(y);
+            this.grid[x][y] = p;
+        }
     }
 }
