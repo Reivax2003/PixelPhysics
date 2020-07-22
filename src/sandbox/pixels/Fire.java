@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Fire extends Pixel{
 
     public Fire(int xpos, int ypos) {
-        super("fire", xpos, ypos, Color.orange);
+        super("fire", xpos, ypos, new Color(255, 81, 0));
     }
 
 
