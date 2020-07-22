@@ -14,7 +14,4 @@ public class Fire extends Pixel{
                 .setProperty("spreads", 1);
     }
 
-    public boolean check(Grid grid, int x, int y){
-        return (grid.getPixel(x,y).type.equals("air"));
-    }
 }
