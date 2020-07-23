@@ -227,7 +227,12 @@ public class GameLogic extends TimerTask {
         if (r.nextDouble() > strength){
             strength *= decreaseAmount;
             if (strength == 0){
-                grid.setPixel(x, y, new Air(x, y));
+                if (r.nextDouble() < 0.02) {
+                    grid.setPixel(x, y, new Smoke(x, y));
+                }
+                else{
+                    grid.setPixel(x, y, new Air(x, y));
+                }
             }
         }
     }
