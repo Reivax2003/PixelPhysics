@@ -1,6 +1,6 @@
 package sandbox;
 
-import sandbox.pixels.Air;
+import sandbox.pixels.*;
 
 import javax.swing.*;
 import java.awt.*;
