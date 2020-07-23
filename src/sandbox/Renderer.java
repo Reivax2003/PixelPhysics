@@ -15,11 +15,10 @@ public class Renderer extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-
+        super.paintComponent(g);
+        
         int gridWidth = grid.getWidth();
         int gridHeight = grid.getHeight();
-        // g.setColor(Color.lightGray);
-        // g.fillRect(0,0, grid.getWidth(), grid.getHeight());
         // set sandbox.pixels per square to the smallest dimension, so
         int pixelsPerSquare = Math.min(getWidth() / gridWidth, getHeight() / gridHeight);
 
