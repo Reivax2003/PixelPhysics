@@ -4,6 +4,7 @@ import sandbox.pixels.*;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.Color;
 
 public class MenuBar extends JMenuBar implements ActionListener {
   // private JMenu elementsMenu;
@@ -31,6 +32,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     for(int p = 0; p < pixels.length; p ++) { //Can only handle up to 20 elements
       JRadioButtonMenuItem button = new JRadioButtonMenuItem(pixels[p].getType());
+      button.setForeground(pixels[p].getColor().darker());
       elementButtons.add(button);
       String index = String.valueOf(p);
       if (index.length() == 1) {
