@@ -224,6 +224,7 @@ public class GameLogic extends TimerTask {
                 {
                     int growing = currentPixel.getProperty("growing");
                     if (currentPixel.type.equals("plant")) {
+                        System.out.println("true");
                         if (growing == 0) {
                             if (currentY < grid.getHeight() - 1 && grid.getPixelDown(currentX, currentY).hasProperty("fertile") &&
                                     currentY > 0 && grid.getPixelUp(currentX, currentY).getType().equals("air")) {
@@ -243,8 +244,9 @@ public class GameLogic extends TimerTask {
                         }
                     }
                     else if (currentPixel.type.equals("plant2") && growing == 1){
-                        if (currentPixel.getProperty("power") != 1 || grid.getPixel(currentX, currentY-1).hasProperty("fertile")){
-                            grow(currentPixel);
+                        if (currentY > 0 && currentY < grid.getHeight()-1 && currentX > 0 && currentX < grid.getWidth()-1 && (currentPixel.getProperty("power") != 100 || grid.getPixel(currentX, currentY+1).hasProperty("fertile")) && currentPixel.getProperty("power") > 0){
+                            grow2(currentPixel);
+                            currentPixel.changeProperty("power", 0);
                         }
                     }
                 }
@@ -285,16 +287,17 @@ public class GameLogic extends TimerTask {
 
         panel.repaint();
     }
-    public void grow(Pixel pixel){
+    public void grow2(Pixel pixel){
         int angle = pixel.getProperty("angle");
-        int power = pixel.getProperty("power");
+        double power = pixel.getProperty("power")/100.0;
         int direction = pixel.getProperty("direction");
         int split = pixel.getProperty("split");
         int turning = pixel.getProperty("turning");
+        double loss = pixel.getProperty("loss")/100.0;
         int x = pixel.getX();
         int y = pixel.getY();
 
-        if (Math.random() < angle/100.0){
+        if (Math.random() < angle/180.0){
             int newDir;
             if (turning == 0){
                 newDir = direction-1;
@@ -308,12 +311,68 @@ public class GameLogic extends TimerTask {
             else if (newDir == -1){
                 newDir = 3;
             }
+            pixel.changeProperty("direction", newDir);
+            direction = newDir;
+            pixel.changeProperty("angle", angle-((int) (loss*100)));
         }
         if (Math.random() < split/100.0){
-            /*if (direction == 0 && turning == 0 && grid.get(x+1, y-1).getProperty("density") < 0){
-                grid.setPixel()
-            }*/
+            Pixel newPlant;
+
+            if (direction == 0 && turning == 0 && grid.getPixel(x+1, y-1).getProperty("density") < 0){
+                newPlant = new Plant2(x+1, y-1);
+            }
+            else if (direction == 0 && turning == 1 && grid.getPixel(x-1, y-1).getProperty("density") < 0){
+                newPlant = new Plant2(x-1, y-1);
+            }
+            else if (direction == 1 && turning == 0 && grid.getPixel(x+1, y+1).getProperty("density") < 0){
+                newPlant = new Plant2(x+1, y+1);
+            }
+            else if (direction == 1 && turning == 1 && grid.getPixel(x+1, y-1).getProperty("density") < 0){
+                newPlant = new Plant2(x+1, y-1);
+            }
+            else if (direction == 2 && turning == 0 && grid.getPixel(x-1, y+1).getProperty("density") < 0){
+                newPlant = new Plant2(x-1, y+1);
+            }
+            else if (direction == 2 && turning == 1 && grid.getPixel(x+1, y+1).getProperty("density") < 0){
+                newPlant = new Plant2(x+1, y+1);
+            }
+            else if (direction == 3 && turning == 0 && grid.getPixel(x-1, y+1).getProperty("density") < 0){
+                newPlant = new Plant2(x-1, y+1);
+            }
+            else {//(direction == 3 && turning == 1 && grid.getPixel(x-1, y-1).getProperty("density") < 0)
+                newPlant = new Plant2(x-1, y-1);
+            }
+            if (newPlant.getX() >= 0 && newPlant.getX() < grid.getWidth() && newPlant.getY() >= 0 && newPlant.getY() < grid.getWidth()) {
+                newPlant.changeProperty("turning", Math.abs(turning - 1));
+                newPlant.changeProperty("power", (int) ((power - loss)*100));
+                pixel.changeProperty("angle", angle);
+                grid.setPixel(newPlant.getX(), newPlant.getY(), newPlant);
+            }
         }
+        int newx = -1;
+        int newy = -1;
+        if (direction == 0 && grid.getPixel(x, y - 1).getProperty("density") < 0) {
+            newx = x;
+            newy = y - 1;
+        } else if (direction == 1 && grid.getPixel(x + 1, y).getProperty("density") < 0) {
+            newx = x + 1;
+            newy = y;
+        } else if (direction == 2 && grid.getPixel(x, y + 1).getProperty("density") < 0) {
+            newx = x;
+            newy = y + 1;
+        } else if (direction == 3 && grid.getPixel(x - 1, y).getProperty("density") < 0) {
+            newx = x - 1;
+            newy = y;
+        }
+        if (newx >= 0 && newx < grid.getWidth() && newy >= 0 && newy < grid.getHeight()) {
+            Pixel newPlant = new Plant2(newx, newy);
+            newPlant.changeProperty("turning", turning);
+            newPlant.changeProperty("direction", direction);
+            newPlant.changeProperty("angle", angle);
+            newPlant.changeProperty("power", (int) ((power - loss) * 100));
+            grid.setPixel(newx, newy, newPlant);
+        }
+
     }
 
     public void flicker(Pixel pixel){
