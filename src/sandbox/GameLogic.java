@@ -35,6 +35,60 @@ public class GameLogic extends TimerTask {
                 int currentX = currentPixel.getX();
                 int currentY = currentPixel.getY();
 
+                Boolean reacted = false;
+                if(currentX > 0 && !reacted)
+                {
+                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelLeft(currentX, currentY).getType(), null);
+                    if(product != null)
+                    {
+                        currentPixel = product.duplicate();
+                        currentPixel.setX(currentX);
+                        currentPixel.setY(currentY);
+                        grid.setPixel(currentX, currentY, currentPixel);
+                        grid.setPixel(currentX-1, currentY, new Air(currentX-1, currentY));
+                        reacted = true;
+                    }
+                }
+                if(currentX < grid.getWidth()-1 && !reacted)
+                {
+                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelRight(currentX, currentY).getType(), null);
+                    if(product != null)
+                    {
+                        currentPixel = product.duplicate();
+                        currentPixel.setX(currentX);
+                        currentPixel.setY(currentY);
+                        grid.setPixel(currentX, currentY, currentPixel);
+                        grid.setPixel(currentX+1, currentY, new Air(currentX+1, currentY));
+                        reacted = true;
+                    }
+                }
+                if(currentY > 0 && !reacted)
+                {
+                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelUp(currentX, currentY).getType(), null);
+                    if(product != null)
+                    {
+                        currentPixel = product.duplicate();
+                        currentPixel.setX(currentX);
+                        currentPixel.setY(currentY);
+                        grid.setPixel(currentX, currentY, currentPixel);
+                        grid.setPixel(currentX, currentY-1, new Air(currentX, currentY-1));
+                        reacted = true;
+                    }
+                }
+                if(currentY < grid.getHeight()-1 && !reacted)
+                {
+                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelDown(currentX, currentY).getType(), null);
+                    if(product != null)
+                    {
+                        currentPixel = product.duplicate();
+                        currentPixel.setX(currentX);
+                        currentPixel.setY(currentY);
+                        grid.setPixel(currentX, currentY, currentPixel);
+                        grid.setPixel(currentX, currentY+1, new Air(currentX, currentY+1));
+                        reacted = true;
+                    }
+                }
+
                 int density = currentPixel.getPropOrDefault("density", Integer.MAX_VALUE);
 
                 if(currentPixel.hasProperty("support")) {
@@ -129,60 +183,6 @@ public class GameLogic extends TimerTask {
                         currentPixel.changeProperty("spreads", 1);
                     }
                 }
-
-                Boolean reacted = false;
-                if(currentX > 0 && !reacted)
-                {
-                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelLeft(currentX, currentY).getType(), null);
-                    if(product != null)
-                    {
-                        product = product.duplicate();
-                        product.setX(currentX);
-                        product.setY(currentY);
-                        grid.setPixel(currentX, currentY, product);
-                        grid.setPixel(currentX-1, currentY, new Air(currentX-1, currentY));
-                        reacted = true;
-                    }
-                }
-                if(currentX < grid.getWidth()-1 && !reacted)
-                {
-                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelRight(currentX, currentY).getType(), null);
-                    if(product != null)
-                    {
-                        product = product.duplicate();
-                        product.setX(currentX);
-                        product.setY(currentY);
-                        grid.setPixel(currentX, currentY, product);
-                        grid.setPixel(currentX+1, currentY, new Air(currentX+1, currentY));
-                        reacted = true;
-                    }
-                }
-                if(currentY > 0 && !reacted)
-                {
-                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelUp(currentX, currentY).getType(), null);
-                    if(product != null)
-                    {
-                        product = product.duplicate();
-                        product.setX(currentX);
-                        product.setY(currentY);
-                        grid.setPixel(currentX, currentY, product);
-                        grid.setPixel(currentX, currentY-1, new Air(currentX, currentY-1));
-                        reacted = true;
-                    }
-                }
-                if(currentY < grid.getHeight()-1 && !reacted)
-                {
-                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelDown(currentX, currentY).getType(), null);
-                    if(product != null)
-                    {
-                        product = product.duplicate();
-                        product.setX(currentX);
-                        product.setY(currentY);
-                        grid.setPixel(currentX, currentY, product);
-                        grid.setPixel(currentX, currentY+1, new Air(currentX, currentY+1));
-                        reacted = true;
-                    }
-                }
             }
             //Alternate direction of updating
             reverse = !reverse;
@@ -268,6 +268,8 @@ public class GameLogic extends TimerTask {
                     clone.changeProperty("spreads", 0);
                     grid.setPixel(check.getX(), check.getY(), clone);
                 }
+            }catch (Exception e){
+
             }
         }
     }
