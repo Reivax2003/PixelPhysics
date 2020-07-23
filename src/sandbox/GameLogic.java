@@ -223,26 +223,28 @@ public class GameLogic extends TimerTask {
                 if(currentPixel.hasProperty("growing"))
                 {
                     int growing = currentPixel.getProperty("growing");
-                    if(growing == 0)
-                    {
-                        if(currentY < grid.getHeight()-1 && grid.getPixelDown(currentX, currentY).hasProperty("fertile") && 
-                        currentY > 0 && grid.getPixelUp(currentX, currentY).getType().equals("air"))
-                        {
-                            currentPixel.changeProperty("growing", 1);
-                            currentPixel.changeProperty("gravity", 0);
-                            currentPixel.changeProperty("support", 0);
+                    if (currentPixel.type.equals("plant")) {
+                        if (growing == 0) {
+                            if (currentY < grid.getHeight() - 1 && grid.getPixelDown(currentX, currentY).hasProperty("fertile") &&
+                                    currentY > 0 && grid.getPixelUp(currentX, currentY).getType().equals("air")) {
+                                currentPixel.changeProperty("growing", 1);
+                                currentPixel.changeProperty("gravity", 0);
+                                currentPixel.changeProperty("support", 0);
+                            }
+                        } else if (growing == 1) {
+                            int height = currentPixel.getProperty("height");
+                            if (Math.random() < currentPixel.getProperty("speed") / 100.0) {
+                                if (height <= 1)
+                                    currentPixel.changeProperty("growing", 2);
+                                currentPixel.changeProperty("height", height - 1);
+                                grid.swapPositions(currentX, currentY, currentX, currentY - 1);
+                                grid.setPixel(currentX, currentY, new Wood(currentX, currentY));
+                            }
                         }
                     }
-                    else if(growing == 1)
-                    {
-                        int height = currentPixel.getProperty("height");
-                        if(Math.random() < currentPixel.getProperty("speed") / 100.0)
-                        {
-                            if(height <= 1)
-                                currentPixel.changeProperty("growing", 2);
-                            currentPixel.changeProperty("height", height-1);
-                            grid.swapPositions(currentX, currentY, currentX, currentY-1);
-                            grid.setPixel(currentX, currentY, new Wood(currentX, currentY));
+                    else if (currentPixel.type.equals("plant2") && growing == 1){
+                        if (currentPixel.getProperty("power") != 1 || grid.getPixel(currentX, currentY-1).hasProperty("fertile")){
+                            grow(currentPixel);
                         }
                     }
                 }
@@ -273,6 +275,37 @@ public class GameLogic extends TimerTask {
 
         panel.repaint();
     }
+    public void grow(Pixel pixel){
+        int angle = pixel.getProperty("angle");
+        int power = pixel.getProperty("power");
+        int direction = pixel.getProperty("direction");
+        int split = pixel.getProperty("split");
+        int turning = pixel.getProperty("turning");
+        int x = pixel.getX();
+        int y = pixel.getY();
+
+        if (Math.random() < angle/100.0){
+            int newDir;
+            if (turning == 0){
+                newDir = direction-1;
+            }
+            else{
+                newDir = direction+1;
+            }
+            if (newDir == 4){
+                newDir = 0;
+            }
+            else if (newDir == -1){
+                newDir = 3;
+            }
+        }
+        if (Math.random() < split/100.0){
+            /*if (direction == 0 && turning == 0 && grid.get(x+1, y-1).getProperty("density") < 0){
+                grid.setPixel()
+            }*/
+        }
+    }
+
     public void flicker(Pixel pixel){
         int x = pixel.getX();
         int y = pixel.getY();
