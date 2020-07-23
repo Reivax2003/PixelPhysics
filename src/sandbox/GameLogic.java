@@ -127,7 +127,7 @@ public class GameLogic extends TimerTask {
                     }
                 }
 
-                if(currentPixel.hasProperty("support")) {
+                if(currentPixel.getPropOrDefault("support", 0) != 0) {
                     int steepness = currentPixel.getPropOrDefault("steepness", 1);
 
                     if(!currentPixel.hasMoved() && currentY < grid.getHeight() - steepness && grid.getPixelDown(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) >= density) {
@@ -218,6 +218,32 @@ public class GameLogic extends TimerTask {
                     }
                     else{
                         currentPixel.changeProperty("spreads", 1);
+                    }
+                }
+                if(currentPixel.hasProperty("growing"))
+                {
+                    int growing = currentPixel.getProperty("growing");
+                    if(growing == 0)
+                    {
+                        if(currentY < grid.getHeight()-1 && grid.getPixelDown(currentX, currentY).hasProperty("fertile") && 
+                        currentY > 0 && grid.getPixelUp(currentX, currentY).getType().equals("air"))
+                        {
+                            currentPixel.changeProperty("growing", 1);
+                            currentPixel.changeProperty("gravity", 0);
+                            currentPixel.changeProperty("support", 0);
+                        }
+                    }
+                    else if(growing == 1)
+                    {
+                        int height = currentPixel.getProperty("height");
+                        if(Math.random() < currentPixel.getProperty("speed") / 100.0)
+                        {
+                            if(height <= 1)
+                                currentPixel.changeProperty("growing", 2);
+                            currentPixel.changeProperty("height", height-1);
+                            grid.swapPositions(currentX, currentY, currentX, currentY-1);
+                            grid.setPixel(currentX, currentY, new Wood(currentX, currentY));
+                        }
                     }
                 }
             }
