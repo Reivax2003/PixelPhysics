@@ -7,7 +7,7 @@ public class Soil extends Pixel {
         super("soil", xpos, ypos, Color.orange.darker().darker());
 
         this
-                .setProperty("gravity", 1)
+                .setProperty("gravity", 2)
                 .setProperty("density", 80)
                 .setProperty("support", 1);
     }
