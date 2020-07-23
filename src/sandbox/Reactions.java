@@ -1,12 +1,14 @@
 package sandbox;
 
-import java.util.HashMap;
-
-import sandbox.pixels.*;
+import sandbox.pixels.Air;
+import sandbox.pixels.Pixel;
+import sandbox.pixels.WetSand;
+import sandbox.pixels.Smoke;
 
 public class Reactions {
 
-    public Reactions(){}
+    public Reactions() {
+    }
 
     public Pixel[] getReaction(Pixel a, Pixel b)
     {
@@ -18,11 +20,10 @@ public class Reactions {
             return null;
     }
 
-    public Pixel[] getReactionOrDefault(Pixel a, Pixel b, Pixel def1, Pixel def2)
-    {
+    public Pixel[] getReactionOrDefault(Pixel a, Pixel b, Pixel def1, Pixel def2) {
         Pixel[] result = getReaction(a, b);
-        if(result == null)
-            return new Pixel[] { def1, def2 };
+        if (result == null)
+            return new Pixel[]{def1, def2};
         else
             return result;
     }
