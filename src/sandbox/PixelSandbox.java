@@ -8,6 +8,7 @@ import java.awt.*;
 public class PixelSandbox {
     private final JFrame frame = new JFrame();
     private Renderer renderer;
+    private MenuBar menuBar;
     private MouseHandler mouseHandler;
     private KeyHandler keyHandler;
     private GameLogic gameLogic;
@@ -50,6 +51,7 @@ public class PixelSandbox {
         frame.add(renderer);
 
         frame.setVisible(true);
+        frame.setJMenuBar(menuBar);
 
         renderer.addMouseMotionListener(mouseHandler);
         renderer.addMouseListener(mouseHandler);
@@ -61,5 +63,6 @@ public class PixelSandbox {
         renderer = new Renderer(grid);
         keyHandler = new KeyHandler();
         mouseHandler = new MouseHandler(renderer, grid, keyHandler);
+        menuBar = new MenuBar();
     }
 }
