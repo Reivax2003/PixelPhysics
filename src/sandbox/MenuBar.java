@@ -19,23 +19,14 @@ public class MenuBar extends JMenuBar implements ActionListener {
           new Smoke(0, 0),
           new WetSand(0, 0),
           new Sand(0, 0),
-          new Sand(0, 0),
-          new Sand(0, 0),
-          new Water(0, 0),
-          new Soil(0, 0),
-          new Stone(0, 0),
-          new Wood(0, 0),
-          new Fire(0, 0),
-          new Smoke(0, 0),
           new WetSand(0, 0),
-          new Sand(0, 0),
   };
 
   public int chosen = 1;
 
   public MenuBar() {
     JMenu elementsMenu = new JMenu("Elements");
-    JMenu elementsMenu2 = new JMenu("Elem cont.");
+    JMenu elementsMenu2 = new JMenu("Elem. cont.");
     ButtonGroup elementButtons = new ButtonGroup();
 
     for(int p = 0; p < pixels.length; p ++) { //Can only handle up to 20 elements
