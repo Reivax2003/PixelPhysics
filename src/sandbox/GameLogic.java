@@ -4,18 +4,15 @@ import sandbox.pixels.*;
 
 import javax.swing.*;
 import java.util.TimerTask;
-import java.util.ArrayList;
 import java.util.Random;
 import java.awt.Color;
 
 public class GameLogic extends TimerTask {
 
-    private final int DEFAULT_DENSITY = 10000;
+    public static final int DEFAULT_DENSITY = 10000;
 
     private final Grid grid;
     private final JPanel panel;
-
-    private boolean reverse;
 
     Reactions reactions = new Reactions();
 
@@ -27,16 +24,16 @@ public class GameLogic extends TimerTask {
     @Override
     public void run() {
         //Start left to right
-        reverse = false;
+        boolean reverse = false;
         for (int y = grid.getHeight() - 1; y > -1; y--) {
-            for (int x = (reverse? 1:0) * (grid.getWidth() -1); -1 < x && x < grid.getWidth(); x+= reverse? -1:1 ) {
+            for (int x = (reverse ? 1:0) * (grid.getWidth() -1); -1 < x && x < grid.getWidth(); x+= reverse ? -1:1 ) {
                 Pixel currentPixel = grid.getPixel(x, y);
 
                 int currentX = currentPixel.getX();
                 int currentY = currentPixel.getY();
 
                 //check for any reactions with neighbor pixels
-                Boolean reacted = false;
+                boolean reacted = false;
                 if(currentX > 0 && !reacted)
                 {
                     Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelLeft(currentX, currentY));
@@ -95,8 +92,42 @@ public class GameLogic extends TimerTask {
 
                 int density = currentPixel.getPropOrDefault("density", Integer.MAX_VALUE);
 
+                if(currentPixel.getType().equals("electricity")) {
+                    if(currentY < grid.getHeight() - 1 && grid.getPixelDown(currentX, currentY).hasProperty("conductive")) {
+                        currentPixel = new Air(currentX, currentY);
+                        grid.setPixel(currentX, currentY, currentPixel);
+                        grid.getPixelDown(currentX, currentY).setState("conducting", 1);
+                    }
+                }
+
+                if(currentPixel.hasProperty("conductive")) {
+                    boolean wasRecovering = false;
+                    if(currentPixel.getStateOrDefault("recovering", 0) != 0) {
+                        currentPixel.setState("recovering", 0);
+                        wasRecovering = true;
+                    }
+
+                    if (currentPixel.getStateOrDefault("conducting", 0) != 0) {
+                        currentPixel.setState("recovering", 1);
+                    }
+
+                    if(!wasRecovering) {
+                        int surroundingElectricity = 0;
+
+                        for (int gridX = -1; gridX <= 1; gridX++) {
+                            for (int gridY = -1; gridY <= 1; gridY++) {
+                                try {
+                                    surroundingElectricity = surroundingElectricity + grid.getPixel(gridX + currentX, gridY + currentY).getStateOrDefault("conducting", 0);
+                                } catch(Exception ignored) {}
+                            }
+                        }
+                        if(surroundingElectricity == 1 || surroundingElectricity == 2) {
+                            currentPixel.setState("willBeConducting", 1);
+                        }
+                    }
+                }
+
                 if(currentPixel.hasProperty("support")) {
-                    int support = currentPixel.getProperty("support");
                     int steepness = currentPixel.getPropOrDefault("steepness", 1);
 
                     if(!currentPixel.hasMoved() && currentY < grid.getHeight() - steepness && grid.getPixelDown(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) >= density) {
@@ -110,7 +141,9 @@ public class GameLogic extends TimerTask {
                                   fall = false; //Block in way
                               }
                             }
-                            if(fall) {grid.swapPositions(currentX, currentY, currentX - 1, currentY + steepness);}
+                            if(fall) {
+                                grid.swapPositions(currentX, currentY, currentX - 1, currentY + steepness);
+                            }
                         }
                         // down + right
                         else if(currentX < grid.getWidth() - 1 && !grid.getPixel(currentX + 1, currentY + steepness).hasMoved() && grid.getPixelRight(currentX, currentY).getPropOrDefault("density", DEFAULT_DENSITY) <= density && grid.getPixel(currentX + 1, currentY + steepness).getPropOrDefault("density", DEFAULT_DENSITY) < density && random >= 0.5) {
@@ -176,7 +209,7 @@ public class GameLogic extends TimerTask {
                 }
                 if(currentPixel.hasProperty("spreads")) {
                     if (currentPixel.getProperty("spreads") == 1){
-                        if (currentPixel.getType() == "fire") {
+                        if (currentPixel.getType().equals("fire")) {
                             flicker(currentPixel);
                             if (currentPixel.getProperty("strength") == 100) {
                                 spread(currentPixel, "flammable");
@@ -194,7 +227,21 @@ public class GameLogic extends TimerTask {
 
         for(int x = 0; x < grid.getWidth(); x++) {
             for(int y = 0; y < grid.getHeight(); y++) {
-                grid.getPixel(x, y).setMoved(false);
+                Pixel pixel = grid.getPixel(x, y);
+                if(!pixel.hasMoved() && pixel.getType().equals("electricity")) {
+                    grid.setPixel(x, y, new Air(x, y));
+                }
+                if(pixel.getStateOrDefault("willBeConducting", 0) != 0) {
+                    int chance = pixel.getPropOrDefault("conductive", 0);
+                    if(Math.random() < chance / 100.0) {
+                        pixel.setState("conducting", 1);
+                    }
+                    pixel.setState("willBeConducting", 0);
+                }
+                if(pixel.getStateOrDefault("recovering", 0) != 0) {
+                    pixel.setState("conducting", 0);
+                }
+                pixel.setMoved(false);
             }
         }
 
@@ -214,16 +261,16 @@ public class GameLogic extends TimerTask {
         Color color = pixel.getColor();
 
         try {
-            if (r.nextDouble() <= strength * spreadChance && grid.getPixel(x, y - 1).type == "air") {
+            if (r.nextDouble() <= strength * spreadChance && grid.getPixel(x, y - 1).type.equals("air")) {
                 Pixel newFlame = new Fire(x, y - 1);
                 newFlame.changeProperty("strength", (int) ((strength - spreadDecrease) * 100));
 
-                color = new Color(color.getRed() / 255.0f, (float) ((color.getGreen() / 255.0f) * (newFlame.getProperty("strength") / 100.0f)), color.getBlue() / 255.0f);
+                color = new Color(color.getRed() / 255.0f, (color.getGreen() / 255.0f) * (newFlame.getProperty("strength") / 100.0f), color.getBlue() / 255.0f);
                 newFlame.setColor(color);
 
                 grid.setPixel(x, y - 1, newFlame);
             }
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         if (r.nextDouble() > strength){
             strength *= decreaseAmount;
             if (strength == 0){
