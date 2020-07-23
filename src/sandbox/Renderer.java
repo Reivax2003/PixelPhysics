@@ -32,7 +32,14 @@ public class Renderer extends JPanel {
             for (int y = 0; y < grid.getHeight(); y++) {
                 Pixel pixel = grid.getPixel(x, y);
 
-                g.setColor(pixel.getColor());
+                Color color = pixel.getColor();
+                if(pixel.getStateOrDefault("recovering", 0) != 0) {
+                    color = Color.yellow.darker();
+                }
+                else if(pixel.getStateOrDefault("conducting", 0) != 0) {
+                    color = Color.yellow;
+                }
+                g.setColor(color);
                 g.fillRect(x * pixelsPerSquare + xOffset, y * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
             }
         }
