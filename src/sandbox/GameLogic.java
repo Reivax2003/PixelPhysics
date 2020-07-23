@@ -405,9 +405,7 @@ public class GameLogic extends TimerTask {
                 pixel.changeProperty("fuel", pixel.getProperty("fuel") - amount);
             }
             else if (pixel.hasProperty("gravity")){
-                pixel.changeProperty("gravity", 1);
-                pixel.addProperty("support", 1);
-                pixel.setColor(Color.darkGray.darker());
+                grid.setPixel(pixel.getX(), pixel.getY(), new Charcoal(pixel.getX(), pixel.getY()));
             }
         }
     }
