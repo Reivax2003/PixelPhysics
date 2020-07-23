@@ -7,9 +7,8 @@ import java.awt.event.*;
 import java.awt.Color;
 
 public class MenuBar extends JMenuBar implements ActionListener {
-  // private JMenu elementsMenu;
 
-  public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of list
+  public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
           new Sand(0, 0),
           new Sand(0, 0),
           new Water(0, 0),
@@ -32,7 +31,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     for(int p = 0; p < pixels.length; p ++) { //Can only handle up to 20 elements
       JRadioButtonMenuItem button = new JRadioButtonMenuItem(pixels[p].getType());
-      button.setForeground(pixels[p].getColor().darker());
+      button.setForeground(pixels[p].getColor().darker()); // Color text for distinction
       elementButtons.add(button);
       String index = String.valueOf(p);
       if (index.length() == 1) {
@@ -66,7 +65,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
   }
 
 
-  public void actionPerformed(ActionEvent p) {
+  public void actionPerformed(ActionEvent p) { // Detects interaction with menu
     chosen = Integer.parseInt(p.getActionCommand());
   }
 }
