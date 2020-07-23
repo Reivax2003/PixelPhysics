@@ -48,10 +48,10 @@ public class PixelSandbox {
         frame.setSize(1000, 500);
         frame.setBackground(Color.lightGray);
 
+        frame.setJMenuBar(menuBar);
         frame.add(renderer);
 
         frame.setVisible(true);
-        frame.setJMenuBar(menuBar);
 
         renderer.addMouseMotionListener(mouseHandler);
         renderer.addMouseListener(mouseHandler);
