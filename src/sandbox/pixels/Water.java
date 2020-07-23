@@ -1,6 +1,6 @@
 package sandbox.pixels;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Water extends Pixel {
 

@@ -22,8 +22,6 @@ public class Renderer extends JPanel {
         // set sandbox.pixels per square to the smallest dimension, so
         int pixelsPerSquare = Math.min(getWidth() / gridWidth, getHeight() / gridHeight);
 
-        boolean coloredBlack = true;
-
         // get the size of the unused margins (getWidth - used space), then divide it by two to get the center
         int xOffset = (getWidth() - gridWidth * pixelsPerSquare) / 2;
         int yOffset = (getHeight() - gridHeight * pixelsPerSquare) / 2;
@@ -33,11 +31,25 @@ public class Renderer extends JPanel {
                 Pixel pixel = grid.getPixel(x, y);
 
                 Color color = pixel.getColor();
-                if(pixel.getStateOrDefault("recovering", 0) != 0) {
+                if (pixel.getStateOrDefault("recovering", 0) != 0) {
                     color = Color.yellow.darker();
-                }
-                else if(pixel.getStateOrDefault("conducting", 0) != 0) {
+                } else if (pixel.getStateOrDefault("conducting", 0) != 0) {
                     color = Color.yellow;
+                }
+                if (pixel.getStateOrDefault("flower", 0) != 0) {
+                    int flower = pixel.getState("flower");
+
+                    Color[] pastels = new Color[] {
+                            new Color(255, 107, 255),
+                            new Color(255, 85, 85),
+                            new Color(255, 165, 48),
+                            new Color(225, 255, 54),
+                            new Color(54, 175, 255)
+                    };
+
+                    flower = flower != -1? flower : (int) (Math.random() * pastels.length);
+                    pixel.setState("flower", flower);
+                    color = pastels[flower];
                 }
                 g.setColor(color);
                 g.fillRect(x * pixelsPerSquare + xOffset, y * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
