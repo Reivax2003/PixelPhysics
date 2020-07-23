@@ -12,14 +12,16 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
     private final JPanel panel;
     private final Grid grid;
     private KeyHandler keyHandler;
+    private MenuBar menuBar;
 
     private int lastMouseX = -1;
     private int lastMouseY = -1;
 
-    public MouseHandler(JPanel panel, Grid grid, KeyHandler keyHandler) {
+    public MouseHandler(JPanel panel, Grid grid, KeyHandler keyHandler, MenuBar menuBar) {
         this.panel = panel;
         this.grid = grid;
         this.keyHandler = keyHandler;
+        this.menuBar = menuBar;
     }
 
     @Override
@@ -90,7 +92,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
         if (lastMouseX == -1) {
             if (button == MouseEvent.BUTTON1) {
-                Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
+                Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                 grid.setPixel(squareX, squareY, pixel);
                 pixel.setX(squareX);
                 pixel.setY(squareY);
@@ -101,7 +103,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
             }
         } else {
             if (button == MouseEvent.BUTTON1) {
-                Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
+                Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
                 pixel.setX(squareX);
                 pixel.setY(squareY);

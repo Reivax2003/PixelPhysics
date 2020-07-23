@@ -62,7 +62,7 @@ public class PixelSandbox {
 
         renderer = new Renderer(grid);
         keyHandler = new KeyHandler();
-        mouseHandler = new MouseHandler(renderer, grid, keyHandler);
         menuBar = new MenuBar();
+        mouseHandler = new MouseHandler(renderer, grid, keyHandler, menuBar);
     }
 }

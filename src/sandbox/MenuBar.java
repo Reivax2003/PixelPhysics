@@ -3,8 +3,9 @@ package sandbox;
 import sandbox.pixels.*;
 
 import javax.swing.*;
+import java.awt.event.*;
 
-public class MenuBar extends JMenuBar {
+public class MenuBar extends JMenuBar implements ActionListener {
   // private JMenu elementsMenu;
 
   public final Pixel[] pixels = {
@@ -20,22 +21,27 @@ public class MenuBar extends JMenuBar {
           new Sand(0, 0),
   };
 
+  public int chosen = 0;
+
   public MenuBar() {
     JMenu elementsMenu = new JMenu("Elements");
     ButtonGroup elementButtons = new ButtonGroup();
 
     for(int p = 0; p < pixels.length; p ++) {
-      MenuElement button = new MenuElement(pixels[p]);
+      JRadioButtonMenuItem button = new JRadioButtonMenuItem(pixels[p].getType());
       elementButtons.add(button);
       elementsMenu.add(button);
+      String index = String.valueOf(p);
+      button.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.getExtendedKeyCodeForChar(index)));
+      button.setActionCommand(index);
+      button.addActionListener(this);
     }
 
     this.add(elementsMenu);
   }
 
-  private class MenuElement extends JRadioButtonMenuItem {
-    public MenuElement(Pixel element) {
-      this.setText(element.getType());
-    }
+
+  public void actionPerformed(ActionEvent p) {
+    chosen = Integer.parseInt(p.getActionCommand());
   }
 }
