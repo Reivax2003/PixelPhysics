@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class Pixel {
 
     HashMap<String, Integer> properties = new HashMap<>();
+    HashMap<String, Integer> state = new HashMap<>();
 
     protected int x;
     protected int y;
@@ -80,6 +81,18 @@ public class Pixel {
 
         // for chaining method calls
         return this;
+    }
+
+    public int getState(String state) {
+        return this.state.get(state);
+    }
+
+    public int getStateOrDefault(String state, int defaultValue) {
+        return this.state.getOrDefault(state, defaultValue);
+    }
+
+    public void setState(String state, int value) {
+        this.state.put(state, value);
     }
 
     public int getProperty(String property) {
