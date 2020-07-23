@@ -32,7 +32,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
       elementButtons.add(button);
       elementsMenu.add(button);
       String index = String.valueOf(p);
-      button.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.getExtendedKeyCodeForChar(30+p))); //Only works 0 - 9
+      button.setAccelerator(KeyStroke.getKeyStroke(30+p)); //Only works 0 - 9
       button.setActionCommand(index);
       button.addActionListener(this);
     }
