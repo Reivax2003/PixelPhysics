@@ -7,7 +7,10 @@ public class Wood extends Pixel {
     public Wood(int xpos, int ypos) {
         super("wood", xpos, ypos, new Color(113, 62, 5));
         this
-                .setProperty("flammable", 1);
+                .setProperty("flammable", 1)
+                .setProperty("fuel", 200)
+                .setProperty("density", 10)
+                .setProperty("gravity", 0);
     }
 
 }
