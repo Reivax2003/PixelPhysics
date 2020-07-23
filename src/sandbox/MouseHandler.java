@@ -1,6 +1,8 @@
 package sandbox;
 
-import sandbox.pixels.*;
+import sandbox.pixels.Air;
+import sandbox.pixels.Pixel;
+import sandbox.pixels.Water;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -11,7 +13,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
     private final JPanel panel;
     private final Grid grid;
-    private KeyHandler keyHandler;
+    private final KeyHandler keyHandler;
 
     private int lastMouseX = -1;
     private int lastMouseY = -1;
