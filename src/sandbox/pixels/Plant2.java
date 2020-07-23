@@ -1,6 +1,6 @@
 package sandbox.pixels;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Random;
 
 public class Plant2 extends Pixel {

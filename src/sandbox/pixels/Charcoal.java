@@ -1,8 +1,8 @@
 package sandbox.pixels;
 
-import java.awt.Color;
+import java.awt.*;
 
-public class Charcoal extends Pixel{
+public class Charcoal extends Pixel {
 
     public Charcoal(int xpos, int ypos) {
         super("charcoal", xpos, ypos, Color.darkGray);
@@ -10,6 +10,7 @@ public class Charcoal extends Pixel{
                 .setProperty("flammable", 1)
                 .setProperty("gravity", 1)
                 .setProperty("density", 40)
-                .setProperty("support", 1);
+                .setProperty("support", 1)
+                .setProperty("solubility", 30);
     }
 }

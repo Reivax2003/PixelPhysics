@@ -9,7 +9,8 @@ public class Wood extends Pixel {
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 200)
-                .setProperty("gravity", 0);
+                .setProperty("gravity", 0)
+                .setProperty("solubility", 30);
     }
 
 }

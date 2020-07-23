@@ -11,7 +11,8 @@ public class Sand extends Pixel {
                 .setProperty("gravity", 1)
                 .setProperty("density", 70)
                 .setProperty("support", 1)
-                .setProperty("fertile", 1);
+                .setProperty("fertile", 1)
+                .setProperty("solubility", 50);
     }
 
 }
