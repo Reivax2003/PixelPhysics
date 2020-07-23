@@ -248,6 +248,16 @@ public class GameLogic extends TimerTask {
                         }
                     }
                 }
+                if(currentPixel.hasProperty("duration"))
+                {
+                    int duration = currentPixel.getProperty("duration");
+                    if(Math.random()<0.5)
+                        duration--;
+                    if(duration < 0)
+                        grid.setPixel(currentX, currentY, new Air(currentX, currentY));
+                    else
+                        currentPixel.changeProperty("duration", duration);
+                }
             }
             //Alternate direction of updating
             reverse = !reverse;
