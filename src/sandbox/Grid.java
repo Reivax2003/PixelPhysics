@@ -1,5 +1,6 @@
 package sandbox;
 
+import sandbox.pixels.Air;
 import sandbox.pixels.Pixel;
 
 public class Grid {
@@ -42,6 +43,10 @@ public class Grid {
     }
 
     public void swapPositions(int x1, int y1, int x2, int y2) {
+        if(x1 == x2 && y1 == y2) {
+            return;
+        }
+
         Pixel position1 = grid[x1][y1];
         Pixel position2 = grid[x2][y2];
 
