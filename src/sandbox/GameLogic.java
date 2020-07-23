@@ -234,13 +234,13 @@ public class GameLogic extends TimerTask {
                 if (currentPixel.hasProperty("growing")) {
                     int growing = currentPixel.getProperty("growing");
                     if (currentPixel.type.equals("plant")) {
-                        System.out.println("true");
+                        // System.out.println("true");
                         if (growing == 0) {
                             if (currentY < grid.getHeight() - 1 && grid.getPixelDown(currentX, currentY).hasProperty("fertile") &&
                                     currentY > 0 && grid.getPixelUp(currentX, currentY).getType().equals("air")) {
                                 currentPixel.changeProperty("growing", 1);
                                 currentPixel.changeProperty("gravity", 0);
-                                currentPixel.addProperty("height", (int) (Math.min(Math.random() * currentPixel.getPropOrDefault("maxheight", 0), currentPixel.getPropOrDefault("minheight", 0))));
+                                currentPixel.addProperty("height", (int) (Math.max(Math.random() * currentPixel.getPropOrDefault("maxheight", 0), currentPixel.getPropOrDefault("minheight", 0))));
                             }
                         } else if (growing == 1) {
                             int height = currentPixel.getProperty("height");
@@ -250,10 +250,9 @@ public class GameLogic extends TimerTask {
                                     currentPixel.setState("flower", -1); // for use in Renderer
                                 }
                                 currentPixel.changeProperty("height", height - 1);
-                                if (grid.getPixel(currentX, currentY - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density) {
+                                if (grid.getPixel(currentX, currentY - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
                                     grid.swapPositions(currentX, currentY, currentX, currentY - 1);
-                                }
-                                grid.setPixel(currentX, currentY, new Plant(currentX, currentY));
+1                                grid.setPixel(currentX, currentY, new Plant(currentX, currentY));
                             }
                         }
                     }
