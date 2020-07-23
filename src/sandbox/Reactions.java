@@ -1,30 +1,30 @@
 package sandbox;
 
-import java.util.HashMap;
-
-import sandbox.pixels.*;
+import sandbox.pixels.Air;
+import sandbox.pixels.Pixel;
+import sandbox.pixels.WetSand;
+import sandbox.pixels.Smoke;
 
 public class Reactions {
-    private HashMap<String, HashMap<String, Pixel>> reactions = new HashMap<String, HashMap<String, Pixel>>();
 
-    public Reactions()
-    {
-        reactions.put("sand", new HashMap<String, Pixel>(){{
-            put("water", new WetSand(0, 0));
-        }});
+    public Reactions() {
     }
 
-    public Pixel getReaction(String a, String b)
+    public Pixel[] getReaction(Pixel a, Pixel b)
     {
-        return reactions.get(a).get(b);
-    }
-
-    public Pixel getReactionOrDefault(String a, String b, Pixel def)
-    {
-        HashMap<String, Pixel> h = reactions.getOrDefault(a, null);
-        if(h == null)
-            return def;
+        if(a.getType().equals("sand") && b.getType().equals("water"))
+            return new Pixel[] { new WetSand(0, 0), new Air(0, 0) };
+        else if(a.getType().equals("fire") && a.getPropOrDefault("strength", 0) == 100 && b.getType().equals("water"))
+            return new Pixel[] { new Air(0, 0), new Air(0, 0) };
         else
-            return h.getOrDefault(b, null);
+            return null;
+    }
+
+    public Pixel[] getReactionOrDefault(Pixel a, Pixel b, Pixel def1, Pixel def2) {
+        Pixel[] result = getReaction(a, b);
+        if (result == null)
+            return new Pixel[]{def1, def2};
+        else
+            return result;
     }
 }

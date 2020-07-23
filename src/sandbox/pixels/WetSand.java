@@ -5,7 +5,7 @@ import java.awt.*;
 public class WetSand extends Pixel {
 
     public WetSand(int xpos, int ypos) {
-        super("wet sand", xpos, ypos, new Color(155, 155, 0));
+        super("wet sand", xpos, ypos, new Color(243, 195, 40).darker());
 
         this
                 .setProperty("gravity", 1)
