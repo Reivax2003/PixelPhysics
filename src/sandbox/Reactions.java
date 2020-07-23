@@ -12,7 +12,7 @@ public class Reactions {
         if(a.getType().equals("sand") && b.getType().equals("water"))
             return new Pixel[] { new WetSand(0, 0), new Air(0, 0) };
         else if(a.getType().equals("fire") && a.getPropOrDefault("strength", 0) == 100 && b.getType().equals("water"))
-            return new Pixel[] { new Air(0, 0), new Air(0, 0) };
+            return new Pixel[] { new Air(0, 0), new Steam(0, 0) };
         else if(a.getType().equals("wet sand") && b.getType().equals("fire"))
             return new Pixel[] { new Sand(0, 0), b };
         else
