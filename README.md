@@ -1,6 +1,6 @@
 # PixelPhysics
 
-Our goal is to make a realtime physics simulation built around pixels, each pixel is one unit of a substance and there are different substances that behave differently and can interact with each other.
+Our goal is to make a realtime physics simulation built around pixels, each pixel is one unit of a substance and there are different substances that behave differently and can interact with each other. Some substances create other ones, like fire creates smoke, and some substances can combine into ones with different properties, like water + sand = wet sand.
 
 List of planned substances:  
 Sand (falls downwards or diagonally),  
