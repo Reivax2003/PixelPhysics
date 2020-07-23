@@ -10,7 +10,6 @@ public class PixelSandbox {
     private Renderer renderer;
     private MenuBar menuBar;
     private MouseHandler mouseHandler;
-    private KeyHandler keyHandler;
     private GameLogic gameLogic;
 
     public Grid grid;
@@ -55,14 +54,12 @@ public class PixelSandbox {
 
         renderer.addMouseMotionListener(mouseHandler);
         renderer.addMouseListener(mouseHandler);
-        frame.addKeyListener(keyHandler);
     }
 
     private void initializeRenderer() {
 
         renderer = new Renderer(grid);
-        keyHandler = new KeyHandler();
         menuBar = new MenuBar();
-        mouseHandler = new MouseHandler(renderer, grid, keyHandler, menuBar);
+        mouseHandler = new MouseHandler(renderer, grid, menuBar);
     }
 }
