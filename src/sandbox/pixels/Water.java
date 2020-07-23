@@ -2,7 +2,7 @@ package sandbox.pixels;
 
 import java.awt.Color;
 
-public class Water extends Pixel implements Liquid {
+public class Water extends Pixel {
 
     public Water(int xpos, int ypos) {
         super("water", xpos, ypos, new Color(9, 117, 250));
