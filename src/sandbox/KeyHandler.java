@@ -9,7 +9,7 @@ public class KeyHandler implements KeyListener {
 
     public int chosen = 0;
     public final Pixel[] pixels = {
-            new Sand(0, 0),
+            new Electricity(0, 0),
             new Sand(0, 0),
             new Water(0, 0),
             new Soil(0, 0),
