@@ -11,16 +11,14 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
     private final JPanel panel;
     private final Grid grid;
-    private KeyHandler keyHandler;
     private MenuBar menuBar;
 
     private int lastMouseX = -1;
     private int lastMouseY = -1;
 
-    public MouseHandler(JPanel panel, Grid grid, KeyHandler keyHandler, MenuBar menuBar) {
+    public MouseHandler(JPanel panel, Grid grid, MenuBar menuBar) {
         this.panel = panel;
         this.grid = grid;
-        this.keyHandler = keyHandler;
         this.menuBar = menuBar;
     }
 
