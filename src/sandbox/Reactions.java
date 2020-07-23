@@ -1,9 +1,6 @@
 package sandbox;
 
-import sandbox.pixels.Air;
-import sandbox.pixels.Pixel;
-import sandbox.pixels.WetSand;
-import sandbox.pixels.Smoke;
+import sandbox.pixels.*;
 
 public class Reactions {
 
@@ -16,6 +13,8 @@ public class Reactions {
             return new Pixel[] { new WetSand(0, 0), new Air(0, 0) };
         else if(a.getType().equals("fire") && a.getPropOrDefault("strength", 0) == 100 && b.getType().equals("water"))
             return new Pixel[] { new Air(0, 0), new Air(0, 0) };
+        else if(a.getType().equals("wet sand") && b.getType().equals("fire"))
+            return new Pixel[] { new Sand(0, 0), b };
         else
             return null;
     }
