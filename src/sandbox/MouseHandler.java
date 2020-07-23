@@ -3,7 +3,6 @@ package sandbox;
 import sandbox.pixels.*;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -12,10 +11,15 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
     private final JPanel panel;
     private final Grid grid;
+    private KeyHandler keyHandler;
 
-    public MouseHandler(JPanel panel, Grid grid) {
+    private int lastMouseX = -1;
+    private int lastMouseY = -1;
+
+    public MouseHandler(JPanel panel, Grid grid, KeyHandler keyHandler) {
         this.panel = panel;
         this.grid = grid;
+        this.keyHandler = keyHandler;
     }
 
     @Override
@@ -27,10 +31,10 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
         int button;
 
-        if((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK) {
+        if ((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK) {
             // left mouse button
             button = MouseEvent.BUTTON1;
-        } else if((e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) == MouseEvent.BUTTON3_DOWN_MASK) {
+        } else if ((e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) == MouseEvent.BUTTON3_DOWN_MASK) {
             // right mouse button
             button = MouseEvent.BUTTON3;
         } else {
@@ -51,7 +55,6 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         clickPoint(x, y, e.getButton());
     }
 
-    // FIXME: misses pixels if mouse moves too fast
     private void clickPoint(int x, int y, int button) {
 
         // size of panel
@@ -78,20 +81,38 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         int squareY = adjustedY / pixelsPerSquare;
 
         // out of bounds
-        if(squareX < 0 || squareX > gridWidth - 1) {
+        if (squareX < 0 || squareX > gridWidth - 1) {
             return;
         }
-        if(squareY < 0 || squareY > gridHeight - 1) {
+        if (squareY < 0 || squareY > gridHeight - 1) {
             return;
         }
 
-        if(button == MouseEvent.BUTTON1) {
-            grid.setPixel(squareX, squareY, new Sand(squareX, squareY));
-        } else if(button == MouseEvent.BUTTON2) {
-            grid.setPixel(squareX, squareY, new Water(squareX, squareY));
-        } else if(button == MouseEvent.BUTTON3) {
-            grid.setPixel(squareX, squareY, new Air(squareX, squareY));
+        if (lastMouseX == -1) {
+            if (button == MouseEvent.BUTTON1) {
+                Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
+                grid.setPixel(squareX, squareY, pixel);
+                pixel.setX(squareX);
+                pixel.setY(squareY);
+            } else if (button == MouseEvent.BUTTON2) {
+                grid.setPixel(squareX, squareY, new Water(squareX, squareY));
+            } else if (button == MouseEvent.BUTTON3) {
+                grid.setPixel(squareX, squareY, new Air(squareX, squareY));
+            }
+        } else {
+            if (button == MouseEvent.BUTTON1) {
+                Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
+                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
+                pixel.setX(squareX);
+                pixel.setY(squareY);
+            } else if (button == MouseEvent.BUTTON2) {
+                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Water(squareX, squareY));
+            } else if (button == MouseEvent.BUTTON3) {
+                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(squareX, squareY));
+            }
         }
+        lastMouseX = squareX;
+        lastMouseY = squareY;
 
         // repaint panel so it displays
         panel.repaint();
@@ -109,7 +130,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        lastMouseX = lastMouseY = -1;
     }
 
     @Override

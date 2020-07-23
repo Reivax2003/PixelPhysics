@@ -1,12 +1,11 @@
 package sandbox.pixels;
 
-import sandbox.Grid;
-
 import java.awt.*;
+import java.util.HashMap;
 
 public class Pixel {
 
-    protected boolean isStable;
+    HashMap<String, Integer> properties = new HashMap<>();
 
     protected int x;
     protected int y;
@@ -14,12 +13,20 @@ public class Pixel {
     public String type;
     protected Color color;
 
-    public Pixel(String type, int xpos, int ypos, Color color){
-        this.isStable = false;
+    protected boolean moved;
+
+    public Pixel(String type, int xpos, int ypos, Color color) {
         this.x = xpos;
         this.y = ypos;
         this.type = type;
         this.color = color;
+        this.moved = false;
+    }
+
+    public Pixel duplicate() {
+        Pixel copy = new Pixel(type, x, y, color);
+        copy.properties = this.properties;
+        return (copy);
     }
 
     public int getX() {
@@ -42,6 +49,10 @@ public class Pixel {
         return color;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public String getType() {
         return type;
     }
@@ -50,7 +61,37 @@ public class Pixel {
         this.type = type;
     }
 
-    public int[] update(Grid grid) {
-        return new int[] {x, y};
+    protected Pixel setProperty(String property, int value) {
+        properties.put(property, value);
+
+        // for chaining method calls
+        return this;
+    }
+
+    public Pixel changeProperty(String property, int value) {
+        properties.replace(property, value);
+
+        // for chaining method calls
+        return this;
+    }
+
+    public int getProperty(String property) {
+        return properties.get(property);
+    }
+
+    public int getPropOrDefault(String property, int def) {
+        return properties.getOrDefault(property, def);
+    }
+
+    public boolean hasProperty(String property) {
+        return properties.containsKey(property);
+    }
+
+    public boolean hasMoved() {
+        return moved;
+    }
+
+    public void setMoved(boolean truefalse) {
+        this.moved = truefalse;
     }
 }
