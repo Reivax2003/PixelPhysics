@@ -31,8 +31,14 @@ public class MenuBar extends JMenuBar implements ActionListener {
       JRadioButtonMenuItem button = new JRadioButtonMenuItem(pixels[p].getType());
       elementButtons.add(button);
       String index = String.valueOf(p);
-      elementsMenu.add(button);
-      button.setAccelerator(KeyStroke.getKeyStroke(index)); //Only works 0 - 9
+      if(p == 0) {
+        elementsMenu.insert(button,9);
+        button.setAccelerator(KeyStroke.getKeyStroke(index));
+      }
+      else if(index.length() == 1) {
+        elementsMenu.insert(button, p-1);
+        button.setAccelerator(KeyStroke.getKeyStroke(index));
+      }
       button.setActionCommand(index);
       button.addActionListener(this);
     }
