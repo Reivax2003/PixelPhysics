@@ -25,7 +25,7 @@ public class Pixel {
 
     public Pixel duplicate() {
         Pixel copy = new Pixel(type, x, y, color);
-        copy.properties = this.properties;
+        copy.properties = new HashMap<>(this.properties);
         return (copy);
     }
 
@@ -62,6 +62,13 @@ public class Pixel {
     }
 
     protected Pixel setProperty(String property, int value) {
+        properties.put(property, value);
+
+        // for chaining method calls
+        return this;
+    }
+
+    public Pixel addProperty(String property, int value) {
         properties.put(property, value);
 
         // for chaining method calls

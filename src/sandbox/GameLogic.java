@@ -227,7 +227,7 @@ public class GameLogic extends TimerTask {
         if (r.nextDouble() > strength){
             strength *= decreaseAmount;
             if (strength == 0){
-                if (r.nextDouble() < 0.02) {
+                if (r.nextDouble() < 0.01) {
                     grid.setPixel(x, y, new Smoke(x, y));
                 }
                 else{
@@ -242,12 +242,15 @@ public class GameLogic extends TimerTask {
 
         boolean hasFuel = false;
 
+        Random r = new Random();
+
         for (int x = -1; x <= 1; x++){
             for (int y = -1; y <= 1; y++){
                 if (x+xpos >= 0 && x+xpos < grid.getWidth() && y+ypos >= 0 && y+ypos < grid.getHeight() && grid.getPixel(x+xpos, y+ypos).hasProperty("flammable")) {
                     light(grid.getPixel(x+xpos, y+ypos), original);
                     if (x == 0 || y == 0) {
                         hasFuel = true;
+                        loseFuel(grid.getPixel(x+xpos, y+ypos), r.nextInt(3));
                     }
                 }
             }
@@ -278,6 +281,18 @@ public class GameLogic extends TimerTask {
                     grid.setPixel(check.getX(), check.getY(), clone);
                 }
             } catch (Exception e) {}
+        }
+    }
+    public void loseFuel(Pixel pixel, int amount){
+        if (pixel.hasProperty("fuel")){
+            if (pixel.getProperty("fuel") > 0){
+                pixel.changeProperty("fuel", pixel.getProperty("fuel") - amount);
+            }
+            else if (pixel.hasProperty("gravity")){
+                pixel.changeProperty("gravity", 1);
+                pixel.addProperty("support", 1);
+                pixel.setColor(Color.darkGray.darker());
+            }
         }
     }
 }
