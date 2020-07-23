@@ -16,6 +16,9 @@ Plants (grow on sand?),
 Lava (burns flammables and melts through stone/metal),
 
 We plan on using java because most of the team knows it and it has a library for simple 2d rendering.
+Other than that we aren't using any other libraries or dependencies.
+
+The user experience should be similar to a sandbox combined with a chemistry lab, where the user can experiment with mixing different substances to see their interactions. Each substance is based off of simple rules, but they can be combined to produce complex behavior (like a rube goldberg machine).
 
 In the future if that can be completed, it would be interesting to turn it into some sort of game.
 
