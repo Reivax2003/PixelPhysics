@@ -268,7 +268,7 @@ public class GameLogic extends TimerTask {
                     clone.changeProperty("spreads", 0);
                     grid.setPixel(check.getX(), check.getY(), clone);
                 }
-            }
+            } catch (Exception e) {}
         }
     }
 }
