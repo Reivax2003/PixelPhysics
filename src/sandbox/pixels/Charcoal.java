@@ -8,7 +8,6 @@ public class Charcoal extends Pixel{
         super("charcoal", xpos, ypos, Color.darkGray);
         this
                 .setProperty("flammable", 1)
-                .setProperty("fuel", 1000)
                 .setProperty("gravity", 1)
                 .setProperty("density", 40)
                 .setProperty("support", 1);
