@@ -35,56 +35,60 @@ public class GameLogic extends TimerTask {
                 int currentX = currentPixel.getX();
                 int currentY = currentPixel.getY();
 
+                //check for any reactions with neighbor pixels
                 Boolean reacted = false;
                 if(currentX > 0 && !reacted)
                 {
-                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelLeft(currentX, currentY).getType(), null);
-                    if(product != null)
+                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelLeft(currentX, currentY));
+                    if(products != null)
                     {
-                        currentPixel = product.duplicate();
-                        currentPixel.setX(currentX);
-                        currentPixel.setY(currentY);
+                        currentPixel = products[0];
+                        currentPixel.setX(currentX); currentPixel.setY(currentY);
                         grid.setPixel(currentX, currentY, currentPixel);
-                        grid.setPixel(currentX-1, currentY, new Air(currentX-1, currentY));
+                        products[1].setX(currentX-1); products[1].setY(currentY);
+                        grid.setPixel(currentX-1, currentY, products[1]);
                         reacted = true;
                     }
                 }
                 if(currentX < grid.getWidth()-1 && !reacted)
                 {
-                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelRight(currentX, currentY).getType(), null);
-                    if(product != null)
+                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelRight(currentX, currentY));
+                    if(products != null)
                     {
-                        currentPixel = product.duplicate();
+                        currentPixel = products[0];
                         currentPixel.setX(currentX);
                         currentPixel.setY(currentY);
                         grid.setPixel(currentX, currentY, currentPixel);
-                        grid.setPixel(currentX+1, currentY, new Air(currentX+1, currentY));
+                        products[1].setX(currentX+1); products[1].setY(currentY);
+                        grid.setPixel(currentX+1, currentY, products[1]);
                         reacted = true;
                     }
                 }
                 if(currentY > 0 && !reacted)
                 {
-                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelUp(currentX, currentY).getType(), null);
-                    if(product != null)
+                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelUp(currentX, currentY));
+                    if(products != null)
                     {
-                        currentPixel = product.duplicate();
+                        currentPixel = products[0];
                         currentPixel.setX(currentX);
                         currentPixel.setY(currentY);
                         grid.setPixel(currentX, currentY, currentPixel);
-                        grid.setPixel(currentX, currentY-1, new Air(currentX, currentY-1));
+                        products[1].setX(currentX); products[1].setY(currentY-1);
+                        grid.setPixel(currentX, currentY-1, products[1]);
                         reacted = true;
                     }
                 }
                 if(currentY < grid.getHeight()-1 && !reacted)
                 {
-                    Pixel product = reactions.getReactionOrDefault(currentPixel.getType(), grid.getPixelDown(currentX, currentY).getType(), null);
-                    if(product != null)
+                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelDown(currentX, currentY));
+                    if(products != null)
                     {
-                        currentPixel = product.duplicate();
+                        currentPixel = products[0];
                         currentPixel.setX(currentX);
                         currentPixel.setY(currentY);
                         grid.setPixel(currentX, currentY, currentPixel);
-                        grid.setPixel(currentX, currentY+1, new Air(currentX, currentY+1));
+                        products[1].setX(currentX); products[1].setY(currentY+1);
+                        grid.setPixel(currentX, currentY+1, products[1]);
                         reacted = true;
                     }
                 }
