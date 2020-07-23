@@ -31,7 +31,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
           new Sand(0, 0),
   };
 
-  public int chosen = 0;
+  public int chosen = 1;
 
   public MenuBar() {
     JMenu elementsMenu = new JMenu("Elements");
@@ -45,6 +45,11 @@ public class MenuBar extends JMenuBar implements ActionListener {
       if(p == 0) { // 0 to end of first menu
         elementsMenu.add(button);
         button.setAccelerator(KeyStroke.getKeyStroke(index));
+      }
+      else if(p == 1) { // Button one is by default selected as the first option
+        elementsMenu.insert(button, p-1);
+        button.setAccelerator(KeyStroke.getKeyStroke(index));
+        button.setSelected(true);
       }
       else if(index.length() == 1) { // 1-9
         elementsMenu.insert(button, p-1);
