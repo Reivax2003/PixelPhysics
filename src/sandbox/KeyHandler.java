@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    public int chosen = 0;
+    public int chosen = 1;
     public final Pixel[] pixels = {
             new Electricity(0, 0),
             new Sand(0, 0),
