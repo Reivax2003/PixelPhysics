@@ -12,6 +12,8 @@ public class Reactions {
     {
         if(a.getType().equals("sand") && b.getType().equals("water"))
             return new Pixel[] { new WetSand(0, 0), new Air(0, 0) };
+        else if(a.getType().equals("fire") && a.getPropOrDefault("strength", 0) == 100 && b.getType().equals("water"))
+            return new Pixel[] { new Smoke(0, 0), new Air(0, 0) };
         else
             return null;
     }
