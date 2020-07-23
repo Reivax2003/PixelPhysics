@@ -140,13 +140,13 @@ public class GameLogic extends TimerTask {
                       //Fall to last air or swap with solid if touching
                       int sign = (gravity > 0)? 1:-1;
                       if(gravity * sign > 1) {
-                        //Fall to block above if a solid exist more than 1 away
+                        //Fall to the block above if a solid exists more than 1 away
                         for (int gravityCheck = gravity * sign; gravityCheck > 1; gravityCheck --) {
                           if (grid.getPixel(currentX, currentY + gravityCheck * sign).getPropOrDefault("density", DEFAULT_DENSITY) > 0) {
                             gravity = gravityCheck * sign - sign;
                           }
                         }
-                        //Check touching
+                        //Check if touching solid
                         if (grid.getPixel(currentX, currentY + sign).getPropOrDefault("density", DEFAULT_DENSITY) > 0) {
                           gravity = sign;
                         }
