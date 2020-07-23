@@ -38,30 +38,31 @@ public class MenuBar extends JMenuBar implements ActionListener {
     JMenu elementsMenu2 = new JMenu("Elem cont.");
     ButtonGroup elementButtons = new ButtonGroup();
 
-    for(int p = 0; p < pixels.length; p ++) {
+    for(int p = 0; p < pixels.length; p ++) { //Can only handle up to 20 elements
       JRadioButtonMenuItem button = new JRadioButtonMenuItem(pixels[p].getType());
       elementButtons.add(button);
       String index = String.valueOf(p);
-      if(p == 0) { // 0 to end of first menu
-        elementsMenu.add(button);
-        button.setAccelerator(KeyStroke.getKeyStroke(index));
+      if (index.length() == 1) {
+        if(p == 0) { // 0 to end of first menu
+          elementsMenu.add(button);
+        }
+        else if(p == 1) { // Button one is by default selected as the first option
+          elementsMenu.insert(button, p-1);
+          button.setSelected(true);
+        }
+        else { // 1-9
+          elementsMenu.insert(button, p-1);
+        }
+        button.setAccelerator(KeyStroke.getKeyStroke(index)); // 0-9 by key
       }
-      else if(p == 1) { // Button one is by default selected as the first option
-        elementsMenu.insert(button, p-1);
-        button.setAccelerator(KeyStroke.getKeyStroke(index));
-        button.setSelected(true);
-      }
-      else if(index.length() == 1) { // 1-9
-        elementsMenu.insert(button, p-1);
-        button.setAccelerator(KeyStroke.getKeyStroke(index));
-      }
-      else if(p == 10) { // 10 to end of second menu
-        elementsMenu2.add(button);
-        button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1),ActionEvent.SHIFT_MASK));
-      }
-      else { //11-19
-        elementsMenu2.insert(button, p-11);
-        button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1),ActionEvent.SHIFT_MASK));
+      else {
+        if(p == 10) { // 10 to end of second menu
+          elementsMenu2.add(button);
+        }
+        else { //11-19
+          elementsMenu2.insert(button, p-11);
+        }
+        button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1),ActionEvent.SHIFT_MASK)); // 10-19 by shift and first digit
       }
       button.setActionCommand(index);
       button.addActionListener(this);
