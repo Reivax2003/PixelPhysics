@@ -1,6 +1,8 @@
 package sandbox;
 
-import sandbox.pixels.*;
+import sandbox.pixels.Air;
+import sandbox.pixels.Pixel;
+import sandbox.pixels.Water;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;

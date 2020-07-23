@@ -1,7 +1,6 @@
 package sandbox;
 
 import sandbox.pixels.Pixel;
-import sandbox.pixels.Sand;
 
 public class Grid {
     private final Pixel[][] grid;
