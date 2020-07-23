@@ -1,8 +1,8 @@
 package sandbox.pixels;
 
-import java.awt.Color;
+import java.awt.*;
 
-public class Charcoal extends Pixel{
+public class Charcoal extends Pixel {
 
     public Charcoal(int xpos, int ypos) {
         super("charcoal", xpos, ypos, Color.darkGray);

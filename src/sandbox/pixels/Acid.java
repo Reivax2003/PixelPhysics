@@ -1,6 +1,6 @@
 package sandbox.pixels;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Acid extends Pixel {
 
@@ -12,5 +12,5 @@ public class Acid extends Pixel {
                 .setProperty("fluidity", 100)
                 .setProperty("acidity", 10);
     }
-    
+
 }

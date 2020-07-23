@@ -5,16 +5,13 @@ import java.util.HashMap;
 
 public class Pixel {
 
-    HashMap<String, Integer> properties = new HashMap<>();
-    HashMap<String, Integer> state = new HashMap<>();
-
+    public String type;
     protected int x;
     protected int y;
-
-    public String type;
     protected Color color;
-
     protected boolean moved;
+    HashMap<String, Integer> properties = new HashMap<>();
+    HashMap<String, Integer> state = new HashMap<>();
 
     public Pixel(String type, int xpos, int ypos, Color color) {
         this.x = xpos;
@@ -34,12 +31,12 @@ public class Pixel {
         return x;
     }
 
-    public int getY() {
-        return y;
-    }
-
     public void setX(int x) {
         this.x = x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public void setY(int y) {
