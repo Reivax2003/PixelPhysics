@@ -584,8 +584,10 @@ public class GameLogic extends TimerTask {
         if (pixel.hasProperty("fuel")) {
             if (pixel.getProperty("fuel") > 0) {
                 pixel.changeProperty("fuel", pixel.getProperty("fuel") - amount);
-            } else if (pixel.hasProperty("gravity")) {
+            } else if (Math.random() < pixel.getPropOrDefault("charcoal", 0)/100.0) {
                 grid.setPixel(pixel.getX(), pixel.getY(), new Charcoal(pixel.getX(), pixel.getY()));
+            } else if (Math.random() < pixel.getPropOrDefault("ash", 0)/100.0) {
+                grid.setPixel(pixel.getX(), pixel.getY(), new Ash(pixel.getX(), pixel.getY()));
             }
         }
     }

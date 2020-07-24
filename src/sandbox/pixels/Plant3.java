@@ -9,6 +9,8 @@ public class Plant3 extends Pixel {
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 50)
+                .setProperty("charcoal", 10)
+                .setProperty("ash", 3)
                 .setProperty("density", 10)
                 .setProperty("gravity", 1)
                 .setProperty("support", 1)
