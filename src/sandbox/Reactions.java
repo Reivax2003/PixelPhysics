@@ -20,14 +20,25 @@ public class Reactions {
             return new Pixel[]{a, new Air()};
         // else if (a.getType().equals("water") && b.getPropOrDefault("temperature", 50) > 60)
         //     return new Pixel[]{new Steam(), b.changeProperty("temperature", b.getProperty("temperature")-50)};
-        else if (a.hasProperty("temperature") && b.hasProperty("temperature"))
-        {
-            int avgTemp = (a.getProperty("temperature") + b.getProperty("temperature"))/2;
-            int quarterChange = (a.getProperty("temperature") - avgTemp) / 2;
-            return new Pixel[]{a.changeProperty("temperature", a.getProperty("temperature") - quarterChange), b.changeProperty("temperature", b.getProperty("temperature") + quarterChange)};
-        }
+        // else if (a.hasProperty("temperature") && b.hasProperty("temperature"))
+        // {
+        //     int avgTemp = (a.getProperty("temperature") + b.getProperty("temperature"))/2;
+        //     int quarterChange = (a.getProperty("temperature") - avgTemp) / 2;
+        //     return new Pixel[]{a.changeProperty("temperature", a.getProperty("temperature") - quarterChange), b.changeProperty("temperature", b.getProperty("temperature") + quarterChange)};
+        // }
         else
             return null;
+    }
+
+    public Pixel[] getTempChange(Pixel a, Pixel b) {
+      if (b.hasProperty("temperature"))
+      {
+          int avgTemp = (a.getProperty("temperature") + b.getProperty("temperature"))/2;
+          int quarterChange = (a.getProperty("temperature") - avgTemp) / 2;
+          return new Pixel[]{a.changeProperty("temperature", a.getProperty("temperature") - quarterChange), b.changeProperty("temperature", b.getProperty("temperature") + quarterChange)};
+      }
+      else
+          return null;
     }
 
     public Pixel[] getReactionOrDefault(Pixel a, Pixel b, Pixel def1, Pixel def2) {
