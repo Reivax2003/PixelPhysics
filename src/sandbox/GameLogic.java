@@ -655,10 +655,14 @@ public class GameLogic extends TimerTask {
 
     //decreases the fuel value, eventually turning pixels into charcoal
     public void loseFuel(Pixel pixel, int amount, int x, int y) {
-        if (pixel.getPropOrDefault("fuel", 0) > 0) {
-            pixel.changeProperty("fuel", pixel.getProperty("fuel") - amount);
-        } else if (pixel.hasProperty("gravity")) {
-            grid.setPixel(x, y, new Charcoal());
+        if (pixel.hasProperty("fuel")) {
+            if (pixel.getProperty("fuel") > 0) {
+                pixel.changeProperty("fuel", pixel.getProperty("fuel") - amount);
+            } else if (Math.random() < pixel.getPropOrDefault("charcoal", 0)/100.0) {
+                grid.setPixel(x, y, new Charcoal());
+            } else if (Math.random() < pixel.getPropOrDefault("ash", 0)/100.0) {
+                grid.setPixel(x, y, new Ash());
+            }
         }
     }
 }
