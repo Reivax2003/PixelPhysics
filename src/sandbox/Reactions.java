@@ -18,6 +18,13 @@ public class Reactions {
             return new Pixel[]{new Sand(), b};
         else if (a.getType().equals("acid") && Math.random() < a.getPropOrDefault("acidity", 100) / 100.0 && Math.random() < b.getPropOrDefault("solubility", 0) / 100.0)
             return new Pixel[]{a, new Air()};
+        else if (a.getType().equals("water") && b.getPropOrDefault("temperature", 50) > 60)
+            return new Pixel[]{new Steam(), b.changeProperty("temperature", b.getProperty("temperature")-50)};
+        else if (a.hasProperty("temperature") && b.hasProperty("temperature"))
+        {
+            int avgTemp = (a.getProperty("temperature") + b.getProperty("temperature"))/2;
+            return new Pixel[]{a.changeProperty("temperature", avgTemp), b.changeProperty("temperature", avgTemp)};
+        }
         else
             return null;
     }

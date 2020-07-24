@@ -4,7 +4,6 @@ import sandbox.pixels.*;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.Color;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
@@ -25,6 +24,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
       new Steam(),
       new Acid(),
       new Plant3(),
+      new Lava()
   };
 
   public int chosen = 1; //currently selected substance

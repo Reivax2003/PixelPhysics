@@ -162,12 +162,14 @@ public class GameLogic extends TimerTask {
                     int gravity = currentPixel.getProperty("gravity");
 
                     if (!currentPixel.hasMoved()) {
+
                         //Binds gravity to grid
                         if (gravity > 0) {
                             gravity = (y + gravity < grid.getHeight()) ? gravity : (grid.getHeight() - 1 - y);
                         } else {
                             gravity = (y + gravity >= 0) ? gravity : -y;
                         }
+
                         //Fall to last air or swap with solid if touching
                         int sign = (gravity > 0) ? 1 : -1;
                         if (gravity * sign > 1) {
@@ -213,13 +215,23 @@ public class GameLogic extends TimerTask {
                         if (currentPixel.getType().equals("fire")) {
                             flicker(currentPixel, x, y);
                             if (currentPixel.getProperty("strength") == 100) {
-                                spread(currentPixel, "flammable", x, y);
+                                spread(currentPixel, "flammable", true);
                             }
                         }
+                        else if(currentPixel.getType().equals("lava"))
+                            spread(new Fire(currentX, currentY), "flammable", false);
                     } else {
                         currentPixel.changeProperty("spreads", 1);
                     }
                 }
+
+                if(currentPixel.hasProperty("heating"))
+                    currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"),100),0));
+                if(currentPixel.hasProperty("temperature"))
+                    if(currentPixel.getType().equals("stone") && currentPixel.getProperty("temperature") > 75)
+                        grid.setPixel(currentX, currentY, currentPixel = new Lava(currentX, currentY));
+                    else if(currentPixel.getType().equals("lava") && currentPixel.getProperty("temperature") < 75)
+                        grid.setPixel(currentX, currentY, currentPixel = new Stone(currentX, currentY));
 
                 //plants
                 if (currentPixel.hasProperty("growing")) {
@@ -514,8 +526,8 @@ public class GameLogic extends TimerTask {
             }
         }
 
-        if (!hasFuel) {
-            grid.setPixel(xpos, ypos, new Air());
+        if (!hasFuel && requiresFuel) {
+            grid.setPixel(xpos, ypos, new Air(xpos, ypos));
         }
     }
 
