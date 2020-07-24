@@ -17,7 +17,7 @@ public class PixelSandbox {
 
     private PixelSandbox() {
         initializeGrid();
-        initializeRenderer();
+        initializeComponents();
         initializeFrame();
         initializeLogic();
     }
@@ -52,9 +52,12 @@ public class PixelSandbox {
         frame.setVisible(true);
     }
 
-    private void initializeRenderer() {
+    private void initializeComponents() {
 
+        //simulation
         renderer = new Renderer(grid);
+        //menu bar
+        menuBar = new MenuBar();
     }
 
     private void initializeLogic() {
@@ -62,9 +65,6 @@ public class PixelSandbox {
         //game mechanics
         gameLogic = new GameLogic(grid, renderer);
         pauseManager = new PauseManager(gameLogic);
-
-        //menu bar
-        menuBar = new MenuBar();
 
         //handles user inputs
         keyHandler = new KeyHandler(pauseManager);
