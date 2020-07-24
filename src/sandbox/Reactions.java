@@ -1,21 +1,23 @@
 package sandbox;
 
-import sandbox.pixels.Air;
-import sandbox.pixels.Pixel;
-import sandbox.pixels.WetSand;
-import sandbox.pixels.Smoke;
+import sandbox.pixels.*;
 
+//stores each of the reactions where 2 substances combine and give 2 substances as results
+//usually use air as the other product when there is 1 product
 public class Reactions {
 
     public Reactions() {
     }
 
-    public Pixel[] getReaction(Pixel a, Pixel b)
-    {
-        if(a.getType().equals("sand") && b.getType().equals("water"))
-            return new Pixel[] { new WetSand(0, 0), new Air(0, 0) };
-        else if(a.getType().equals("fire") && a.getPropOrDefault("strength", 0) == 100 && b.getType().equals("water"))
-            return new Pixel[] { new Air(0, 0), new Air(0, 0) };
+    public Pixel[] getReaction(Pixel a, Pixel b) {
+        if (a.getType().equals("sand") && b.getType().equals("water"))
+            return new Pixel[]{new WetSand(0, 0), new Air(0, 0)};
+        else if (a.getType().equals("fire") && a.getPropOrDefault("strength", 0) == 100 && b.getType().equals("water"))
+            return new Pixel[]{new Air(0, 0), new Steam(0, 0)};
+        else if (a.getType().equals("wet sand") && b.getType().equals("fire"))
+            return new Pixel[]{new Sand(0, 0), b};
+        else if (a.getType().equals("acid") && Math.random() < a.getPropOrDefault("acidity", 100) / 100.0 && Math.random() < b.getPropOrDefault("solubility", 0) / 100.0)
+            return new Pixel[]{a, new Air(0, 0)};
         else
             return null;
     }

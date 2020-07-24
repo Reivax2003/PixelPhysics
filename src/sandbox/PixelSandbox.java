@@ -1,39 +1,37 @@
 package sandbox;
 
-import sandbox.pixels.*;
+import sandbox.pixels.Air;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class PixelSandbox {
     private final JFrame frame = new JFrame();
+    public Grid grid;
     private Renderer renderer;
     private MenuBar menuBar;
     private MouseHandler mouseHandler;
     private KeyHandler keyHandler;
     private GameLogic gameLogic;
-
-    public Grid grid;
-
-    public static void main(String[] args) {
-        new PixelSandbox();
-    }
+    private PauseManager pauseManager;
 
     private PixelSandbox() {
         initializeGrid();
         initializeRenderer();
         initializeFrame();
+        initializeLogic();
+    }
 
-        gameLogic = new GameLogic(grid, renderer);
-        java.util.Timer timer = new java.util.Timer();
-
-        timer.scheduleAtFixedRate(gameLogic, 0, 100);
+    public static void main(String[] args) {
+        new PixelSandbox();
     }
 
     private void initializeGrid() {
 
+        // initialize a new grid
         grid = new Grid(100, 50);
 
+        // set all spaces to air
         for (int x = 0; x < grid.getWidth(); x++) {
             for (int y = 0; y < grid.getHeight(); y++) {
                 grid.setPixel(x, y, new Air(x, y));
@@ -52,17 +50,34 @@ public class PixelSandbox {
         frame.add(renderer);
 
         frame.setVisible(true);
-
-        renderer.addMouseMotionListener(mouseHandler);
-        renderer.addMouseListener(mouseHandler);
-        frame.addKeyListener(keyHandler);
     }
 
     private void initializeRenderer() {
 
         renderer = new Renderer(grid);
-        keyHandler = new KeyHandler();
+    }
+
+    private void initializeLogic() {
+
+        //game mechanics
+        gameLogic = new GameLogic(grid, renderer);
+        pauseManager = new PauseManager(gameLogic);
+
+        //menu bar
         menuBar = new MenuBar();
+
+        //handles user inputs
+        keyHandler = new KeyHandler(pauseManager);
         mouseHandler = new MouseHandler(renderer, grid, menuBar);
+
+        //add listeners for user inputs
+        renderer.addMouseMotionListener(mouseHandler);
+        renderer.addMouseListener(mouseHandler);
+        frame.addKeyListener(keyHandler);
+
+        java.util.Timer timer = new java.util.Timer();
+
+        //start game loop
+        timer.scheduleAtFixedRate(gameLogic, 0, 100);
     }
 }

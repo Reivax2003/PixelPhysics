@@ -1,6 +1,6 @@
 package sandbox.pixels;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Water extends Pixel {
 
@@ -9,6 +9,8 @@ public class Water extends Pixel {
         this
                 .setProperty("gravity", 1)
                 .setProperty("density", 50)
-                .setProperty("fluidity", 100);
+                .setProperty("fluidity", 100)
+                .setProperty("conductive", 25)
+                .setProperty("support", 1);
     }
 }
