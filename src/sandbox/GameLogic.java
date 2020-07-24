@@ -182,12 +182,14 @@ public class GameLogic extends TimerTask {
                     int gravity = currentPixel.getProperty("gravity");
 
                     if (!currentPixel.hasMoved()) {
+
                         //Binds gravity to grid
                         if (gravity > 0) {
                             gravity = (currentY + gravity < grid.getHeight()) ? gravity : (grid.getHeight() - 1 - currentY);
                         } else {
                             gravity = (currentY + gravity >= 0) ? gravity : -currentY;
                         }
+
                         //Fall to last air or swap with solid if touching
                         int sign = (gravity > 0) ? 1 : -1;
                         if (gravity * sign > 1) {
