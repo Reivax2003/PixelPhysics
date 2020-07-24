@@ -97,10 +97,18 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
                 grid.setPixel(squareX, squareY, pixel);
                 pixel.setX(squareX);
                 pixel.setY(squareY);
+                
+                if(pixel.getType().equals("electricity") && grid.getPixel(squareX, squareY).hasProperty("conductive")) {
+                    grid.getPixel(squareX, squareY).setState("conducting", 1);
+                } else {
+                    pixel.setX(squareX);
+                    pixel.setY(squareY);
+                    grid.setPixel(squareX, squareY, pixel);
+                }
             } else if (button == MouseEvent.BUTTON3) {
                 grid.setPixel(squareX, squareY, new Air(squareX, squareY));
             }
-        } else {  //drawline if draggin over screen
+        } else {  //draw line if dragging over screen
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
