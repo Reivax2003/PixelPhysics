@@ -24,12 +24,15 @@ public class GameLogic extends TimerTask {
     private ArrayList<ArrayList<Integer>> slimeEdgesEmpty = new ArrayList<ArrayList<Integer>>();
     private boolean slimeExists = false;
     double centerDistance = 0;
-    int slimeGoalX = 0;
-    int slimeGoalY = 0;
+    int slimeGoalX;
+    int slimeGoalY;
 
     public GameLogic(Grid grid, JPanel panel) {
         this.grid = grid;
         this.panel = panel;
+
+        slimeGoalX = (int) (Math.random()*grid.getWidth());
+        slimeGoalY = (int) (Math.random()*grid.getHeight());
     }
 
     public void setPaused(boolean paused) {
@@ -50,6 +53,10 @@ public class GameLogic extends TimerTask {
         boolean reverse = false;
         slimeEdges.clear();
         centerDistance = 0;
+        if (Math.random() < 0.01){
+            slimeGoalX = (int) (Math.random()*grid.getWidth());
+            slimeGoalY = (int) (Math.random()*grid.getHeight());
+        }
         for (int y = grid.getHeight() - 1; y > -1; y--) {
             for (int x = (reverse ? 1 : 0) * (grid.getWidth() - 1); -1 < x && x < grid.getWidth(); x += reverse ? -1 : 1) {
                 Pixel currentPixel = grid.getPixel(x, y);
