@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Plant3 extends Pixel {
 
-    public Plant3(int xpos, int ypos) {
-        super("plant3", xpos, ypos, Color.green);
+    public Plant3() {
+        super("plant3", Color.green);
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 50)
@@ -17,7 +17,7 @@ public class Plant3 extends Pixel {
                 .setProperty("split", 40)       //chance to split
                 .setProperty("direction", 0)    //current moving direction (delta x)
                 .setProperty("turning", 30)     //chance to change direction
-                .setProperty("power", 80);      //chance to keep growing
+                .setProperty("power", 95);      //chance to keep growing
     }
 
 }

@@ -49,12 +49,6 @@ public class Grid {
         Pixel position1 = grid[x1][y1];
         Pixel position2 = grid[x2][y2];
 
-        position1.setX(x2);
-        position1.setY(y2);
-
-        position2.setX(x1);
-        position2.setY(y1);
-
         position1.setMoved(true);
         position2.setMoved(true);
 
@@ -77,9 +71,17 @@ public class Grid {
                 continue;
             }
             Pixel p = pixel.duplicate();
-            p.setX(x);
-            p.setY(y);
             this.grid[x][y] = p;
+        }
+    }
+
+    // Fills the grid with a pixel type
+    public void fillGrid(Pixel pixel){
+        for (int x = 0; x < this.getWidth(); x++) {
+            for (int y = 0; y < this.getHeight(); y++) {
+                Pixel p = pixel.duplicate();
+                this.grid[x][y] = p;
+            }
         }
     }
 }
