@@ -247,7 +247,6 @@ public class GameLogic extends TimerTask {
                     }
                 }
 
-<<<<<<< HEAD
                 if(currentPixel.hasProperty("heating"))
                     currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"),100),0));
                 if(currentPixel.hasProperty("temperature"))
@@ -256,8 +255,6 @@ public class GameLogic extends TimerTask {
                     else if(currentPixel.getType().equals("lava") && currentPixel.getProperty("temperature") < 75)
                         grid.setPixel(currentX, currentY, currentPixel = new Stone(currentX, currentY));
 
-=======
->>>>>>> 1d1ee679b5b6e1039b7b4a0dd84736559fbd9277
                 //plants
                 if (currentPixel.hasProperty("growing")) {
                     int growing = currentPixel.getProperty("growing");
