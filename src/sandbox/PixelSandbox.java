@@ -53,7 +53,7 @@ public class PixelSandbox {
         //simulation
         renderer = new Renderer(grid);
         //menu bar
-        menuBar = new MenuBar();
+        menuBar = new MenuBar(grid);
     }
 
     private void initializeLogic() {
