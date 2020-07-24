@@ -2,7 +2,9 @@ Here is the list of all the currently used pixel properties
 some might be better explainied by the person who made them
 
 acidity         chance to dissolve another substance (0 to 100)
+ash             chance to turn into ash after burning (will try charcoal first)
 angle           plant2
+charcoal        chance to trun into charcoal after burning
 conductive      chance to transmit electricity (0 to 100)
 density         determines if it will sink in other substances
 direction       plant2
