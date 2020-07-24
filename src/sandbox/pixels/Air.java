@@ -18,7 +18,7 @@ public class Air extends Pixel {
     }
 
     public Pixel duplicate() { //Needs to be created as an Air to copy hasMoved()
-        Pixel copy = new Air(x, y);
+        Pixel copy = new Air();
         copy.properties = new HashMap<>(this.properties);
         return (copy);
     }
