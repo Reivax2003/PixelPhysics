@@ -10,6 +10,8 @@ public class AlienPlant extends Pixel {
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 50)
+                .setProperty("charcoal", 30)
+                .setProperty("ash", 10)
                 .setProperty("density", 10)
                 //.setProperty("gravity", 0)
                 //.setProperty("support", 1)
