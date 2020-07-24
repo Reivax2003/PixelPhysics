@@ -275,8 +275,8 @@ public class GameLogic extends TimerTask {
                         refreshEdges();
                         slimeExists = true;
                     }
-                    int neighbors = checkSurroundingsFor(currentPixel, x, y, "group", 1, 1, 1);
-                    int supports = checkSurroundingsFor(currentPixel, x, y, "support", 1, Integer.MAX_VALUE, 1);
+                    int neighbors = checkSurroundingsFor(currentPixel, x, y, "group", 1, 1, 1, false);
+                    int supports = checkSurroundingsFor(currentPixel, x, y, "support", 1, Integer.MAX_VALUE, 1, true);
                     if (currentPixel.getProperty("group") == 1 && neighbors < 8){
                         slimeEdges.add(new ArrayList<Integer>(Arrays.asList(x, y)));
                     }
@@ -291,7 +291,7 @@ public class GameLogic extends TimerTask {
                         }
                     }
                     if (supports == 0){
-                        currentPixel.changeProperty("gravity", 1);
+                        currentPixel.changeProperty("gravity", 2);
                     }
                     else{
                         currentPixel.changeProperty("gravity", 0);
@@ -403,7 +403,7 @@ public class GameLogic extends TimerTask {
     }
     // checks the surroundings of a pixel in radius r for pixels with a given
     // property between min and max (inclusive) and returns the number of them
-    public int checkSurroundingsFor(Pixel original, int origx, int origy, String property, int min, int max, int r){
+    public int checkSurroundingsFor(Pixel original, int origx, int origy, String property, int min, int max, int r, boolean edgeCounts){
         int num = 0;
         for (int x = -r; x <= r; x++){
             for (int y = -r; y <= r; y++){
@@ -411,7 +411,11 @@ public class GameLogic extends TimerTask {
                     if ((x != 0 || y != 0) && grid.getPixel(origx + x, origy + y).hasProperty(property) && grid.getPixel(origx + x, origy + y).getProperty(property) <= max && grid.getPixel(origx + x, origy + y).getProperty(property) >= min) {
                         num++;
                     }
-                }catch(Exception e){}
+                }catch(Exception e){
+                    if (edgeCounts){
+                        num++;
+                    }
+                }
             }
         }
         return num;
