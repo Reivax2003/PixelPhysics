@@ -4,28 +4,27 @@ import sandbox.pixels.*;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.Color;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
   public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
-      new Electricity(0, 0), //Menu 1
-      new Sand(0, 0),
-      new Water(0, 0),
-      new Soil(0, 0),
-      new Stone(0, 0),
-      new Wood(0, 0),
-      new Fire(0, 0),
-      new Plant(0, 0),
-      new AlienPlant(0, 0),
-      new Metal(0, 0),
-      new Smoke(0,0), // Menu 2
-      new Charcoal(0,0),
-      new WetSand(0,0),
-      new Steam(0,0),
-      new Acid(0,0),
-      new Plant3(0,0),
-      new Lava(0,0),
+      new Electricity(), //Menu 1
+      new Sand(),
+      new Water(),
+      new Soil(),
+      new Stone(),
+      new Wood(),
+      new Fire(),
+      new Plant(),
+      new AlienPlant(),
+      new Metal(),
+      new Smoke(), // Menu 2
+      new Charcoal(),
+      new WetSand(),
+      new Steam(),
+      new Acid(),
+      new Plant3(),
+      new Lava()
   };
 
   public int chosen = 1; //currently selected substance

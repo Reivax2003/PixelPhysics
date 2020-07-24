@@ -3,8 +3,8 @@ package sandbox.pixels;
 import java.awt.Color;
 
 public class Ash extends Pixel {
-    public Ash(int xpos, int ypos) {
-        super("ash", xpos, ypos, Color.gray);
+    public Ash() {
+        super("ash", Color.gray);
 
         this
                 .setProperty("gravity", 1)

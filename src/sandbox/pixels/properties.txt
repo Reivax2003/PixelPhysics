@@ -7,24 +7,28 @@ angle           plant2
 charcoal        chance to trun into charcoal after burning
 conductive      chance to transmit electricity (0 to 100)
 density         determines if it will sink in other substances
-direction       plant2
-fertile         whether plants can grow on it
-flammable       can it catch on fire (0 to 1)
 fluidity        how well it flows sideways (0 to 100)
-fragile         
-fuel            how long it can burn
+fragile         is destroyed when it lands
 gravity         how fast it falls
-growing         plant's growing state (0 to 2)
-loss            plant2
+solubility      chance to get dissolved by acid (0 to 100)
+steepness       how steep it can stack in a pile
+support         diagonal falling (0 to 1)
+
+strength        fire strength, also determines if it can spread
+spreads         does it spread (0 to 1)
+fuel            how long it can burn
+flammable       can it catch on fire (0 to 1)
+
 maxheight       maxheight of plant
 minheight       minheight of plant
-power           plant2
-solubility      chance to get dissolved by acid (0 to 100)
 speed           chance plant will grow (0 to 100)
-split           plant2
-spreads         does it spread (0 to 1)
-steepness       how steep it can stack in a pile
-strength        fire strength, also determines if it can spread
-support         diagonal falling (0 to 1)
-temperature     temperature of pixel (0 to 25: freezing, 25 to 75: normal, 75 to 100: melting)
+
+growing         plant's growing state (0 to 2)
+fertile         whether plants can grow on it
+
 turning         plant2
+angle           plant2
+split           plant2
+power           plant2
+loss            plant2
+direction       plant2

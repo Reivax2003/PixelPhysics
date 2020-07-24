@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Charcoal extends Pixel {
 
-    public Charcoal(int xpos, int ypos) {
-        super("charcoal", xpos, ypos, Color.darkGray);
+    public Charcoal() {
+        super("charcoal", Color.darkGray);
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 1000)

@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Lava extends Pixel {
     
-    public Lava(int xpos, int ypos) {
-        super("lava", xpos, ypos, Color.red);
+    public Lava() {
+        super("lava", Color.red);
         this                
                 .setProperty("gravity", 1)
                 .setProperty("density", 50)
