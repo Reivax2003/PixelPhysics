@@ -9,17 +9,16 @@ import java.awt.Color;
 public class MenuBar extends JMenuBar implements ActionListener {
 
   public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
-          new Sand(0, 0),
-          new Sand(0, 0),
-          new Water(0, 0),
-          new Soil(0, 0),
-          new Stone(0, 0),
-          new Wood(0, 0),
-          new Fire(0, 0),
-          new Smoke(0, 0),
-          new WetSand(0, 0),
-          new Sand(0, 0),
-          new WetSand(0, 0),
+      new Electricity(0, 0),
+      new Sand(0, 0),
+      new Water(0, 0),
+      new Soil(0, 0),
+      new Stone(0, 0),
+      new Wood(0, 0),
+      new Fire(0, 0),
+      new Plant(0, 0),
+      new Plant2(0, 0),
+      new Metal(0, 0),
   };
 
   public int chosen = 1;
