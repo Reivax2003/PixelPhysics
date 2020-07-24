@@ -2,6 +2,7 @@ package sandbox;
 
 import sandbox.pixels.*;
 
+import javax.lang.model.util.ElementScanner6;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
@@ -662,6 +663,8 @@ public class GameLogic extends TimerTask {
                 grid.setPixel(x, y, new Charcoal());
             } else if (Math.random() < pixel.getPropOrDefault("ash", 0)/100.0) {
                 grid.setPixel(x, y, new Ash());
+            } else {
+                grid.setPixel(x, y, new Air());
             }
         }
     }
