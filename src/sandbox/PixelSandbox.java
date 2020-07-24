@@ -9,6 +9,7 @@ public class PixelSandbox {
     private final JFrame frame = new JFrame();
     public Grid grid;
     private Renderer renderer;
+    private MenuBar menuBar;
     private MouseHandler mouseHandler;
     private KeyHandler keyHandler;
     private GameLogic gameLogic;
@@ -16,7 +17,7 @@ public class PixelSandbox {
 
     private PixelSandbox() {
         initializeGrid();
-        initializeRenderer();
+        initializeComponents();
         initializeFrame();
         initializeLogic();
     }
@@ -45,14 +46,18 @@ public class PixelSandbox {
         frame.setSize(1000, 500);
         frame.setBackground(Color.lightGray);
 
+        frame.setJMenuBar(menuBar);
         frame.add(renderer);
 
         frame.setVisible(true);
     }
 
-    private void initializeRenderer() {
+    private void initializeComponents() {
 
+        //simulation
         renderer = new Renderer(grid);
+        //menu bar
+        menuBar = new MenuBar();
     }
 
     private void initializeLogic() {
@@ -63,7 +68,7 @@ public class PixelSandbox {
 
         //handles user inputs
         keyHandler = new KeyHandler(pauseManager);
-        mouseHandler = new MouseHandler(renderer, grid, keyHandler);
+        mouseHandler = new MouseHandler(renderer, grid, menuBar);
 
         //add listeners for user inputs
         renderer.addMouseMotionListener(mouseHandler);
