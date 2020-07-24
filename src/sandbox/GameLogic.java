@@ -61,41 +61,36 @@ public class GameLogic extends TimerTask {
                 Pixel currentPixel = grid.getPixel(x, y);
 
                 //check for any reactions with neighbor pixels
-                boolean reacted = false;
-                if (x > 0 && !reacted) {//left
+                if (x > 0) {//left
                     Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelLeft(x, y));
                     if (products != null) {
                         currentPixel = products[0];
                         grid.setPixel(x, y, currentPixel);
                         grid.setPixel(x - 1, y, products[1]);
-                        reacted = true;
                     }
                 }
-                if (x < grid.getWidth() - 1 && !reacted) {//right
+                if (x < grid.getWidth() - 1) {//right
                     Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelRight(x, y));
                     if (products != null) {
                         currentPixel = products[0];
                         grid.setPixel(x, y, currentPixel);
                         grid.setPixel(x + 1, y, products[1]);
-                        reacted = true;
                     }
                 }
-                if (y > 0 && !reacted) {//up
+                if (y > 0) {//up
                     Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelUp(x, y));
                     if (products != null) {
                         currentPixel = products[0];
                         grid.setPixel(x, y, currentPixel);
                         grid.setPixel(x, y - 1, products[1]);
-                        reacted = true;
                     }
                 }
-                if (y < grid.getHeight() - 1 && !reacted) {//down
+                if (y < grid.getHeight() - 1) {//down
                     Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelDown(x, y));
                     if (products != null) {
                         currentPixel = products[0];
                         grid.setPixel(x, y, currentPixel);
                         grid.setPixel(x, y + 1, products[1]);
-                        reacted = true;
                     }
                 }
 
@@ -243,6 +238,7 @@ public class GameLogic extends TimerTask {
                     }
                 }
 
+                //temperature change system
                 if(currentPixel.hasProperty("heating"))
                     currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"),100),0));
                 if(currentPixel.hasProperty("temperature")) {
