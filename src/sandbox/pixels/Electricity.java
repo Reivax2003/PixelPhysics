@@ -3,8 +3,8 @@ package sandbox.pixels;
 import java.awt.*;
 
 public class Electricity extends Pixel {
-    public Electricity(int xpos, int ypos) {
-        super("electricity", xpos, ypos, Color.yellow);
+    public Electricity() {
+        super("electricity", Color.yellow);
 
         this
                 .setProperty("gravity", 1)

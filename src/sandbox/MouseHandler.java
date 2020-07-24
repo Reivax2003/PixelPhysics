@@ -2,7 +2,6 @@ package sandbox;
 
 import sandbox.pixels.Air;
 import sandbox.pixels.Pixel;
-import sandbox.pixels.Water;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -97,21 +96,17 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
                 if(pixel.getType().equals("electricity") && grid.getPixel(squareX, squareY).hasProperty("conductive")) {
                     grid.getPixel(squareX, squareY).setState("conducting", 1);
                 } else {
-                    pixel.setX(squareX);
-                    pixel.setY(squareY);
                     grid.setPixel(squareX, squareY, pixel);
                 }
             } else if (button == MouseEvent.BUTTON3) {
-                grid.setPixel(squareX, squareY, new Air(squareX, squareY));
+                grid.setPixel(squareX, squareY, new Air());
             }
         } else {  //draw line if dragging over screen
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
-                pixel.setX(squareX);
-                pixel.setY(squareY);
             } else if (button == MouseEvent.BUTTON3) {
-                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(squareX, squareY));
+                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air());
             }
         }
         lastMouseX = squareX;

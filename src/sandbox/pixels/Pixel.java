@@ -6,41 +6,21 @@ import java.util.HashMap;
 public class Pixel {
 
     public String type;
-    protected int x;
-    protected int y;
     protected Color color;
     protected boolean moved;
     HashMap<String, Integer> properties = new HashMap<>();
     HashMap<String, Integer> state = new HashMap<>();
 
-    public Pixel(String type, int xpos, int ypos, Color color) {
-        this.x = xpos;
-        this.y = ypos;
+    public Pixel(String type, Color color) {
         this.type = type;
         this.color = color;
         this.moved = false;
     }
 
     public Pixel duplicate() {
-        Pixel copy = new Pixel(type, x, y, color);
+        Pixel copy = new Pixel(type, color);
         copy.properties = new HashMap<>(this.properties);
         return (copy);
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public Color getColor() {

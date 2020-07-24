@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Plant extends Pixel {
 
-    public Plant(int xpos, int ypos) {
-        super("plant", xpos, ypos, Color.green.darker());
+    public Plant() {
+        super("plant", Color.green.darker());
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 50)

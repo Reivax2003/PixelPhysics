@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class AlienPlant extends Pixel {
 
-    public AlienPlant(int xpos, int ypos) {
-        super("alien plant", xpos, ypos, Color.cyan);
+    public AlienPlant() {
+        super("alien plant", Color.cyan);
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 50)
