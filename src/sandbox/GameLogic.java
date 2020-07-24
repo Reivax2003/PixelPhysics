@@ -182,12 +182,14 @@ public class GameLogic extends TimerTask {
                     int gravity = currentPixel.getProperty("gravity");
 
                     if (!currentPixel.hasMoved()) {
+
                         //Binds gravity to grid
                         if (gravity > 0) {
                             gravity = (currentY + gravity < grid.getHeight()) ? gravity : (grid.getHeight() - 1 - currentY);
                         } else {
                             gravity = (currentY + gravity >= 0) ? gravity : -currentY;
                         }
+
                         //Fall to last air or swap with solid if touching
                         int sign = (gravity > 0) ? 1 : -1;
                         if (gravity * sign > 1) {
@@ -245,6 +247,7 @@ public class GameLogic extends TimerTask {
                     }
                 }
 
+<<<<<<< HEAD
                 if(currentPixel.hasProperty("heating"))
                     currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"),100),0));
                 if(currentPixel.hasProperty("temperature"))
@@ -253,35 +256,14 @@ public class GameLogic extends TimerTask {
                     else if(currentPixel.getType().equals("lava") && currentPixel.getProperty("temperature") < 75)
                         grid.setPixel(currentX, currentY, currentPixel = new Stone(currentX, currentY));
 
+=======
+>>>>>>> 1d1ee679b5b6e1039b7b4a0dd84736559fbd9277
                 //plants
                 if (currentPixel.hasProperty("growing")) {
                     int growing = currentPixel.getProperty("growing");
                     //flower type
                     if (currentPixel.type.equals("plant")) {
-                        // System.out.println("true");
-                        if (growing == 0) {
-                            if (currentY < grid.getHeight() - 1 && grid.getPixelDown(currentX, currentY).hasProperty("fertile") &&
-                                    currentY > 0 && grid.getPixelUp(currentX, currentY).getType().equals("air")) {
-                                currentPixel.changeProperty("growing", 1);
-                                currentPixel.changeProperty("gravity", 0);
-                                currentPixel.changeProperty("support", 0);
-                                currentPixel.addProperty("height", (int) (Math.max(Math.random() * currentPixel.getPropOrDefault("maxheight", 0), currentPixel.getPropOrDefault("minheight", 0))));
-                            }
-                        } else if (growing == 1) {
-                            int height = currentPixel.getProperty("height");
-                            if (Math.random() < currentPixel.getProperty("speed") / 100.0) {
-                                if (height <= 1) {
-                                    currentPixel.changeProperty("growing", 2);
-                                    currentPixel.setState("flower", -1); // for use in Renderer
-                                }
-                                currentPixel.changeProperty("height", height - 1);
-                                if (grid.getPixel(currentX, currentY - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
-                                    grid.swapPositions(currentX, currentY, currentX, currentY - 1);
-                                Pixel p = new Plant(currentX, currentY);
-                                p.changeProperty("support", 0);
-                                grid.setPixel(currentX, currentY, p);
-                            }
-                        }
+                        grow1(currentPixel);
                     }
                     //tree type
                     else if (currentPixel.type.equals("alien plant") && growing == 1){
@@ -294,7 +276,7 @@ public class GameLogic extends TimerTask {
                     else if(currentPixel.type.equals("plant3"))
                         grow3(currentPixel);
                 }
-                
+
                 //certain substances will go away over time
                 if (currentPixel.hasProperty("duration")) {
                     int duration = currentPixel.getProperty("duration");
@@ -333,6 +315,36 @@ public class GameLogic extends TimerTask {
 
         panel.repaint();
         steps--;
+    }
+
+    public void grow1(Pixel pixel) {
+        int growing = pixel.getProperty("growing");
+        int density = pixel.getProperty("density");
+        int x = pixel.getX();
+        int y = pixel.getY();
+        if (growing == 0) {
+            if (y < grid.getHeight() - 1 && grid.getPixelDown(x, y).hasProperty("fertile") &&
+                    y > 0 && grid.getPixelUp(x, y).getType().equals("air")) {
+                pixel.changeProperty("growing", 1);
+                pixel.changeProperty("gravity", 0);
+                pixel.changeProperty("support", 0);
+                pixel.addProperty("height", (int) (Math.max(Math.random() * pixel.getPropOrDefault("maxheight", 0), pixel.getPropOrDefault("minheight", 0))));
+            }
+        } else if (growing == 1) {
+            int height = pixel.getProperty("height");
+            if (Math.random() < pixel.getProperty("speed") / 100.0) {
+                if (height <= 1) {
+                    pixel.changeProperty("growing", 2);
+                    pixel.setState("flower", -1); // for use in Renderer
+                }
+                pixel.changeProperty("height", height - 1);
+                if (grid.getPixel(x, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
+                    grid.swapPositions(x, y, x, y - 1);
+                Pixel p = new Plant(x, y);
+                p.changeProperty("support", 0);
+                grid.setPixel(x, y, p);
+            }
+        }
     }
     //calculates the tree plant growth direction and amount
     public void grow2(Pixel pixel){
@@ -445,7 +457,7 @@ public class GameLogic extends TimerTask {
                     pixel.setState("flower", -1); // for use in Renderer
                 }
                 //check if it changes direction
-                int direction = pixel.getProperty("direction");  
+                int direction = pixel.getProperty("direction");
                 if(Math.random() < pixel.getProperty("turning") / 100.0)
                     direction += Math.random() < 0.5 ? -1 : 1;
                 if(direction > 1) direction = 1;

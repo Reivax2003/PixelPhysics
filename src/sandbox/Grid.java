@@ -82,4 +82,16 @@ public class Grid {
             this.grid[x][y] = p;
         }
     }
+
+    // Fills the grid with a pixel type
+    public void fillGrid(Pixel pixel){
+        for (int x = 0; x < this.getWidth(); x++) {
+            for (int y = 0; y < this.getHeight(); y++) {
+                Pixel p = pixel.duplicate();
+                p.setX(x);
+                p.setY(y);
+                this.grid[x][y] = p;
+            }
+        }
+    }
 }
