@@ -17,7 +17,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
       new Wood(0, 0),
       new Fire(0, 0),
       new Plant(0, 0),
-      new Plant2(0, 0),
+      new AlienPlant(0, 0),
       new Metal(0, 0),
       new Smoke(0,0), // Menu 2
       new Charcoal(0,0),
