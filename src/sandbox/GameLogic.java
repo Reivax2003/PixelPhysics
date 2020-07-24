@@ -150,7 +150,7 @@ public class GameLogic extends TimerTask {
                                 }
                             }
                             if (fall) {
-                                grid.swapPositions(x, y, x - 1, y + steepness);
+                                grid.swapPositions(x, y, x -= 1, y += steepness);
                             }
                         }
                         // down + right
@@ -163,7 +163,7 @@ public class GameLogic extends TimerTask {
                                 }
                             }
                             if (fall) {
-                                grid.swapPositions(x, y, x + 1, y + steepness);
+                                grid.swapPositions(x, y, x += 1, y += steepness);
                             }
                         }
                     }
@@ -198,7 +198,7 @@ public class GameLogic extends TimerTask {
                         }
 
                         if (grid.getPixel(x, y + gravity).getPropOrDefault("density", DEFAULT_DENSITY) < density && !grid.getPixel(x, y + gravity).hasMoved()) {
-                            grid.swapPositions(x, y, x, y + gravity);
+                            grid.swapPositions(x, y, x, y += gravity);
                         }
                     }
                 }
@@ -212,11 +212,11 @@ public class GameLogic extends TimerTask {
 
                         // left
                         if (x > 0 && !grid.getPixelLeft(x, y).hasMoved() && grid.getPixelLeft(x, y).getPropOrDefault("density", DEFAULT_DENSITY) < density && random < 0.5) {
-                            grid.swapPositions(x, y, x - 1, y);
+                            grid.swapPositions(x, y, x -= 1, y);
                         }
                         // right
                         else if (x < grid.getWidth() - 1 && !grid.getPixelRight(x, y).hasMoved() && grid.getPixelRight(x, y).getPropOrDefault("density", DEFAULT_DENSITY) < density && random >= 0.5) {
-                            grid.swapPositions(x, y, x + 1, y);
+                            grid.swapPositions(x, y, x += 1, y);
                         }
                     }
                 }
