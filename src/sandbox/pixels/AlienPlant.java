@@ -3,10 +3,10 @@ package sandbox.pixels;
 import java.awt.*;
 import java.util.Random;
 
-public class Plant2 extends Pixel {
+public class AlienPlant extends Pixel {
 
-    public Plant2(int xpos, int ypos) {
-        super("plant2", xpos, ypos, Color.green.brighter());
+    public AlienPlant(int xpos, int ypos) {
+        super("alien plant", xpos, ypos, Color.cyan);
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 50)
