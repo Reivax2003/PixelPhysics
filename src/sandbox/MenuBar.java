@@ -25,7 +25,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         new Electricity(),
         new Wood(),
         new Plant(),
-        new AlienPlant(),
+        new AlienPlant(true),
         new Plant3(),
         new Slime()
   };
@@ -176,7 +176,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1),ActionEvent.SHIFT_MASK)); // 10-19 by shift and first digit
       }
       else if (p+indexMod < 30){
-        button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1),ActionEvent.CONTROL_MASK)); // 20-29 by control and first digit
+        button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1),ActionEvent.CTRL_MASK)); // 20-29 by control and first digit
       }
 
 
