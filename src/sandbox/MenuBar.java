@@ -24,7 +24,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
       new Steam(),
       new Acid(),
       new Plant3(),
-      new Lava()
+      new Lava(),
+      new Slime()
   };
 
   public int chosen = 1; //currently selected substance
