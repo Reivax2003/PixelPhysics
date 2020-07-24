@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Acid extends Pixel {
 
-    public Acid(int xpos, int ypos) {
-        super("acid", xpos, ypos, Color.green.brighter());
+    public Acid() {
+        super("acid", Color.green.brighter());
         this
                 .setProperty("gravity", 1)
                 .setProperty("density", 60)
