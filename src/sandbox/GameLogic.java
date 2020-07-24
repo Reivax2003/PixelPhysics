@@ -23,9 +23,9 @@ public class GameLogic extends TimerTask {
     private ArrayList<ArrayList<Integer>> slimeEdges = new ArrayList<ArrayList<Integer>>();
     private ArrayList<ArrayList<Integer>> slimeEdgesEmpty = new ArrayList<ArrayList<Integer>>();
     private boolean slimeExists = false;
-    double centerDistance = 0;
     int slimeGoalX;
     int slimeGoalY;
+    int slimeSupports = 0;
 
     public GameLogic(Grid grid, JPanel panel) {
         this.grid = grid;
@@ -52,7 +52,6 @@ public class GameLogic extends TimerTask {
         //Start left to right
         boolean reverse = false;
         slimeEdges.clear();
-        centerDistance = 0;
         if (Math.random() < 0.01){
             slimeGoalX = (int) (Math.random()*grid.getWidth());
             slimeGoalY = (int) (Math.random()*grid.getHeight());
@@ -270,15 +269,32 @@ public class GameLogic extends TimerTask {
                     else if(currentPixel.type.equals("plant3"))
                         grow3(currentPixel, x, y);
                 }
-                //slime that follows you
+                //slime that wanders around
                 if (currentPixel.type.equals("slime")){
                     if (!slimeExists){
                         refreshEdges();
                         slimeExists = true;
                     }
                     int neighbors = checkSurroundingsFor(currentPixel, x, y, "group", 1, 1, 1);
+                    int supports = checkSurroundingsFor(currentPixel, x, y, "support", 1, Integer.MAX_VALUE, 1);
                     if (currentPixel.getProperty("group") == 1 && neighbors < 8){
                         slimeEdges.add(new ArrayList<Integer>(Arrays.asList(x, y)));
+                    }
+                    if (supports > 0){
+                        slimeSupports += 1;
+                        currentPixel.changeProperty("stable", 1);
+                    }
+                    else{
+                        if (currentPixel.getProperty("stable") == 1){
+                            currentPixel.changeProperty("stable", 0);
+                            slimeSupports -= 1;
+                        }
+                    }
+                    if (supports == 0){
+                        currentPixel.changeProperty("gravity", 1);
+                    }
+                    else{
+                        currentPixel.changeProperty("gravity", 0);
                     }
                 }
                 
@@ -297,8 +313,7 @@ public class GameLogic extends TimerTask {
             reverse = !reverse;
         }
 
-        int speed = 1;
-        for (int v = 0; v < speed; v++) {
+        if (slimeSupports > 0) {
             //get slime pixel furthest from goal
             int farX = 0;
             int farY = 0;
