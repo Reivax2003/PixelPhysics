@@ -93,11 +93,13 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         if (lastMouseX == -1) {
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
-                grid.setPixel(squareX, squareY, pixel);
-                pixel.setX(squareX);
-                pixel.setY(squareY);
-            } else if (button == MouseEvent.BUTTON2) {
-                grid.setPixel(squareX, squareY, new Water(squareX, squareY));
+                if(pixel.getType().equals("electricity") && grid.getPixel(squareX, squareY).hasProperty("conductive")) {
+                    grid.getPixel(squareX, squareY).setState("conducting", 1);
+                } else {
+                    pixel.setX(squareX);
+                    pixel.setY(squareY);
+                    grid.setPixel(squareX, squareY, pixel);
+                }
             } else if (button == MouseEvent.BUTTON3) {
                 grid.setPixel(squareX, squareY, new Air(squareX, squareY));
             }
