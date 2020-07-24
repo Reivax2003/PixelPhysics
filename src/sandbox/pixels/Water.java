@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Water extends Pixel {
 
-    public Water(int xpos, int ypos) {
-        super("water", xpos, ypos, new Color(9, 117, 250));
+    public Water() {
+        super("water", new Color(9, 117, 250));
         this
                 .setProperty("gravity", 1)
                 .setProperty("density", 50)
