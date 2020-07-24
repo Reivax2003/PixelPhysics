@@ -18,7 +18,7 @@ public class KeyHandler implements KeyListener {
     //         new Wood(0, 0),
     //         new Fire(0, 0),
     //         new Plant(0, 0),
-    //         new Plant2(0, 0),
+    //         new AlienPlant(0, 0),
     //         new Metal(0, 0),
     // };
     // public int chosen = 1;  //currently selected substance
