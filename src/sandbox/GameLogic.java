@@ -47,7 +47,7 @@ public class GameLogic extends TimerTask {
 
                 //check for any reactions with neighbor pixels
                 boolean reacted = false;
-                if (currentX > 0 && !reacted) {
+                if (currentX > 0 && !reacted) {//left
                     Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelLeft(currentX, currentY));
                     if (products != null) {
                         currentPixel = products[0];
@@ -60,7 +60,7 @@ public class GameLogic extends TimerTask {
                         reacted = true;
                     }
                 }
-                if (currentX < grid.getWidth() - 1 && !reacted) {
+                if (currentX < grid.getWidth() - 1 && !reacted) {//right
                     Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelRight(currentX, currentY));
                     if (products != null) {
                         currentPixel = products[0];
@@ -73,7 +73,7 @@ public class GameLogic extends TimerTask {
                         reacted = true;
                     }
                 }
-                if (currentY > 0 && !reacted) {
+                if (currentY > 0 && !reacted) {//up
                     Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelUp(currentX, currentY));
                     if (products != null) {
                         currentPixel = products[0];
@@ -86,7 +86,7 @@ public class GameLogic extends TimerTask {
                         reacted = true;
                     }
                 }
-                if (currentY < grid.getHeight() - 1 && !reacted) {
+                if (currentY < grid.getHeight() - 1 && !reacted) {//down
                     Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelDown(currentX, currentY));
                     if (products != null) {
                         currentPixel = products[0];
@@ -102,6 +102,7 @@ public class GameLogic extends TimerTask {
 
                 int density = currentPixel.getPropOrDefault("density", Integer.MAX_VALUE);
 
+                //transfer electricity pixel into conductor
                 if (currentPixel.getType().equals("electricity")) {
                     if (currentY < grid.getHeight() - 1 && grid.getPixelDown(currentX, currentY).hasProperty("conductive")) {
                         currentPixel = new Air(currentX, currentY);
@@ -110,6 +111,7 @@ public class GameLogic extends TimerTask {
                     }
                 }
 
+                //next state
                 if (currentPixel.hasProperty("conductive")) {
                     boolean wasRecovering = false;
                     if (currentPixel.getStateOrDefault("recovering", 0) != 0) {
@@ -132,12 +134,14 @@ public class GameLogic extends TimerTask {
                                 }
                             }
                         }
+                        //transfer electricity
                         if (surroundingElectricity == 1 || surroundingElectricity == 2) {
                             currentPixel.setState("willBeConducting", 1);
                         }
                     }
                 }
 
+                //check for diagonal falling
                 if (currentPixel.getPropOrDefault("support", 0) != 0) {
                     int steepness = currentPixel.getPropOrDefault("steepness", 1);
 
@@ -172,6 +176,7 @@ public class GameLogic extends TimerTask {
                     }
                 }
 
+                //check for vertical falling
                 if (currentPixel.hasProperty("gravity")) {
                     int gravity = currentPixel.getProperty("gravity");
 
@@ -203,6 +208,7 @@ public class GameLogic extends TimerTask {
                     }
                 }
 
+                //liquids move left and right
                 if (currentPixel.hasProperty("fluidity")) {
                     int fluidity = currentPixel.getProperty("fluidity");
 
@@ -219,6 +225,8 @@ public class GameLogic extends TimerTask {
                         }
                     }
                 }
+
+                //fire calculations
                 if (currentPixel.hasProperty("spreads")) {
                     if (currentPixel.getProperty("spreads") == 1) {
                         if (currentPixel.getType().equals("fire")) {
@@ -231,16 +239,18 @@ public class GameLogic extends TimerTask {
                         currentPixel.changeProperty("spreads", 1);
                     }
                 }
+                //plants
                 if (currentPixel.hasProperty("growing")) {
                     int growing = currentPixel.getProperty("growing");
+                    //flower type
                     if (currentPixel.type.equals("plant")) {
-                        System.out.println("true");
+                        // System.out.println("true");
                         if (growing == 0) {
                             if (currentY < grid.getHeight() - 1 && grid.getPixelDown(currentX, currentY).hasProperty("fertile") &&
                                     currentY > 0 && grid.getPixelUp(currentX, currentY).getType().equals("air")) {
                                 currentPixel.changeProperty("growing", 1);
                                 currentPixel.changeProperty("gravity", 0);
-                                currentPixel.addProperty("height", (int) (Math.min(Math.random() * currentPixel.getPropOrDefault("maxheight", 0), currentPixel.getPropOrDefault("minheight", 0))));
+                                currentPixel.addProperty("height", (int) (Math.max(Math.random() * currentPixel.getPropOrDefault("maxheight", 0), currentPixel.getPropOrDefault("minheight", 0))));
                             }
                         } else if (growing == 1) {
                             int height = currentPixel.getProperty("height");
@@ -250,13 +260,13 @@ public class GameLogic extends TimerTask {
                                     currentPixel.setState("flower", -1); // for use in Renderer
                                 }
                                 currentPixel.changeProperty("height", height - 1);
-                                if (grid.getPixel(currentX, currentY - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density) {
+                                if (grid.getPixel(currentX, currentY - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
                                     grid.swapPositions(currentX, currentY, currentX, currentY - 1);
-                                }
                                 grid.setPixel(currentX, currentY, new Plant(currentX, currentY));
                             }
                         }
                     }
+                    //tree type
                     else if (currentPixel.type.equals("plant2") && growing == 1){
                         if (currentY > 0 && currentY < grid.getHeight()-1 && currentX > 0 && currentX < grid.getWidth()-1 && (currentPixel.getProperty("power") != 100 || grid.getPixel(currentX, currentY+1).hasProperty("fertile")) && currentPixel.getProperty("power") > 0){
                             grow2(currentPixel);
@@ -264,6 +274,8 @@ public class GameLogic extends TimerTask {
                         }
                     }
                 }
+                
+                //certain substances will go away over time
                 if (currentPixel.hasProperty("duration")) {
                     int duration = currentPixel.getProperty("duration");
                     if (Math.random() < 0.5)
@@ -278,6 +290,7 @@ public class GameLogic extends TimerTask {
             reverse = !reverse;
         }
 
+        //update metal and electricity states
         for (int x = 0; x < grid.getWidth(); x++) {
             for (int y = 0; y < grid.getHeight(); y++) {
                 Pixel pixel = grid.getPixel(x, y);
@@ -301,6 +314,7 @@ public class GameLogic extends TimerTask {
         panel.repaint();
         steps--;
     }
+    //calculates the tree plant growth direction and amount
     public void grow2(Pixel pixel){
         int angle = pixel.getProperty("angle");
         double power = pixel.getProperty("power")/100.0;
@@ -386,7 +400,7 @@ public class GameLogic extends TimerTask {
         }
 
     }
-
+    //adds fire pixels about the main fire pixel to give a special effect
     public void flicker(Pixel pixel) {
         int x = pixel.getX();
         int y = pixel.getY();
@@ -424,6 +438,7 @@ public class GameLogic extends TimerTask {
         }
     }
 
+    //spreads the fire to neighboring flammable pixels
     public void spread(Pixel original, String fuel) {
         int xpos = original.getX();
         int ypos = original.getY();
@@ -449,6 +464,7 @@ public class GameLogic extends TimerTask {
         }
     }
 
+    //lights flammables by putting fire pixels around them
     public void light(Pixel pixel, Pixel original) {
         int x = pixel.getX();
         int y = pixel.getY();
@@ -474,6 +490,7 @@ public class GameLogic extends TimerTask {
         }
     }
 
+    //decreases the fuel value, eventually turning pixels into charcoal
     public void loseFuel(Pixel pixel, int amount) {
         if (pixel.hasProperty("fuel")) {
             if (pixel.getProperty("fuel") > 0) {
