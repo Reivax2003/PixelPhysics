@@ -10,23 +10,51 @@ public class MenuBar extends JMenuBar implements ActionListener {
   private final Grid grid;
 
   public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
-      new Electricity(), //Menu 1
+        new WetSand(),
+        new Sand(),
+        new Soil(),
+        new Stone(),
+        new Metal(),
+        new Charcoal(),
+        new Water(),
+        new Lava(),
+        new Acid(),
+        new Smoke(),
+        new Steam(),
+        new Fire(),
+        new Electricity(),
+        new Wood(),
+        new Plant(),
+        new AlienPlant(),
+        new Plant3(),
+        new Slime()
+  };
+  private final Pixel[] solid = {
+      new WetSand(),
       new Sand(),
-      new Water(),
       new Soil(),
       new Stone(),
-      new Wood(),
+      new Metal(),
+      new Charcoal()
+  };
+  private final Pixel[] liquid = {
+      new Water(),
+      new Lava(),
+      new Acid()
+  };
+  private final Pixel[] gas = {
+      new Smoke(),
+      new Steam()
+  };
+  private final Pixel[] property = {
       new Fire(),
+      new Electricity()
+  };
+  private final Pixel[] living = {
+      new Wood(),
       new Plant(),
       new AlienPlant(),
-      new Metal(),
-      new Smoke(), // Menu 2
-      new Charcoal(),
-      new WetSand(),
-      new Steam(),
-      new Acid(),
       new Plant3(),
-      new Lava(),
       new Slime()
   };
 
@@ -35,8 +63,29 @@ public class MenuBar extends JMenuBar implements ActionListener {
   public MenuBar(Grid grid) {
     this.grid = grid;
 
+    JMenu solidsMenu = new JMenu("Solid");
+    JMenu liquidsMenu = new JMenu("Liquid");
+    JMenu gassesMenu = new JMenu("Gas");
+    JMenu propertiesMenu = new JMenu("Property");
+    JMenu livingMenu = new JMenu("Living");
+    ButtonGroup elementButtons = new ButtonGroup();
+
+    int imod = 0;
+    populateMenu(solidsMenu, solid, imod);
+    imod += solid.length;
+    populateMenu(liquidsMenu, liquid, imod);
+    imod += liquid.length;
+    populateMenu(gassesMenu, gas, imod);
+    imod += gas.length;
+    populateMenu(propertiesMenu, property, imod);
+    imod += property.length;
+    populateMenu(livingMenu, living, imod);
+
+
+
+
     // Build Elements Menus
-    JMenu elementsMenu = new JMenu("Elements");
+    /*JMenu elementsMenu = new JMenu("Elements");
     JMenu elementsMenu2 = new JMenu("Elem. cont.");
     ButtonGroup elementButtons = new ButtonGroup();
 
@@ -69,11 +118,14 @@ public class MenuBar extends JMenuBar implements ActionListener {
       }
       button.setActionCommand(index);
       button.addActionListener(this);
-    }
+    }*/
 
     // Add elments menus to bar
-    this.add(elementsMenu);
-    this.add(elementsMenu2);
+    this.add(solidsMenu);
+    this.add(liquidsMenu);
+    this.add(gassesMenu);
+    this.add(propertiesMenu);
+    this.add(livingMenu);
 
     // Whitespace
     this.add(Box.createHorizontalGlue());
@@ -99,6 +151,37 @@ public class MenuBar extends JMenuBar implements ActionListener {
       if (action == "reset") {
         grid.fillGrid(new Air());
       }
+    }
+  }
+
+  public void populateMenu(JMenu menu, Pixel[] list, int indexMod){
+    for(int p = 0; p < list.length; p ++) {
+      JRadioButtonMenuItem button = new JRadioButtonMenuItem(list[p].getType());
+      button.setForeground(list[p].getColor().darker()); // Color text for distinction
+      menu.add(button);
+      String index = String.valueOf(p+indexMod);
+      if(p == 0) { // 0 to end of first menu
+        menu.add(button);
+      }
+      else if(p+indexMod == 1) { // Button one is by default selected as the first option
+        menu.insert(button, p-1);
+        button.setSelected(true);
+      }
+      else { // 2-9
+        menu.insert(button, p-1);
+      }
+      if (p+indexMod < 10)
+        button.setAccelerator(KeyStroke.getKeyStroke(index)); // 0-9 by key
+      else if (p+indexMod < 20){
+        button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1),ActionEvent.SHIFT_MASK)); // 10-19 by shift and first digit
+      }
+      else if (p+indexMod < 30){
+        button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1),ActionEvent.CONTROL_MASK)); // 20-29 by control and first digit
+      }
+
+
+      button.setActionCommand(index);
+      button.addActionListener(this);
     }
   }
 }
