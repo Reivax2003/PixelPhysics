@@ -48,9 +48,9 @@ public class Renderer extends JPanel {
                     };
 
                     //if flower color has not yet been set, set it
-                    flower = flower != -1? flower : (int) (Math.random() * pastels.length);
+                    flower = flower != -1? flower : (int) (Math.random() * pastels.length) + 1;
                     pixel.setState("flower", flower);
-                    color = pastels[flower];
+                    color = pastels[flower - 1];
                 }
                 g.setColor(color);
                 g.fillRect(x * pixelsPerSquare + xOffset, y * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
