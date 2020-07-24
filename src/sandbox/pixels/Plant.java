@@ -11,6 +11,7 @@ public class Plant extends Pixel {
                 .setProperty("fuel", 50)
                 .setProperty("density", 10)
                 .setProperty("gravity", 1)
+                .setProperty("support", 1)
                 .setProperty("growing", 0)
                 .setProperty("minheight", 2)
                 .setProperty("maxheight", 5)
