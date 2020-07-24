@@ -19,6 +19,11 @@ public class MenuBar extends JMenuBar implements ActionListener {
       new Plant(0, 0),
       new Plant2(0, 0),
       new Metal(0, 0),
+      new Smoke(0,0),
+      new Charcoal(0,0),
+      new WetSand(0,0),
+      new Steam(0,0),
+      new Acid(0,0),
   };
 
   public int chosen = 1;
