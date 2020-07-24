@@ -53,7 +53,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
   private final Pixel[] living = {
       new Wood(),
       new Plant(),
-      new AlienPlant(),
+      new AlienPlant(true),
       new Plant3(),
       new Slime()
   };

@@ -112,7 +112,7 @@ public class GameLogic extends TimerTask {
                             grid.setPixel(x + 1, y, products[1]);
                         }
                     }
-                    if (y > 0) { //&& !reacted) {//up
+                    if (y > 0) {//up
                         Pixel[] products = reactions.getTempChange(currentPixel, grid.getPixelUp(x, y));
                         if (products != null) {
                             currentPixel = products[0];
@@ -279,13 +279,13 @@ public class GameLogic extends TimerTask {
                     currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"),100),0));
                 if(currentPixel.hasProperty("temperature")) {
                     if(currentPixel.getType().equals("stone") && currentPixel.getProperty("temperature") > 75)
-                        grid.setPixel(x, y, currentPixel = new Lava());
+                        grid.setPixel(x, y, new Lava());
                     else if(currentPixel.getType().equals("lava") && currentPixel.getProperty("temperature") < 75)
-                        grid.setPixel(x, y, currentPixel = new Stone());
+                        grid.setPixel(x, y, new Stone());
                     else if(currentPixel.getType().equals("water") && currentPixel.getProperty("temperature") > 60)
-                        grid.setPixel(x, y, currentPixel = new Steam());
+                        grid.setPixel(x, y, new Steam());
                     else if(currentPixel.getType().equals("steam") && currentPixel.getProperty("temperature") < 60)
-                        grid.setPixel(x, y, currentPixel = new Water());
+                        grid.setPixel(x, y, new Water());
                     grid.getPixel(x,y).changeProperty("temperature",currentPixel.getProperty("temperature")); //Keep old temp
                 }
 
@@ -300,7 +300,7 @@ public class GameLogic extends TimerTask {
                     else if (currentPixel.type.equals("alien plant") && growing == 1){
                         if (y > 0 && y < grid.getHeight()-1 && x > 0 && x < grid.getWidth()-1 && (currentPixel.getProperty("power") != 100 || grid.getPixel(x, y +1).hasProperty("fertile")) && currentPixel.getProperty("power") > 0){
                             grow2(currentPixel, x, y);
-                            currentPixel.changeProperty("power", 0);
+                            currentPixel.changeProperty("power", 0).changeProperty("gravity", 0).changeProperty("support", 0);
                         }
                     }
                     //tree type 2
@@ -555,7 +555,7 @@ public class GameLogic extends TimerTask {
                 newY = y-1;
             }
             if (newX >= 0 && newX < grid.getWidth() && newY >= 0 && newY < grid.getWidth()) {
-                Pixel newPlant = new AlienPlant();
+                Pixel newPlant = new AlienPlant(false);
                 newPlant.changeProperty("turning", Math.abs(turning - 1));
                 newPlant.changeProperty("power", (int) ((power - loss)*100));
                 pixel.changeProperty("angle", angle);
@@ -578,7 +578,7 @@ public class GameLogic extends TimerTask {
             newy = y;
         }
         if (newx >= 0 && newx < grid.getWidth() && newy >= 0 && newy < grid.getHeight()) {
-            Pixel newPlant = new AlienPlant();
+            Pixel newPlant = new AlienPlant(false);
             newPlant.changeProperty("turning", turning);
             newPlant.changeProperty("direction", direction);
             newPlant.changeProperty("angle", angle);
