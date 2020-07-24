@@ -2,6 +2,8 @@ package sandbox;
 
 import sandbox.pixels.*;
 
+//stores each of the reactions where 2 substances combine and give 2 substances as results
+//usually use air as the other product when there is 1 product
 public class Reactions {
 
     public Reactions() {
