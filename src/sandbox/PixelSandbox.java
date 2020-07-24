@@ -57,18 +57,22 @@ public class PixelSandbox {
 
     private void initializeLogic() {
 
+        //game mechanics
         gameLogic = new GameLogic(grid, renderer);
         pauseManager = new PauseManager(gameLogic);
 
+        //handles user inputs
         keyHandler = new KeyHandler(pauseManager);
         mouseHandler = new MouseHandler(renderer, grid, keyHandler);
 
+        //add listeners for user inputs
         renderer.addMouseMotionListener(mouseHandler);
         renderer.addMouseListener(mouseHandler);
         frame.addKeyListener(keyHandler);
 
         java.util.Timer timer = new java.util.Timer();
 
+        //start game loop
         timer.scheduleAtFixedRate(gameLogic, 0, 100);
     }
 }

@@ -62,6 +62,7 @@ public class Grid {
         grid[x2][y2] = position1;
     }
 
+    //draws a line of pixels on the grid
     public void drawLine(int x1, int y1, int x2, int y2, Pixel pixel) {
         double dirX = x2 - x1, dirY = y2 - y1;
         double length = Math.sqrt(dirX * dirX + dirY * dirY);

@@ -47,6 +47,7 @@ public class Renderer extends JPanel {
                             new Color(54, 175, 255)
                     };
 
+                    //if flower color has not yet been set, set it
                     flower = flower != -1? flower : (int) (Math.random() * pastels.length);
                     pixel.setState("flower", flower);
                     color = pastels[flower];

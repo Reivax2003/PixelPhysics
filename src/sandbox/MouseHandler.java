@@ -90,25 +90,22 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
             return;
         }
 
+        //left click to add pixels, right click to remove
         if (lastMouseX == -1) {
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
                 grid.setPixel(squareX, squareY, pixel);
                 pixel.setX(squareX);
                 pixel.setY(squareY);
-            } else if (button == MouseEvent.BUTTON2) {
-                grid.setPixel(squareX, squareY, new Water(squareX, squareY));
             } else if (button == MouseEvent.BUTTON3) {
                 grid.setPixel(squareX, squareY, new Air(squareX, squareY));
             }
-        } else {
+        } else {  //drawline if draggin over screen
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
                 pixel.setX(squareX);
                 pixel.setY(squareY);
-            } else if (button == MouseEvent.BUTTON2) {
-                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Water(squareX, squareY));
             } else if (button == MouseEvent.BUTTON3) {
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(squareX, squareY));
             }
