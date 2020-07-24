@@ -1,6 +1,7 @@
 package sandbox;
 
 import sandbox.pixels.*;
+// import sun.jvm.hotspot.memory.DictionaryEntry;
 
 import javax.swing.*;
 import java.awt.*;
@@ -239,6 +240,7 @@ public class GameLogic extends TimerTask {
                         currentPixel.changeProperty("spreads", 1);
                     }
                 }
+                
                 //plants
                 if (currentPixel.hasProperty("growing")) {
                     int growing = currentPixel.getProperty("growing");
@@ -250,6 +252,7 @@ public class GameLogic extends TimerTask {
                                     currentY > 0 && grid.getPixelUp(currentX, currentY).getType().equals("air")) {
                                 currentPixel.changeProperty("growing", 1);
                                 currentPixel.changeProperty("gravity", 0);
+                                currentPixel.changeProperty("support", 0);
                                 currentPixel.addProperty("height", (int) (Math.max(Math.random() * currentPixel.getPropOrDefault("maxheight", 0), currentPixel.getPropOrDefault("minheight", 0))));
                             }
                         } else if (growing == 1) {
@@ -262,17 +265,22 @@ public class GameLogic extends TimerTask {
                                 currentPixel.changeProperty("height", height - 1);
                                 if (grid.getPixel(currentX, currentY - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
                                     grid.swapPositions(currentX, currentY, currentX, currentY - 1);
-                                grid.setPixel(currentX, currentY, new Plant(currentX, currentY));
+                                Pixel p = new Plant(currentX, currentY);
+                                p.changeProperty("support", 0);
+                                grid.setPixel(currentX, currentY, p);
                             }
                         }
                     }
-                    //tree type
+                    //tree type 1
                     else if (currentPixel.type.equals("plant2") && growing == 1){
                         if (currentY > 0 && currentY < grid.getHeight()-1 && currentX > 0 && currentX < grid.getWidth()-1 && (currentPixel.getProperty("power") != 100 || grid.getPixel(currentX, currentY+1).hasProperty("fertile")) && currentPixel.getProperty("power") > 0){
                             grow2(currentPixel);
                             currentPixel.changeProperty("power", 0);
                         }
                     }
+                    //tree type 2
+                    else if(currentPixel.type.equals("plant3"))
+                        grow3(currentPixel);
                 }
                 
                 //certain substances will go away over time
@@ -400,6 +408,62 @@ public class GameLogic extends TimerTask {
         }
 
     }
+
+    //grows based on int displacement
+    public void grow3(Pixel pixel){
+        int growing = pixel.getProperty("growing");
+        int density = pixel.getProperty("density");
+        int x = pixel.getX();
+        int y = pixel.getY();
+
+        if (growing == 0) {
+            if (y < grid.getHeight() - 1 && grid.getPixelDown(x, y).hasProperty("fertile") &&
+                    y > 0 && grid.getPixelUp(x, y).getPropOrDefault("density", DEFAULT_DENSITY) < density) {
+                pixel.changeProperty("growing", 1)
+                    .changeProperty("gravity", 0)
+                    .changeProperty("support", 0);
+            }
+        } else if (growing == 1) {
+            if (Math.random() < pixel.getProperty("speed") / 100.0) {
+                if (Math.random() > pixel.getProperty("power") / 100.0) {  //check if it will stop growing
+                    pixel.changeProperty("growing", 2);
+                    pixel.setState("flower", -1); // for use in Renderer
+                }
+                //check if it changes direction
+                int direction = pixel.getProperty("direction");  
+                if(Math.random() < pixel.getProperty("turning") / 100.0)
+                    direction += Math.random() < 0.5 ? -1 : 1;
+                if(direction > 1) direction = 1;
+                else if(direction < -1) direction = -1;
+                pixel.changeProperty("direction", direction);
+
+                //grow
+                if (grid.getPixel(x + direction, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
+                    grid.swapPositions(x, y, x + direction, y - 1);
+                Pixel p = new Plant3(x, y)
+                    .changeProperty("growing", 2)
+                    .changeProperty("gravity", 0)
+                    .changeProperty("support", 0);
+                grid.setPixel(x, y, p);
+
+                //check if it will split
+                if(Math.random() < pixel.getProperty("split") / 100.0)
+                {
+                    double random = Math.random();
+                    int newX = Math.max(Math.min(x + (random < 0.3 ? -1 : random < 0.6 ? 0 : 1), grid.getWidth()-1), 0);
+                    if (grid.getPixel(newX, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
+                    {
+                        p = new Plant3(newX, y - 1)
+                            .changeProperty("growing", 1)
+                            .changeProperty("gravity", 0)
+                            .changeProperty("support", 0);
+                        grid.setPixel(newX, y - 1, p);
+                    }
+                }
+            }
+        }
+    }
+
     //adds fire pixels about the main fire pixel to give a special effect
     public void flicker(Pixel pixel) {
         int x = pixel.getX();
