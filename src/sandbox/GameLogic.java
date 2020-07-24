@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 import java.util.TimerTask;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 public class GameLogic extends TimerTask {
 
@@ -16,6 +18,12 @@ public class GameLogic extends TimerTask {
     Reactions reactions = new Reactions();
     private boolean isPaused = false;
     private int steps = 0;
+    private ArrayList<Pixel> livingSlime = new ArrayList<Pixel>();
+    private ArrayList<Pixel> slimeEdges = new ArrayList<Pixel>();
+    private ArrayList<Pixel> slimeEdgesEmpty = new ArrayList<Pixel>();
+    double centerDistance = 0;
+    int slimeGoalX = 0;
+    int slimeGoalY = 0;
 
     public GameLogic(Grid grid, JPanel panel) {
         this.grid = grid;
@@ -38,6 +46,9 @@ public class GameLogic extends TimerTask {
 
         //Start left to right
         boolean reverse = false;
+        slimeEdges.clear();
+        slimeEdgesEmpty.clear();
+        centerDistance = 0;
         for (int y = grid.getHeight() - 1; y > -1; y--) {
             for (int x = (reverse ? 1 : 0) * (grid.getWidth() - 1); -1 < x && x < grid.getWidth(); x += reverse ? -1 : 1) {
                 Pixel currentPixel = grid.getPixel(x, y);
@@ -251,7 +262,25 @@ public class GameLogic extends TimerTask {
                     else if(currentPixel.type.equals("plant3"))
                         grow3(currentPixel, x, y);
                 }
-
+                //slime that follows you
+                if (currentPixel.type.equals("slime")){
+                    if (livingSlime.size() == 0){
+                        currentPixel.changeProperty("group", 1);
+                        livingSlime.add(currentPixel);
+                    }
+                    int neighbors = checkSurroundingsFor(currentPixel, "group", 1, 1, 1);
+                    if (neighbors > 0 && !livingSlime.contains(currentPixel)){
+                        livingSlime.add(currentPixel);
+                        currentPixel.changeProperty("group", 1);
+                    }
+                    if (livingSlime.contains(currentPixel) && neighbors < 8){
+                        slimeEdges.add(currentPixel);
+                    }
+                    if (livingSlime.contains(currentPixel)){
+                        centerDistance += DistBetween(currentX, currentY, slimeGoalX, slimeGoalY);
+                    }
+                }
+                
                 //certain substances will go away over time
                 if (currentPixel.hasProperty("duration")) {
                     int duration = currentPixel.getProperty("duration");
@@ -265,6 +294,31 @@ public class GameLogic extends TimerTask {
             }
             //Alternate direction of updating
             reverse = !reverse;
+        }
+
+        //move slime
+        centerDistance /= livingSlime.size();
+        refreshEdges();
+        Pixel furthest = null;
+        double farDist = 0;
+        for (int i = 0; i < slimeEdges.size(); i++){
+            double dist = DistBetween(slimeEdges.get(i).getX(), slimeEdges.get(i).getY(), slimeGoalX, slimeGoalY);
+            if (dist > farDist){
+                farDist = dist;
+                furthest = slimeEdges.get(i);
+            }
+        }
+        Pixel closest = null;
+        double closeDist = Integer.MAX_VALUE;
+        for (int x = 0; x < slimeEdgesEmpty.size(); x++){
+            double dist = DistBetween(slimeEdgesEmpty.get(x).getX(), slimeEdgesEmpty.get(x).getY(), slimeGoalX, slimeGoalY);
+            if (dist < closeDist){
+                closeDist = dist;
+                closest = slimeEdgesEmpty.get(x);
+            }
+        }
+        if (closest != null && furthest != null){
+            grid.swapPositions(closest.getX(), closest.getY(), furthest.getX(), furthest.getY());
         }
 
         //update metal and electricity states
@@ -290,6 +344,52 @@ public class GameLogic extends TimerTask {
 
         panel.repaint();
         steps--;
+    }
+    // refreshes the list of air pixels around the slime
+    public void refreshEdges(){
+        slimeEdgesEmpty.clear();
+        for (int i = 0; i < slimeEdges.size(); i++){
+            addEdges(slimeEdges.get(i));
+        }
+    }
+    // adds pixels around a pixel that are air to the list of air pixels around the slime
+    public void addEdges(Pixel original){
+        int origx = original.getX();
+        int origy = original.getY();
+        for (int x = -1; x <= 1; x++){
+            for (int y = -1; y <= 1; y++){
+                try {
+                    if ((x != 0 || y != 0) && grid.getPixel(origx + x, origy + y).getPropOrDefault("density", DEFAULT_DENSITY) <= 0) {
+                        if (!slimeEdgesEmpty.contains(grid.getPixel(origx + x, origy + y)))
+                            slimeEdgesEmpty.add(grid.getPixel(origx + x, origy + y));
+                    }
+                }catch(Exception e){}
+            }
+        }
+    }
+    // checks the surroundings of a pixel in radius r for pixels with a given
+    // property between min and max (inclusive) and returns the number of them
+    public int checkSurroundingsFor(Pixel original, String property, int min, int max, int r){
+        int num = 0;
+        int origx = original.getX();
+        int origy = original.getY();
+        for (int x = -r; x <= r; x++){
+            for (int y = -r; y <= r; y++){
+                try {
+                    if ((x != 0 || y != 0) && grid.getPixel(origx + x, origy + y).hasProperty(property) && grid.getPixel(origx + x, origy + y).getProperty(property) <= max && grid.getPixel(origx + x, origy + y).getProperty(property) >= min) {
+                        num++;
+                    }
+                }catch(Exception e){}
+            }
+        }
+        return num;
+    }
+    //calculates the distance between two points and returns it as a double
+    public double DistBetween(double x1, double y1, double x2, double y2){
+        double x = Math.pow(x2-x1, 2);
+        double y = Math.pow(y2-y1, 2);
+        double dist = Math.sqrt((x*x)+(y*y));
+        return dist;
     }
 
     public void grow1(Pixel pixel, int x, int y) {
