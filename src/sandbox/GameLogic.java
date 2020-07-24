@@ -2,6 +2,7 @@ package sandbox;
 
 import sandbox.pixels.*;
 
+import javax.lang.model.util.ElementScanner6;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
@@ -330,7 +331,7 @@ public class GameLogic extends TimerTask {
         for (int x = 0; x < grid.getWidth(); x++) {
             for (int y = 0; y < grid.getHeight(); y++) {
                 Pixel pixel = grid.getPixel(x, y);
-                if (!pixel.hasMoved() && pixel.getType().equals("electricity")) {
+                if (!pixel.hasMoved() && pixel.hasProperty("fragile")) {
                     grid.setPixel(x, y, new Air());
                 }
                 if (pixel.getStateOrDefault("willBeConducting", 0) != 0) {
@@ -671,6 +672,8 @@ public class GameLogic extends TimerTask {
                 grid.setPixel(x, y, new Charcoal());
             } else if (Math.random() < pixel.getPropOrDefault("ash", 0)/100.0) {
                 grid.setPixel(x, y, new Ash());
+            } else {
+                grid.setPixel(x, y, new Air());
             }
         }
     }
