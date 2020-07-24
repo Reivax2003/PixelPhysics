@@ -48,7 +48,6 @@ public class GameLogic extends TimerTask {
         //Start left to right
         boolean reverse = false;
         slimeEdges.clear();
-        slimeEdgesEmpty.clear();
         centerDistance = 0;
         for (int y = grid.getHeight() - 1; y > -1; y--) {
             for (int x = (reverse ? 1 : 0) * (grid.getWidth() - 1); -1 < x && x < grid.getWidth(); x += reverse ? -1 : 1) {
@@ -290,39 +289,41 @@ public class GameLogic extends TimerTask {
             reverse = !reverse;
         }
 
-        //get slime pixel furthest from goal
-        int farX = 0;
-        int farY = 0;
-        double farDist = -1;
-        for (int i = 0; i < slimeEdges.size(); i++){
-            double dist = DistBetween(slimeEdges.get(i).get(0), slimeEdges.get(i).get(1), slimeGoalX, slimeGoalY);
-            if (dist > farDist){
-                farDist = dist;
-                farX = slimeEdges.get(i).get(0);
-                farY = slimeEdges.get(i).get(1);
+        int speed = 1;
+        for (int v = 0; v < speed; v++) {
+            //get slime pixel furthest from goal
+            int farX = 0;
+            int farY = 0;
+            double farDist = -1;
+            for (int i = 0; i < slimeEdges.size(); i++) {
+                double dist = DistBetween(slimeEdges.get(i).get(0), slimeEdges.get(i).get(1), slimeGoalX, slimeGoalY);
+                if (dist > farDist) {
+                    farDist = dist;
+                    farX = slimeEdges.get(i).get(0);
+                    farY = slimeEdges.get(i).get(1);
+                }
             }
-        }
 
-        //get closest possible position for slime pixel
-        int closeX = 0;
-        int closeY = 0;
-        double closeDist = Integer.MAX_VALUE;
-        for (int x = 0; x < slimeEdgesEmpty.size(); x++){
-            double dist = DistBetween(slimeEdgesEmpty.get(x).get(0), slimeEdgesEmpty.get(x).get(1), slimeGoalX, slimeGoalY);
-            if (dist < closeDist && grid.getPixel(slimeEdgesEmpty.get(x).get(0), slimeEdgesEmpty.get(x).get(1)).getPropOrDefault("density", DEFAULT_DENSITY) <= 0){
-                closeDist = dist;
-                closeX = slimeEdgesEmpty.get(x).get(0);
-                closeY = slimeEdgesEmpty.get(x).get(1);
+            //get closest possible position for slime pixel
+            int closeX = 0;
+            int closeY = 0;
+            double closeDist = Integer.MAX_VALUE;
+            for (int x = 0; x < slimeEdgesEmpty.size(); x++) {
+                double dist = DistBetween(slimeEdgesEmpty.get(x).get(0), slimeEdgesEmpty.get(x).get(1), slimeGoalX, slimeGoalY);
+                if (dist < closeDist && grid.getPixel(slimeEdgesEmpty.get(x).get(0), slimeEdgesEmpty.get(x).get(1)).getPropOrDefault("density", DEFAULT_DENSITY) <= 0) {
+                    closeDist = dist;
+                    closeX = slimeEdgesEmpty.get(x).get(0);
+                    closeY = slimeEdgesEmpty.get(x).get(1);
+                }
             }
-        }
 
-        System.out.println(slimeEdgesEmpty.size());
-        //move pixel
-        if (farDist != 0 && closeDist != Integer.MAX_VALUE && farDist > closeDist){
-            grid.swapPositions(closeX, closeY, farX, farY);
-        }
-        else if (farDist < closeDist){
+            //move pixel
+            //System.out.println(farDist+" "+closeDist);
+            if (farDist != 0 && closeDist != Integer.MAX_VALUE && farDist > closeDist) {
+                grid.swapPositions(closeX, closeY, farX, farY);
+            } //else if (farDist <= closeDist) {
             refreshEdges();
+            //}
         }
 
         //update metal and electricity states
@@ -362,8 +363,16 @@ public class GameLogic extends TimerTask {
             for (int y = -1; y <= 1; y++){
                 try {
                     if ((x != 0 || y != 0) && grid.getPixel(origx + x, origy + y).getPropOrDefault("density", DEFAULT_DENSITY) <= 0) {
-                        if (!slimeEdgesEmpty.contains(new ArrayList<Integer>(Arrays.asList(origx + x, origy + y))))
+                        boolean contains = false;
+                        for (ArrayList<Integer> each : slimeEdgesEmpty){
+                            if (each.get(0) == origx+x && each.get(1) == origy+y){
+                                contains = true;
+                                break;
+                            }
+                        }
+                        if (!contains) {
                             slimeEdgesEmpty.add(new ArrayList<Integer>(Arrays.asList(origx + x, origy + y)));
+                        }
                     }
                 }catch(Exception e){}
             }
@@ -386,8 +395,8 @@ public class GameLogic extends TimerTask {
     }
     //calculates the distance between two points and returns it as a double
     public double DistBetween(double x1, double y1, double x2, double y2){
-        double x = Math.pow(x2-x1, 2);
-        double y = Math.pow(y2-y1, 2);
+        double x = x2-x1;
+        double y = y2-y1;
         double dist = Math.sqrt((x*x)+(y*y));
         return dist;
     }
