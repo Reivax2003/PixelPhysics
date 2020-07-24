@@ -300,7 +300,7 @@ public class GameLogic extends TimerTask {
                     else if (currentPixel.type.equals("alien plant") && growing == 1){
                         if (y > 0 && y < grid.getHeight()-1 && x > 0 && x < grid.getWidth()-1 && (currentPixel.getProperty("power") != 100 || grid.getPixel(x, y +1).hasProperty("fertile")) && currentPixel.getProperty("power") > 0){
                             grow2(currentPixel, x, y);
-                            currentPixel.changeProperty("power", 0);
+                            currentPixel.changeProperty("power", 0).changeProperty("gravity", 0).changeProperty("support", 0);
                         }
                     }
                     //tree type 2
@@ -555,7 +555,7 @@ public class GameLogic extends TimerTask {
                 newY = y-1;
             }
             if (newX >= 0 && newX < grid.getWidth() && newY >= 0 && newY < grid.getWidth()) {
-                Pixel newPlant = new AlienPlant();
+                Pixel newPlant = new AlienPlant(false);
                 newPlant.changeProperty("turning", Math.abs(turning - 1));
                 newPlant.changeProperty("power", (int) ((power - loss)*100));
                 pixel.changeProperty("angle", angle);
@@ -578,7 +578,7 @@ public class GameLogic extends TimerTask {
             newy = y;
         }
         if (newx >= 0 && newx < grid.getWidth() && newy >= 0 && newy < grid.getHeight()) {
-            Pixel newPlant = new AlienPlant();
+            Pixel newPlant = new AlienPlant(false);
             newPlant.changeProperty("turning", turning);
             newPlant.changeProperty("direction", direction);
             newPlant.changeProperty("angle", angle);
