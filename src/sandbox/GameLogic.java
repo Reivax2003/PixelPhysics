@@ -93,6 +93,42 @@ public class GameLogic extends TimerTask {
                         grid.setPixel(x, y + 1, products[1]);
                     }
                 }
+                
+                if (currentPixel.hasProperty("temperature")) {
+                    //Temp Change
+                    if (x > 0) {//left
+                        Pixel[] products = reactions.getTempChange(currentPixel, grid.getPixelLeft(x, y));
+                        if (products != null) {
+                            currentPixel = products[0];
+                            grid.setPixel(x, y, currentPixel);
+                            grid.setPixel(x - 1, y, products[1]);
+                        }
+                    }
+                    if (x < grid.getWidth() - 1) {//right
+                        Pixel[] products = reactions.getTempChange(currentPixel, grid.getPixelRight(x, y));
+                        if (products != null) {
+                            currentPixel = products[0];
+                            grid.setPixel(x, y, currentPixel);
+                            grid.setPixel(x + 1, y, products[1]);
+                        }
+                    }
+                    if (y > 0 && !reacted) {//up
+                        Pixel[] products = reactions.getTempChange(currentPixel, grid.getPixelUp(x, y));
+                        if (products != null) {
+                            currentPixel = products[0];
+                            grid.setPixel(x, y, currentPixel);
+                            grid.setPixel(x, y - 1, products[1]);
+                        }
+                    }
+                    if (y < grid.getHeight() - 1) {//down
+                        Pixel[] products = reactions.getTempChange(currentPixel, grid.getPixelDown(x, y));
+                        if (products != null) {
+                            currentPixel = products[0];
+                            grid.setPixel(x, y, currentPixel);
+                            grid.setPixel(x, y + 1, products[1]);
+                        }
+                    }
+                }
 
                 int density = currentPixel.getPropOrDefault("density", Integer.MAX_VALUE);
 
