@@ -227,20 +227,32 @@ public class GameLogic extends TimerTask {
                     }
                 }
 
+                currentX = currentPixel.getX();
+                currentY = currentPixel.getY();
                 //fire calculations
                 if (currentPixel.hasProperty("spreads")) {
                     if (currentPixel.getProperty("spreads") == 1) {
                         if (currentPixel.getType().equals("fire")) {
                             flicker(currentPixel);
                             if (currentPixel.getProperty("strength") == 100) {
-                                spread(currentPixel, "flammable");
+                                spread(currentPixel, "flammable", true);
                             }
                         }
+                        else if(currentPixel.getType().equals("lava"))
+                            spread(new Fire(currentX, currentY), "flammable", false);
                     } else {
                         currentPixel.changeProperty("spreads", 1);
                     }
                 }
-                
+
+                if(currentPixel.hasProperty("heating"))
+                    currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"),100),0));
+                if(currentPixel.hasProperty("temperature"))
+                    if(currentPixel.getType().equals("stone") && currentPixel.getProperty("temperature") > 75)
+                        grid.setPixel(currentX, currentY, currentPixel = new Lava(currentX, currentY));
+                    else if(currentPixel.getType().equals("lava") && currentPixel.getProperty("temperature") < 75)
+                        grid.setPixel(currentX, currentY, currentPixel = new Stone(currentX, currentY));
+
                 //plants
                 if (currentPixel.hasProperty("growing")) {
                     int growing = currentPixel.getProperty("growing");
@@ -507,7 +519,7 @@ public class GameLogic extends TimerTask {
     }
 
     //spreads the fire to neighboring flammable pixels
-    public void spread(Pixel original, String fuel) {
+    public void spread(Pixel original, String fuel, Boolean requiresFuel) {
         int xpos = original.getX();
         int ypos = original.getY();
 
@@ -527,7 +539,7 @@ public class GameLogic extends TimerTask {
             }
         }
 
-        if (!hasFuel) {
+        if (!hasFuel && requiresFuel) {
             grid.setPixel(xpos, ypos, new Air(xpos, ypos));
         }
     }

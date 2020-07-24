@@ -24,4 +24,5 @@ spreads         does it spread (0 to 1)
 steepness       how steep it can stack in a pile
 strength        fire strength, also determines if it can spread
 support         diagonal falling (0 to 1)
+temperature     temperature of pixel (0 to 25: freezing, 25 to 75: normal, 75 to 100: melting)
 turning         plant2
