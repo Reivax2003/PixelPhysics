@@ -32,11 +32,7 @@ public class PixelSandbox {
         grid = new Grid(100, 50);
 
         // set all spaces to air
-        for (int x = 0; x < grid.getWidth(); x++) {
-            for (int y = 0; y < grid.getHeight(); y++) {
-                grid.setPixel(x, y, new Air(x, y));
-            }
-        }
+        grid.fillGrid(new Air(0, 0));
     }
 
     private void initializeFrame() {
