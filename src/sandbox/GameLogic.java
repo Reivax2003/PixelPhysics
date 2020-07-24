@@ -442,7 +442,7 @@ public class GameLogic extends TimerTask {
                 int newX = Math.max(Math.min(x + direction, grid.getWidth()-1), 0);
 
                 //grow
-                if (grid.getPixel(newX, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
+                if (y > 0 && grid.getPixel(newX, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
                     grid.swapPositions(x, y, newX, y - 1);
                 Pixel p = new Plant3(x, y)
                     .changeProperty("growing", 2)
@@ -455,7 +455,7 @@ public class GameLogic extends TimerTask {
                 {
                     double random = Math.random();
                     newX = Math.max(Math.min(x + (random < 0.3 ? -1 : random < 0.6 ? 0 : 1), grid.getWidth()-1), 0);
-                    if (grid.getPixel(newX, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
+                    if (y > 0 && grid.getPixel(newX, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
                     {
                         p = new Plant3(newX, y - 1)
                             .changeProperty("growing", 1)
