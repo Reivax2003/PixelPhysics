@@ -94,10 +94,6 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         if (lastMouseX == -1) {
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                grid.setPixel(squareX, squareY, pixel);
-                pixel.setX(squareX);
-                pixel.setY(squareY);
-                
                 if(pixel.getType().equals("electricity") && grid.getPixel(squareX, squareY).hasProperty("conductive")) {
                     grid.getPixel(squareX, squareY).setState("conducting", 1);
                 } else {
