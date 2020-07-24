@@ -267,7 +267,7 @@ public class GameLogic extends TimerTask {
                         }
                     }
                     //tree type
-                    else if (currentPixel.type.equals("plant2") && growing == 1){
+                    else if (currentPixel.type.equals("alien plant") && growing == 1){
                         if (currentY > 0 && currentY < grid.getHeight()-1 && currentX > 0 && currentX < grid.getWidth()-1 && (currentPixel.getProperty("power") != 100 || grid.getPixel(currentX, currentY+1).hasProperty("fertile")) && currentPixel.getProperty("power") > 0){
                             grow2(currentPixel);
                             currentPixel.changeProperty("power", 0);
@@ -344,29 +344,29 @@ public class GameLogic extends TimerTask {
         if (Math.random() < split/100.0){
             Pixel newPlant;
 
-            if (direction == 0 && turning == 0 && grid.getPixel(x+1, y-1).getProperty("density") < 0){
-                newPlant = new Plant2(x+1, y-1);
+            if (direction == 0 && turning == 0 && grid.getPixel(x+1, y-1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
+                newPlant = new AlienPlant(x+1, y-1);
             }
-            else if (direction == 0 && turning == 1 && grid.getPixel(x-1, y-1).getProperty("density") < 0){
-                newPlant = new Plant2(x-1, y-1);
+            else if (direction == 0 && turning == 1 && grid.getPixel(x-1, y-1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
+                newPlant = new AlienPlant(x-1, y-1);
             }
-            else if (direction == 1 && turning == 0 && grid.getPixel(x+1, y+1).getProperty("density") < 0){
-                newPlant = new Plant2(x+1, y+1);
+            else if (direction == 1 && turning == 0 && grid.getPixel(x+1, y+1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
+                newPlant = new AlienPlant(x+1, y+1);
             }
-            else if (direction == 1 && turning == 1 && grid.getPixel(x+1, y-1).getProperty("density") < 0){
-                newPlant = new Plant2(x+1, y-1);
+            else if (direction == 1 && turning == 1 && grid.getPixel(x+1, y-1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
+                newPlant = new AlienPlant(x+1, y-1);
             }
-            else if (direction == 2 && turning == 0 && grid.getPixel(x-1, y+1).getProperty("density") < 0){
-                newPlant = new Plant2(x-1, y+1);
+            else if (direction == 2 && turning == 0 && grid.getPixel(x-1, y+1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
+                newPlant = new AlienPlant(x-1, y+1);
             }
-            else if (direction == 2 && turning == 1 && grid.getPixel(x+1, y+1).getProperty("density") < 0){
-                newPlant = new Plant2(x+1, y+1);
+            else if (direction == 2 && turning == 1 && grid.getPixel(x+1, y+1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
+                newPlant = new AlienPlant(x+1, y+1);
             }
-            else if (direction == 3 && turning == 0 && grid.getPixel(x-1, y+1).getProperty("density") < 0){
-                newPlant = new Plant2(x-1, y+1);
+            else if (direction == 3 && turning == 0 && grid.getPixel(x-1, y+1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
+                newPlant = new AlienPlant(x-1, y+1);
             }
             else {//(direction == 3 && turning == 1 && grid.getPixel(x-1, y-1).getProperty("density") < 0)
-                newPlant = new Plant2(x-1, y-1);
+                newPlant = new AlienPlant(x-1, y-1);
             }
             if (newPlant.getX() >= 0 && newPlant.getX() < grid.getWidth() && newPlant.getY() >= 0 && newPlant.getY() < grid.getWidth()) {
                 newPlant.changeProperty("turning", Math.abs(turning - 1));
@@ -377,26 +377,29 @@ public class GameLogic extends TimerTask {
         }
         int newx = -1;
         int newy = -1;
-        if (direction == 0 && grid.getPixel(x, y - 1).getProperty("density") < 0) {
+        if (direction == 0 && grid.getPixel(x, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
             newx = x;
             newy = y - 1;
-        } else if (direction == 1 && grid.getPixel(x + 1, y).getProperty("density") < 0) {
+        } else if (direction == 1 && grid.getPixel(x + 1, y).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
             newx = x + 1;
             newy = y;
-        } else if (direction == 2 && grid.getPixel(x, y + 1).getProperty("density") < 0) {
+        } else if (direction == 2 && grid.getPixel(x, y + 1).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
             newx = x;
             newy = y + 1;
-        } else if (direction == 3 && grid.getPixel(x - 1, y).getProperty("density") < 0) {
+        } else if (direction == 3 && grid.getPixel(x - 1, y).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
             newx = x - 1;
             newy = y;
         }
         if (newx >= 0 && newx < grid.getWidth() && newy >= 0 && newy < grid.getHeight()) {
-            Pixel newPlant = new Plant2(newx, newy);
+            Pixel newPlant = new AlienPlant(newx, newy);
             newPlant.changeProperty("turning", turning);
             newPlant.changeProperty("direction", direction);
             newPlant.changeProperty("angle", angle);
             newPlant.changeProperty("power", (int) ((power - loss) * 100));
             grid.setPixel(newx, newy, newPlant);
+            Pixel trunk = new Wood(x, y);
+            trunk.setColor(Color.magenta.darker());
+            grid.setPixel(x, y, trunk);
         }
 
     }
