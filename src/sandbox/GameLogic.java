@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.TimerTask;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameLogic extends TimerTask {
 
@@ -18,9 +19,9 @@ public class GameLogic extends TimerTask {
     Reactions reactions = new Reactions();
     private boolean isPaused = false;
     private int steps = 0;
-    private ArrayList<Pixel> livingSlime = new ArrayList<Pixel>();
-    private ArrayList<Pixel> slimeEdges = new ArrayList<Pixel>();
-    private ArrayList<Pixel> slimeEdgesEmpty = new ArrayList<Pixel>();
+    private ArrayList<ArrayList<Integer>> slimeEdges = new ArrayList<ArrayList<Integer>>();
+    private ArrayList<ArrayList<Integer>> slimeEdgesEmpty = new ArrayList<ArrayList<Integer>>();
+    private boolean slimeExists = false;
     double centerDistance = 0;
     int slimeGoalX = 0;
     int slimeGoalY = 0;
@@ -264,20 +265,13 @@ public class GameLogic extends TimerTask {
                 }
                 //slime that follows you
                 if (currentPixel.type.equals("slime")){
-                    if (livingSlime.size() == 0){
-                        currentPixel.changeProperty("group", 1);
-                        livingSlime.add(currentPixel);
+                    if (!slimeExists){
+                        refreshEdges();
+                        slimeExists = true;
                     }
-                    int neighbors = checkSurroundingsFor(currentPixel, "group", 1, 1, 1);
-                    if (neighbors > 0 && !livingSlime.contains(currentPixel)){
-                        livingSlime.add(currentPixel);
-                        currentPixel.changeProperty("group", 1);
-                    }
-                    if (livingSlime.contains(currentPixel) && neighbors < 8){
-                        slimeEdges.add(currentPixel);
-                    }
-                    if (livingSlime.contains(currentPixel)){
-                        centerDistance += DistBetween(currentX, currentY, slimeGoalX, slimeGoalY);
+                    int neighbors = checkSurroundingsFor(currentPixel, x, y, "group", 1, 1, 1);
+                    if (currentPixel.getProperty("group") == 1 && neighbors < 8){
+                        slimeEdges.add(new ArrayList<Integer>(Arrays.asList(x, y)));
                     }
                 }
                 
@@ -296,29 +290,39 @@ public class GameLogic extends TimerTask {
             reverse = !reverse;
         }
 
-        //move slime
-        centerDistance /= livingSlime.size();
-        refreshEdges();
-        Pixel furthest = null;
-        double farDist = 0;
+        //get slime pixel furthest from goal
+        int farX = 0;
+        int farY = 0;
+        double farDist = -1;
         for (int i = 0; i < slimeEdges.size(); i++){
-            double dist = DistBetween(slimeEdges.get(i).getX(), slimeEdges.get(i).getY(), slimeGoalX, slimeGoalY);
+            double dist = DistBetween(slimeEdges.get(i).get(0), slimeEdges.get(i).get(1), slimeGoalX, slimeGoalY);
             if (dist > farDist){
                 farDist = dist;
-                furthest = slimeEdges.get(i);
+                farX = slimeEdges.get(i).get(0);
+                farY = slimeEdges.get(i).get(1);
             }
         }
-        Pixel closest = null;
+
+        //get closest possible position for slime pixel
+        int closeX = 0;
+        int closeY = 0;
         double closeDist = Integer.MAX_VALUE;
         for (int x = 0; x < slimeEdgesEmpty.size(); x++){
-            double dist = DistBetween(slimeEdgesEmpty.get(x).getX(), slimeEdgesEmpty.get(x).getY(), slimeGoalX, slimeGoalY);
-            if (dist < closeDist){
+            double dist = DistBetween(slimeEdgesEmpty.get(x).get(0), slimeEdgesEmpty.get(x).get(1), slimeGoalX, slimeGoalY);
+            if (dist < closeDist && grid.getPixel(slimeEdgesEmpty.get(x).get(0), slimeEdgesEmpty.get(x).get(1)).getPropOrDefault("density", DEFAULT_DENSITY) <= 0){
                 closeDist = dist;
-                closest = slimeEdgesEmpty.get(x);
+                closeX = slimeEdgesEmpty.get(x).get(0);
+                closeY = slimeEdgesEmpty.get(x).get(1);
             }
         }
-        if (closest != null && furthest != null){
-            grid.swapPositions(closest.getX(), closest.getY(), furthest.getX(), furthest.getY());
+
+        System.out.println(slimeEdgesEmpty.size());
+        //move pixel
+        if (farDist != 0 && closeDist != Integer.MAX_VALUE && farDist > closeDist){
+            grid.swapPositions(closeX, closeY, farX, farY);
+        }
+        else if (farDist < closeDist){
+            refreshEdges();
         }
 
         //update metal and electricity states
@@ -349,19 +353,17 @@ public class GameLogic extends TimerTask {
     public void refreshEdges(){
         slimeEdgesEmpty.clear();
         for (int i = 0; i < slimeEdges.size(); i++){
-            addEdges(slimeEdges.get(i));
+            addEdges(grid.getPixel(slimeEdges.get(i).get(0), slimeEdges.get(i).get(1)), slimeEdges.get(i).get(0), slimeEdges.get(i).get(1));
         }
     }
     // adds pixels around a pixel that are air to the list of air pixels around the slime
-    public void addEdges(Pixel original){
-        int origx = original.getX();
-        int origy = original.getY();
+    public void addEdges(Pixel original, int origx, int origy){
         for (int x = -1; x <= 1; x++){
             for (int y = -1; y <= 1; y++){
                 try {
                     if ((x != 0 || y != 0) && grid.getPixel(origx + x, origy + y).getPropOrDefault("density", DEFAULT_DENSITY) <= 0) {
-                        if (!slimeEdgesEmpty.contains(grid.getPixel(origx + x, origy + y)))
-                            slimeEdgesEmpty.add(grid.getPixel(origx + x, origy + y));
+                        if (!slimeEdgesEmpty.contains(new ArrayList<Integer>(Arrays.asList(origx + x, origy + y))))
+                            slimeEdgesEmpty.add(new ArrayList<Integer>(Arrays.asList(origx + x, origy + y)));
                     }
                 }catch(Exception e){}
             }
@@ -369,10 +371,8 @@ public class GameLogic extends TimerTask {
     }
     // checks the surroundings of a pixel in radius r for pixels with a given
     // property between min and max (inclusive) and returns the number of them
-    public int checkSurroundingsFor(Pixel original, String property, int min, int max, int r){
+    public int checkSurroundingsFor(Pixel original, int origx, int origy, String property, int min, int max, int r){
         int num = 0;
-        int origx = original.getX();
-        int origy = original.getY();
         for (int x = -r; x <= r; x++){
             for (int y = -r; y <= r; y++){
                 try {
