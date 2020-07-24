@@ -5,15 +5,13 @@ import java.util.HashMap;
 
 public class Pixel {
 
-    HashMap<String, Integer> properties = new HashMap<>();
-
+    public String type;
     protected int x;
     protected int y;
-
-    public String type;
     protected Color color;
-
     protected boolean moved;
+    HashMap<String, Integer> properties = new HashMap<>();
+    HashMap<String, Integer> state = new HashMap<>();
 
     public Pixel(String type, int xpos, int ypos, Color color) {
         this.x = xpos;
@@ -25,7 +23,7 @@ public class Pixel {
 
     public Pixel duplicate() {
         Pixel copy = new Pixel(type, x, y, color);
-        copy.properties = this.properties;
+        copy.properties = new HashMap<>(this.properties);
         return (copy);
     }
 
@@ -33,12 +31,12 @@ public class Pixel {
         return x;
     }
 
-    public int getY() {
-        return y;
-    }
-
     public void setX(int x) {
         this.x = x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public void setY(int y) {
@@ -68,11 +66,30 @@ public class Pixel {
         return this;
     }
 
+    public Pixel addProperty(String property, int value) {
+        properties.put(property, value);
+
+        // for chaining method calls
+        return this;
+    }
+
     public Pixel changeProperty(String property, int value) {
         properties.replace(property, value);
 
         // for chaining method calls
         return this;
+    }
+
+    public int getState(String state) {
+        return this.state.get(state);
+    }
+
+    public int getStateOrDefault(String state, int defaultValue) {
+        return this.state.getOrDefault(state, defaultValue);
+    }
+
+    public void setState(String state, int value) {
+        this.state.put(state, value);
     }
 
     public int getProperty(String property) {
