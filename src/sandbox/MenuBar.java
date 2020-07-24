@@ -7,6 +7,8 @@ import java.awt.event.*;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
+  private final Grid grid;
+
   public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
       new Electricity(), //Menu 1
       new Sand(),
@@ -30,7 +32,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
   public int chosen = 1; //currently selected substance
 
-  public MenuBar() {
+  public MenuBar(Grid grid) {
+    this.grid = grid;
+
+    // Build Elements Menus
     JMenu elementsMenu = new JMenu("Elements");
     JMenu elementsMenu2 = new JMenu("Elem. cont.");
     ButtonGroup elementButtons = new ButtonGroup();
@@ -66,12 +71,34 @@ public class MenuBar extends JMenuBar implements ActionListener {
       button.addActionListener(this);
     }
 
+    // Add elments menus to bar
     this.add(elementsMenu);
     this.add(elementsMenu2);
+
+    // Whitespace
+    this.add(Box.createHorizontalGlue());
+
+    // Build settings/control/options decide later menu
+    JMenu controlMenu = new JMenu("Control");
+    JMenuItem reset = new JMenuItem("Reset");
+    reset.setActionCommand("reset");
+    reset.addActionListener(this);
+    controlMenu.add(reset);
+
+    // Add control menu to bar
+    this.add(controlMenu);
   }
 
 
-  public void actionPerformed(ActionEvent p) { // Detects interaction with menu
-    chosen = Integer.parseInt(p.getActionCommand());
+  public void actionPerformed(ActionEvent a) { // Detects interaction with menu
+    String action = a.getActionCommand();
+    try { //Assumes all numeric action events are chosing type
+      chosen = Integer.parseInt(action);
+    }
+    catch(NumberFormatException e) {
+      if (action == "reset") {
+        grid.fillGrid(new Air());
+      }
+    }
   }
 }
