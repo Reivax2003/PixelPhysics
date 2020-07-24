@@ -70,7 +70,12 @@ public class Grid {
         dirY /= length;
 
         for (double i = 0; i < length; i++) {
-            int x = (int) (x1 + dirX * i), y = (int) (y1 + dirY * i);
+            int x = (int) (x1 + dirX * i);
+            int y = (int) (y1 + dirY * i);
+            if(pixel.getType().equals("electricity") && this.grid[x][y].hasProperty("conductive")) {
+                this.grid[x][y].setState("conducting", 1);
+                continue;
+            }
             Pixel p = pixel.duplicate();
             p.setX(x);
             p.setY(y);
