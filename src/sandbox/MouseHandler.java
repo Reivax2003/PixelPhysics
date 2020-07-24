@@ -13,15 +13,15 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
 
     private final JPanel panel;
     private final Grid grid;
-    private final KeyHandler keyHandler;
+    private MenuBar menuBar;
 
     private int lastMouseX = -1;
     private int lastMouseY = -1;
 
-    public MouseHandler(JPanel panel, Grid grid, KeyHandler keyHandler) {
+    public MouseHandler(JPanel panel, Grid grid, MenuBar menuBar) {
         this.panel = panel;
         this.grid = grid;
-        this.keyHandler = keyHandler;
+        this.menuBar = menuBar;
     }
 
     @Override
@@ -93,7 +93,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         //left click to add pixels, right click to remove
         if (lastMouseX == -1) {
             if (button == MouseEvent.BUTTON1) {
-                Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
+                Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                 if(pixel.getType().equals("electricity") && grid.getPixel(squareX, squareY).hasProperty("conductive")) {
                     grid.getPixel(squareX, squareY).setState("conducting", 1);
                 } else {
@@ -106,7 +106,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
             }
         } else {  //draw line if dragging over screen
             if (button == MouseEvent.BUTTON1) {
-                Pixel pixel = keyHandler.pixels[keyHandler.chosen].duplicate();
+                Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
                 pixel.setX(squareX);
                 pixel.setY(squareY);
