@@ -112,7 +112,7 @@ public class GameLogic extends TimerTask {
                             grid.setPixel(x + 1, y, products[1]);
                         }
                     }
-                    if (y > 0 && !reacted) {//up
+                    if (y > 0) { //&& !reacted) {//up
                         Pixel[] products = reactions.getTempChange(currentPixel, grid.getPixelUp(x, y));
                         if (products != null) {
                             currentPixel = products[0];
