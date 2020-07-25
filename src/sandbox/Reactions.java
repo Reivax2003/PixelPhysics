@@ -14,7 +14,7 @@ public class Reactions {
             return new Pixel[]{new WetSand(), new Air()};
         else if (a.getType().equals("fire") && a.getPropOrDefault("strength", 0) == 100 && b.getType().equals("water"))
             return new Pixel[]{new Air(), new Steam()};
-        else if (a.getType().equals("wet sand") && b.getType().equals("fire"))
+        else if (a.getType().equals("wet sand") && (b.getType().equals("fire") || b.getPropOrDefault("temperature", 50) > 110))
             return new Pixel[]{new Sand(), b};
         else if (a.getType().equals("acid") && Math.random() < a.getPropOrDefault("acidity", 100) / 100.0 && Math.random() < b.getPropOrDefault("solubility", 0) / 100.0)
             return new Pixel[]{a, new Air()};
