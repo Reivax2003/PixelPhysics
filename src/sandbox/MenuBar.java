@@ -58,6 +58,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
       new Slime()
   };
 
+  private ButtonGroup elementButtons;
+
   public int chosen = 1; //currently selected substance
 
   public MenuBar(Grid grid) {
@@ -68,7 +70,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
     JMenu gassesMenu = new JMenu("Gas");
     JMenu propertiesMenu = new JMenu("Property");
     JMenu livingMenu = new JMenu("Living");
-    ButtonGroup elementButtons = new ButtonGroup();
+    elementButtons = new ButtonGroup();
 
     int imod = 0;
     populateMenu(solidsMenu, solid, imod);
@@ -158,18 +160,14 @@ public class MenuBar extends JMenuBar implements ActionListener {
     for(int p = 0; p < list.length; p ++) {
       JRadioButtonMenuItem button = new JRadioButtonMenuItem(list[p].getType());
       button.setForeground(list[p].getColor().darker()); // Color text for distinction
+      elementButtons.add(button);
       menu.add(button);
       String index = String.valueOf(p+indexMod);
-      if(p == 0) { // 0 to end of first menu
-        menu.add(button);
-      }
-      else if(p+indexMod == 1) { // Button one is by default selected as the first option
-        menu.insert(button, p-1);
+
+      if(p+indexMod == 1) { // Button one is by default selected as the first option
         button.setSelected(true);
       }
-      else { // 2-9
-        menu.insert(button, p-1);
-      }
+
       if (p+indexMod < 10)
         button.setAccelerator(KeyStroke.getKeyStroke(index)); // 0-9 by key
       else if (p+indexMod < 20){
