@@ -16,6 +16,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         new Stone(),
         new Metal(),
         new Charcoal(),
+        new Ice(),
         new Water(),
         new Lava(),
         new Acid(),
@@ -35,27 +36,28 @@ public class MenuBar extends JMenuBar implements ActionListener {
       new Soil(),
       new Stone(),
       new Metal(),
-      new Charcoal()
+      new Charcoal(),
+      new Ice(),
   };
   private final Pixel[] liquid = {
       new Water(),
       new Lava(),
-      new Acid()
+      new Acid(),
   };
   private final Pixel[] gas = {
       new Smoke(),
-      new Steam()
+      new Steam(),
   };
   private final Pixel[] property = {
       new Fire(),
-      new Electricity()
+      new Electricity(),
   };
   private final Pixel[] living = {
       new Wood(),
       new Plant(),
       new AlienPlant(true),
       new Plant3(),
-      new Slime()
+      new Slime(),
   };
 
   private ButtonGroup elementButtons;

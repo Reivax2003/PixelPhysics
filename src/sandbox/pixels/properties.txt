@@ -18,6 +18,7 @@ strength        fire strength, also determines if it can spread
 spreads         does it spread (0 to 1)
 fuel            how long it can burn
 flammable       can it catch on fire (0 to 1)
+temperature     temperature (0 to 200)
 
 maxheight       maxheight of plant
 minheight       minheight of plant

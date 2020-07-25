@@ -276,15 +276,19 @@ public class GameLogic extends TimerTask {
 
                 //temperature change system
                 if(currentPixel.hasProperty("heating"))
-                    currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"),100),0));
+                    currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"),200),0));
                 if(currentPixel.hasProperty("temperature")) {
-                    if(currentPixel.getType().equals("stone") && currentPixel.getProperty("temperature") > 75)
+                    if(currentPixel.getType().equals("stone") && currentPixel.getProperty("temperature") > 175)
                         grid.setPixel(x, y, new Lava());
-                    else if(currentPixel.getType().equals("lava") && currentPixel.getProperty("temperature") < 75)
+                    else if(currentPixel.getType().equals("lava") && currentPixel.getProperty("temperature") < 150)
                         grid.setPixel(x, y, new Stone());
-                    else if(currentPixel.getType().equals("water") && currentPixel.getProperty("temperature") > 60)
+                    else if(currentPixel.getType().equals("ice") && currentPixel.getProperty("temperature") > 30)
+                        grid.setPixel(x, y, new Water());
+                    else if(currentPixel.getType().equals("water") && currentPixel.getProperty("temperature") < 20)
+                        grid.setPixel(x, y, new Ice());
+                    else if(currentPixel.getType().equals("water") && currentPixel.getProperty("temperature") > 110)
                         grid.setPixel(x, y, new Steam());
-                    else if(currentPixel.getType().equals("steam") && currentPixel.getProperty("temperature") < 60)
+                    else if(currentPixel.getType().equals("steam") && currentPixel.getProperty("temperature") < 90)
                         grid.setPixel(x, y, new Water());
                     grid.getPixel(x,y).changeProperty("temperature",currentPixel.getProperty("temperature")); //Keep old temp
                 }
