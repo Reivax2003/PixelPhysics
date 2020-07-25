@@ -11,7 +11,7 @@ public class Lava extends Pixel {
                 .setProperty("density", 50)
                 .setProperty("fluidity", 50)
                 .setProperty("spreads", 1)
-                .setProperty("temperature", 100)
+                .setProperty("temperature", 175)
                 .setProperty("heating", 1);
     }
 

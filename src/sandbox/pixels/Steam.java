@@ -11,7 +11,7 @@ public class Steam extends Pixel {
                 .setProperty("gravity", -1)
                 .setProperty("density", -10)
                 .setProperty("fluidity", 100)
-                .setProperty("temperature",75);
+                .setProperty("temperature",100);
     }
 
 }
