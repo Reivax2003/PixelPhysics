@@ -10,14 +10,14 @@ import java.awt.event.MouseMotionListener;
 
 public class MouseHandler implements MouseMotionListener, MouseListener {
 
-    private final JPanel panel;
+    private final Renderer panel;
     private final Grid grid;
     private MenuBar menuBar;
 
     private int lastMouseX = -1;
     private int lastMouseY = -1;
 
-    public MouseHandler(JPanel panel, Grid grid, MenuBar menuBar) {
+    public MouseHandler(Renderer panel, Grid grid, MenuBar menuBar) {
         this.panel = panel;
         this.grid = grid;
         this.menuBar = menuBar;
@@ -98,6 +98,9 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
                 } else {
                     grid.setPixel(squareX, squareY, pixel);
                 }
+            } else if (button == MouseEvent.BUTTON2) {
+                panel.slimeGoalX = squareX;
+                panel.slimeGoalY = squareY;
             } else if (button == MouseEvent.BUTTON3) {
                 grid.setPixel(squareX, squareY, new Air());
             }
@@ -105,6 +108,9 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
+            } else if (button == MouseEvent.BUTTON2) {
+                panel.slimeGoalX = squareX;
+                panel.slimeGoalY = squareY;
             } else if (button == MouseEvent.BUTTON3) {
                 grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air());
             }
