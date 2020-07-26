@@ -16,24 +16,21 @@ public class GameLogic extends TimerTask {
     public static final int DEFAULT_DENSITY = 10000;
 
     private final Grid grid;
-    private final JPanel panel;
+    private final Renderer panel;
     Reactions reactions = new Reactions();
     private boolean isPaused = false;
     private int steps = 0;
     private ArrayList<ArrayList<Integer>> slimeEdges = new ArrayList<ArrayList<Integer>>();
     private ArrayList<ArrayList<Integer>> slimeEdgesEmpty = new ArrayList<ArrayList<Integer>>();
-    private boolean slimeExists = false;
-    int slimeGoalX;
-    int slimeGoalY;
     int slimeSupports = 0;
     // int frameNum = 0;
 
-    public GameLogic(Grid grid, JPanel panel) {
+    public GameLogic(Grid grid, Renderer panel) {
         this.grid = grid;
         this.panel = panel;
 
-        slimeGoalX = (int) (Math.random()*grid.getWidth());
-        slimeGoalY = (int) (Math.random()*grid.getHeight());
+        panel.slimeGoalX = (int) (Math.random()*grid.getWidth());
+        panel.slimeGoalY = (int) (Math.random()*grid.getHeight());
     }
 
     public void setPaused(boolean paused) {
@@ -56,8 +53,8 @@ public class GameLogic extends TimerTask {
         boolean reverse = false;
         slimeEdges.clear();
         if (Math.random() < 0.01){
-            slimeGoalX = (int) (Math.random()*grid.getWidth());
-            slimeGoalY = (int) (Math.random()*grid.getHeight());
+            panel.slimeGoalX = (int) (Math.random()*grid.getWidth());
+            panel.slimeGoalY = (int) (Math.random()*grid.getHeight());
         }
         for (int y = grid.getHeight() - 1; y > -1; y--) {
             for (int x = (reverse ? 1 : 0) * (grid.getWidth() - 1); -1 < x && x < grid.getWidth(); x += reverse ? -1 : 1) {
@@ -318,9 +315,9 @@ public class GameLogic extends TimerTask {
                 }
                 //slime that wanders around
                 if (currentPixel.type.equals("slime")){
-                    if (!slimeExists){
+                    if (!panel.slimeExists){
                         refreshEdges();
-                        slimeExists = true;
+                        panel.slimeExists = true;
                     }
                     int neighbors = checkSurroundingsFor(currentPixel, pixelX, pixelY, "group", 1, 1, 1, false);
                     int supports = checkSurroundingsFor(currentPixel, pixelX, pixelY, "support", 1, Integer.MAX_VALUE, 1, true);
@@ -366,7 +363,7 @@ public class GameLogic extends TimerTask {
             int farY = 0;
             double farDist = -1;
             for (int i = 0; i < slimeEdges.size(); i++) {
-                double dist = DistBetween(slimeEdges.get(i).get(0), slimeEdges.get(i).get(1), slimeGoalX, slimeGoalY);
+                double dist = DistBetween(slimeEdges.get(i).get(0), slimeEdges.get(i).get(1), panel.slimeGoalX, panel.slimeGoalY);
                 if (dist > farDist) {
                     farDist = dist;
                     farX = slimeEdges.get(i).get(0);
@@ -379,7 +376,7 @@ public class GameLogic extends TimerTask {
             int closeY = 0;
             double closeDist = Integer.MAX_VALUE;
             for (int x = 0; x < slimeEdgesEmpty.size(); x++) {
-                double dist = DistBetween(slimeEdgesEmpty.get(x).get(0), slimeEdgesEmpty.get(x).get(1), slimeGoalX, slimeGoalY);
+                double dist = DistBetween(slimeEdgesEmpty.get(x).get(0), slimeEdgesEmpty.get(x).get(1), panel.slimeGoalX, panel.slimeGoalY);
                 if (dist < closeDist && grid.getPixel(slimeEdgesEmpty.get(x).get(0), slimeEdgesEmpty.get(x).get(1)).getPropOrDefault("density", DEFAULT_DENSITY) <= 0) {
                     closeDist = dist;
                     closeX = slimeEdgesEmpty.get(x).get(0);

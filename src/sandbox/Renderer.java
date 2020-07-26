@@ -8,6 +8,9 @@ import java.awt.*;
 public class Renderer extends JPanel {
 
     private final Grid grid;
+    public boolean slimeExists = false;
+    public int slimeGoalX;
+    public int slimeGoalY;
 
     public Renderer(Grid grid) {
         this.grid = grid;
@@ -55,6 +58,12 @@ public class Renderer extends JPanel {
                 g.setColor(color);
                 g.fillRect(x * pixelsPerSquare + xOffset, y * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
             }
+        }
+        
+        if(slimeExists)
+        {
+            g.setColor(Color.red);
+            g.drawRect(slimeGoalX * pixelsPerSquare + xOffset, slimeGoalY * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
         }
     }
 }
