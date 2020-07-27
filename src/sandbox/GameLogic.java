@@ -773,7 +773,7 @@ public class GameLogic extends TimerTask {
                     checkX = x + i;
                 }
 
-                if (grid.getPixel(checkX, checkY).hasProperty("overwritable")) {
+                if (grid.getPixel(checkX, checkY).hasProperty("overwritable") || grid.getPixel(checkX, checkY).getType().equals("fire")) {
                     Pixel clone = original.duplicate();
                     clone.changeProperty("spreads", 0);
                     grid.setPixel(checkX, checkY, clone);
