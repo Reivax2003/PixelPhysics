@@ -20,6 +20,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         new Water(),
         new Lava(),
         new Acid(),
+        new Gasoline(),
         new Smoke(),
         new Steam(),
         new Fire(),
@@ -43,6 +44,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
       new Water(),
       new Lava(),
       new Acid(),
+      new Gasoline(),
   };
   private final Pixel[] gas = {
       new Smoke(),
