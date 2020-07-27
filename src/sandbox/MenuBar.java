@@ -5,6 +5,7 @@ import sandbox.pixels.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
@@ -97,6 +98,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         imod += property.length;
         populateMenu(livingMenu, living, imod);
 
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 
         // Build Elements Menus
     /*JMenu elementsMenu = new JMenu("Elements");
