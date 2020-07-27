@@ -6,6 +6,7 @@ List of substances:
 Acid
 Ash
 Charcoal
+Duplicate
 Electricity
 Fire (burns flammables, produces smoke),
 Fuse and Fuse Powder
