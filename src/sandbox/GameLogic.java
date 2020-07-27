@@ -2,14 +2,11 @@ package sandbox;
 
 import sandbox.pixels.*;
 
-import javax.lang.model.util.ElementScanner6;
-import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
-import java.util.TimerTask;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
+import java.util.TimerTask;
 
 public class GameLogic extends TimerTask {
 
@@ -29,12 +26,14 @@ public class GameLogic extends TimerTask {
         this.grid = grid;
         this.panel = panel;
 
-        panel.slimeGoalX = (int) (Math.random()*grid.getWidth());
-        panel.slimeGoalY = (int) (Math.random()*grid.getHeight());
+        panel.slimeGoalX = (int) (Math.random() * grid.getWidth());
+        panel.slimeGoalY = (int) (Math.random() * grid.getHeight());
     }
 
     public void setPaused(boolean paused) {
         isPaused = paused;
+        panel.setPaused(paused);
+        panel.repaint();
     }
 
     public void setSteps(int steps) {
@@ -43,6 +42,7 @@ public class GameLogic extends TimerTask {
 
     @Override
     public void run() {
+        panel.hOffset += 0.075f;
         if (isPaused && !(steps > 0)) {
             return;
         }
@@ -52,9 +52,9 @@ public class GameLogic extends TimerTask {
         //Start left to right
         boolean reverse = false;
         slimeEdges.clear();
-        if (Math.random() < 0.01){
-            panel.slimeGoalX = (int) (Math.random()*grid.getWidth());
-            panel.slimeGoalY = (int) (Math.random()*grid.getHeight());
+        if (Math.random() < 0.01) {
+            panel.slimeGoalX = (int) (Math.random() * grid.getWidth());
+            panel.slimeGoalY = (int) (Math.random() * grid.getHeight());
         }
         for (int y = grid.getHeight() - 1; y > -1; y--) {
             for (int x = (reverse ? 1 : 0) * (grid.getWidth() - 1); -1 < x && x < grid.getWidth(); x += reverse ? -1 : 1) {
@@ -95,7 +95,7 @@ public class GameLogic extends TimerTask {
                         grid.setPixel(pixelX, pixelY + 1, products[1]);
                     }
                 }
-                
+
                 if (currentPixel.hasProperty("temperature")) {
                     //Temp Change
                     if (pixelX > 0) {//left
@@ -268,8 +268,7 @@ public class GameLogic extends TimerTask {
                             if (currentPixel.getProperty("strength") == 100) {
                                 spread(currentPixel, "flammable", true, pixelX, pixelY);
                             }
-                        }
-                        else if(currentPixel.getType().equals("lava"))
+                        } else if (currentPixel.getType().equals("lava"))
                             spread(new Fire(), "flammable", false, pixelX, pixelY);
                     } else {
                         currentPixel.changeProperty("spreads", 1);
@@ -277,22 +276,22 @@ public class GameLogic extends TimerTask {
                 }
 
                 //temperature change system
-                if(currentPixel.hasProperty("heating"))
-                    currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"),200),0));
-                if(currentPixel.hasProperty("temperature")) {
-                    if(currentPixel.getType().equals("stone") && currentPixel.getProperty("temperature") > 175)
+                if (currentPixel.hasProperty("heating"))
+                    currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"), 200), 0));
+                if (currentPixel.hasProperty("temperature")) {
+                    if (currentPixel.getType().equals("stone") && currentPixel.getProperty("temperature") > 175)
                         grid.setPixel(pixelX, pixelY, new Lava());
-                    else if(currentPixel.getType().equals("lava") && currentPixel.getProperty("temperature") < 150)
+                    else if (currentPixel.getType().equals("lava") && currentPixel.getProperty("temperature") < 150)
                         grid.setPixel(pixelX, pixelY, new Stone());
-                    else if(currentPixel.getType().equals("ice") && currentPixel.getProperty("temperature") > 30)
+                    else if (currentPixel.getType().equals("ice") && currentPixel.getProperty("temperature") > 30)
                         grid.setPixel(pixelX, pixelY, new Water());
-                    else if(currentPixel.getType().equals("water") && currentPixel.getProperty("temperature") < 20)
+                    else if (currentPixel.getType().equals("water") && currentPixel.getProperty("temperature") < 20)
                         grid.setPixel(pixelX, pixelY, new Ice());
-                    else if(currentPixel.getType().equals("water") && currentPixel.getProperty("temperature") > 110)
+                    else if (currentPixel.getType().equals("water") && currentPixel.getProperty("temperature") > 110)
                         grid.setPixel(pixelX, pixelY, new Steam());
-                    else if(currentPixel.getType().equals("steam") && currentPixel.getProperty("temperature") < 90)
+                    else if (currentPixel.getType().equals("steam") && currentPixel.getProperty("temperature") < 90)
                         grid.setPixel(pixelX, pixelY, new Water());
-                    grid.getPixel(pixelX,pixelY).changeProperty("temperature",currentPixel.getProperty("temperature")); //Keep old temp
+                    grid.getPixel(pixelX, pixelY).changeProperty("temperature", currentPixel.getProperty("temperature")); //Keep old temp
                 }
 
                 //plants
@@ -303,41 +302,39 @@ public class GameLogic extends TimerTask {
                         grow1(currentPixel, pixelX, pixelY);
                     }
                     //tree type
-                    else if (currentPixel.type.equals("alien plant") && growing == 1){
-                        if (pixelY > 0 && pixelY < grid.getHeight()-1 && pixelX > 0 && pixelX < grid.getWidth()-1 && (currentPixel.getProperty("power") != 100 || grid.getPixel(pixelX, pixelY +1).hasProperty("fertile")) && currentPixel.getProperty("power") > 0){
+                    else if (currentPixel.type.equals("alien plant") && growing == 1) {
+                        if (pixelY > 0 && pixelY < grid.getHeight() - 1 && pixelX > 0 && pixelX < grid.getWidth() - 1 && (currentPixel.getProperty("power") != 100 || grid.getPixel(pixelX, pixelY + 1).hasProperty("fertile")) && currentPixel.getProperty("power") > 0) {
                             grow2(currentPixel, pixelX, pixelY);
                             currentPixel.changeProperty("power", 0).changeProperty("gravity", 0).changeProperty("support", 0);
                         }
                     }
                     //tree type 2
-                    else if(currentPixel.type.equals("plant3"))
+                    else if (currentPixel.type.equals("plant3"))
                         grow3(currentPixel, pixelX, pixelY);
                 }
                 //slime that wanders around
-                if (currentPixel.type.equals("slime")){
-                    if (!panel.slimeExists){
+                if (currentPixel.type.equals("slime")) {
+                    if (!panel.slimeExists) {
                         refreshEdges();
                         panel.slimeExists = true;
                     }
                     int neighbors = checkSurroundingsFor(currentPixel, pixelX, pixelY, "group", 1, 1, 1, false);
                     int supports = checkSurroundingsFor(currentPixel, pixelX, pixelY, "support", 1, Integer.MAX_VALUE, 1, true);
-                    if (currentPixel.getProperty("group") == 1 && neighbors < 8){
+                    if (currentPixel.getProperty("group") == 1 && neighbors < 8) {
                         slimeEdges.add(new ArrayList<Integer>(Arrays.asList(pixelX, pixelY)));
                     }
-                    if (supports > 0){
+                    if (supports > 0) {
                         slimeSupports += 1;
                         currentPixel.changeProperty("stable", 1);
-                    }
-                    else{
-                        if (currentPixel.getProperty("stable") == 1){
+                    } else {
+                        if (currentPixel.getProperty("stable") == 1) {
                             currentPixel.changeProperty("stable", 0);
                             slimeSupports -= 1;
                         }
                     }
-                    if (supports == 0){
+                    if (supports == 0) {
                         currentPixel.changeProperty("gravity", 2);
-                    }
-                    else{
+                    } else {
                         currentPixel.changeProperty("gravity", 0);
                     }
                 }
@@ -417,22 +414,24 @@ public class GameLogic extends TimerTask {
         panel.repaint();
         steps--;
     }
+
     // refreshes the list of air pixels around the slime
-    public void refreshEdges(){
+    public void refreshEdges() {
         slimeEdgesEmpty.clear();
-        for (int i = 0; i < slimeEdges.size(); i++){
+        for (int i = 0; i < slimeEdges.size(); i++) {
             addEdges(grid.getPixel(slimeEdges.get(i).get(0), slimeEdges.get(i).get(1)), slimeEdges.get(i).get(0), slimeEdges.get(i).get(1));
         }
     }
+
     // adds pixels around a pixel that are air to the list of air pixels around the slime
-    public void addEdges(Pixel original, int origx, int origy){
-        for (int x = -1; x <= 1; x++){
-            for (int y = -1; y <= 1; y++){
+    public void addEdges(Pixel original, int origx, int origy) {
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
                 try {
                     if ((x != 0 || y != 0) && grid.getPixel(origx + x, origy + y).getPropOrDefault("density", DEFAULT_DENSITY) <= 0) {
                         boolean contains = false;
-                        for (ArrayList<Integer> each : slimeEdgesEmpty){
-                            if (each.get(0) == origx+x && each.get(1) == origy+y){
+                        for (ArrayList<Integer> each : slimeEdgesEmpty) {
+                            if (each.get(0) == origx + x && each.get(1) == origy + y) {
                                 contains = true;
                                 break;
                             }
@@ -441,22 +440,24 @@ public class GameLogic extends TimerTask {
                             slimeEdgesEmpty.add(new ArrayList<Integer>(Arrays.asList(origx + x, origy + y)));
                         }
                     }
-                }catch(Exception e){}
+                } catch (Exception e) {
+                }
             }
         }
     }
+
     // checks the surroundings of a pixel in radius r for pixels with a given
     // property between min and max (inclusive) and returns the number of them
-    public int checkSurroundingsFor(Pixel original, int origx, int origy, String property, int min, int max, int r, boolean edgeCounts){
+    public int checkSurroundingsFor(Pixel original, int origx, int origy, String property, int min, int max, int r, boolean edgeCounts) {
         int num = 0;
-        for (int x = -r; x <= r; x++){
-            for (int y = -r; y <= r; y++){
+        for (int x = -r; x <= r; x++) {
+            for (int y = -r; y <= r; y++) {
                 try {
                     if ((x != 0 || y != 0) && grid.getPixel(origx + x, origy + y).hasProperty(property) && grid.getPixel(origx + x, origy + y).getProperty(property) <= max && grid.getPixel(origx + x, origy + y).getProperty(property) >= min) {
                         num++;
                     }
-                }catch(Exception e){
-                    if (edgeCounts){
+                } catch (Exception e) {
+                    if (edgeCounts) {
                         num++;
                     }
                 }
@@ -464,11 +465,12 @@ public class GameLogic extends TimerTask {
         }
         return num;
     }
+
     //calculates the distance between two points and returns it as a double
-    public double DistBetween(double x1, double y1, double x2, double y2){
-        double x = x2-x1;
-        double y = y2-y1;
-        double dist = Math.sqrt((x*x)+(y*y));
+    public double DistBetween(double x1, double y1, double x2, double y2) {
+        double x = x2 - x1;
+        double y = y2 - y1;
+        double dist = Math.sqrt((x * x) + (y * y));
         return dist;
     }
 
@@ -499,16 +501,17 @@ public class GameLogic extends TimerTask {
             }
         }
     }
+
     //calculates the tree plant growth direction and amount
-    public void grow2(Pixel pixel, int x, int y){
+    public void grow2(Pixel pixel, int x, int y) {
         int angle = pixel.getProperty("angle");
-        double power = pixel.getProperty("power")/100.0;
+        double power = pixel.getProperty("power") / 100.0;
         int direction = pixel.getProperty("direction");
         int split = pixel.getProperty("split");
         int turning = pixel.getProperty("turning");
-        double loss = pixel.getProperty("loss")/100.0;
+        double loss = pixel.getProperty("loss") / 100.0;
 
-        if (Math.random() < angle/180.0){
+        if (Math.random() < angle / 180.0) {
             int newDir;
             if (turning == 0) {
                 newDir = direction - 1;
@@ -522,48 +525,41 @@ public class GameLogic extends TimerTask {
             }
             pixel.changeProperty("direction", newDir);
             direction = newDir;
-            pixel.changeProperty("angle", angle-((int) (loss*100)));
+            pixel.changeProperty("angle", angle - ((int) (loss * 100)));
         }
-        if (Math.random() < split/100.0){
+        if (Math.random() < split / 100.0) {
             int newX;
             int newY;
 
-            if (direction == 0 && turning == 0 && grid.getPixel(x+1, y-1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
-                newX = x+1;
-                newY = y-1;
-            }
-            else if (direction == 0 && turning == 1 && grid.getPixel(x-1, y-1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
-                newX = x-1;
-                newY = y-1;
-            }
-            else if (direction == 1 && turning == 0 && grid.getPixel(x+1, y+1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
-                newX = x+1;
-                newY = y+1;
-            }
-            else if (direction == 1 && turning == 1 && grid.getPixel(x+1, y-1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
-                newX = x+1;
-                newY = y-1;
-            }
-            else if (direction == 2 && turning == 0 && grid.getPixel(x-1, y+1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
-                newX = x-1;
-                newY = y+1;
-            }
-            else if (direction == 2 && turning == 1 && grid.getPixel(x+1, y+1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
-                newX = x+1;
-                newY = y+1;
-            }
-            else if (direction == 3 && turning == 0 && grid.getPixel(x-1, y+1).getPropOrDefault("density", DEFAULT_DENSITY) < 0){
-                newX = x-1;
-                newY = y+1;
-            }
-            else {//(direction == 3 && turning == 1 && grid.getPixel(x-1, y-1).getProperty("density") < 0)
-                newX = x-1;
-                newY = y-1;
+            if (direction == 0 && turning == 0 && grid.getPixel(x + 1, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
+                newX = x + 1;
+                newY = y - 1;
+            } else if (direction == 0 && turning == 1 && grid.getPixel(x - 1, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
+                newX = x - 1;
+                newY = y - 1;
+            } else if (direction == 1 && turning == 0 && grid.getPixel(x + 1, y + 1).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
+                newX = x + 1;
+                newY = y + 1;
+            } else if (direction == 1 && turning == 1 && grid.getPixel(x + 1, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
+                newX = x + 1;
+                newY = y - 1;
+            } else if (direction == 2 && turning == 0 && grid.getPixel(x - 1, y + 1).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
+                newX = x - 1;
+                newY = y + 1;
+            } else if (direction == 2 && turning == 1 && grid.getPixel(x + 1, y + 1).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
+                newX = x + 1;
+                newY = y + 1;
+            } else if (direction == 3 && turning == 0 && grid.getPixel(x - 1, y + 1).getPropOrDefault("density", DEFAULT_DENSITY) < 0) {
+                newX = x - 1;
+                newY = y + 1;
+            } else {//(direction == 3 && turning == 1 && grid.getPixel(x-1, y-1).getProperty("density") < 0)
+                newX = x - 1;
+                newY = y - 1;
             }
             if (newX >= 0 && newX < grid.getWidth() && newY >= 0 && newY < grid.getWidth()) {
                 Pixel newPlant = new AlienPlant(false);
                 newPlant.changeProperty("turning", Math.abs(turning - 1));
-                newPlant.changeProperty("power", (int) ((power - loss)*100));
+                newPlant.changeProperty("power", (int) ((power - loss) * 100));
                 pixel.changeProperty("angle", angle);
                 grid.setPixel(newX, newY, newPlant);
             }
@@ -598,7 +594,7 @@ public class GameLogic extends TimerTask {
     }
 
     //grows based on int displacement
-    public void grow3(Pixel pixel, int x, int y){
+    public void grow3(Pixel pixel, int x, int y) {
         int growing = pixel.getProperty("growing");
         int density = pixel.getProperty("density");
 
@@ -606,8 +602,8 @@ public class GameLogic extends TimerTask {
             if (y < grid.getHeight() - 1 && grid.getPixelDown(x, y).hasProperty("fertile") &&
                     y > 0 && grid.getPixelUp(x, y).getPropOrDefault("density", DEFAULT_DENSITY) < density) {
                 pixel.changeProperty("growing", 1)
-                    .changeProperty("gravity", 0)
-                    .changeProperty("support", 0);
+                        .changeProperty("gravity", 0)
+                        .changeProperty("support", 0);
             }
         } else if (growing == 1) {
             if (Math.random() < pixel.getProperty("speed") / 100.0) {
@@ -617,33 +613,31 @@ public class GameLogic extends TimerTask {
                 }
                 //check if it changes direction
                 int direction = pixel.getProperty("direction");
-                if(Math.random() < pixel.getProperty("turning") / 100.0)
+                if (Math.random() < pixel.getProperty("turning") / 100.0)
                     direction += Math.random() < 0.5 ? -1 : 1;
-                if(direction > 1) direction = 1;
-                else if(direction < -1) direction = -1;
+                if (direction > 1) direction = 1;
+                else if (direction < -1) direction = -1;
                 pixel.changeProperty("direction", direction);
-                int newX = Math.max(Math.min(x + direction, grid.getWidth()-1), 0);
+                int newX = Math.max(Math.min(x + direction, grid.getWidth() - 1), 0);
 
                 //grow
                 if (y > 0 && grid.getPixel(newX, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
                     grid.swapPositions(x, y, newX, y - 1);
                 Pixel p = new Plant3()
-                    .changeProperty("growing", 2)
-                    .changeProperty("gravity", 0)
-                    .changeProperty("support", 0);
+                        .changeProperty("growing", 2)
+                        .changeProperty("gravity", 0)
+                        .changeProperty("support", 0);
                 grid.setPixel(x, y, p);
 
                 //check if it will split
-                if(Math.random() < pixel.getProperty("split") / 100.0)
-                {
+                if (Math.random() < pixel.getProperty("split") / 100.0) {
                     double random = Math.random();
-                    newX = Math.max(Math.min(x + (random < 0.3 ? -1 : random < 0.6 ? 0 : 1), grid.getWidth()-1), 0);
-                    if (y > 0 && grid.getPixel(newX, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density)
-                    {
+                    newX = Math.max(Math.min(x + (random < 0.3 ? -1 : random < 0.6 ? 0 : 1), grid.getWidth() - 1), 0);
+                    if (y > 0 && grid.getPixel(newX, y - 1).getPropOrDefault("density", DEFAULT_DENSITY) < density) {
                         p = new Plant3()
-                            .changeProperty("growing", 1)
-                            .changeProperty("gravity", 0)
-                            .changeProperty("support", 0);
+                                .changeProperty("growing", 1)
+                                .changeProperty("gravity", 0)
+                                .changeProperty("support", 0);
                         grid.setPixel(newX, y - 1, p);
                     }
                 }
@@ -738,9 +732,9 @@ public class GameLogic extends TimerTask {
         if (pixel.hasProperty("fuel")) {
             if (pixel.getProperty("fuel") > 0) {
                 pixel.changeProperty("fuel", pixel.getProperty("fuel") - amount);
-            } else if (Math.random() < pixel.getPropOrDefault("charcoal", 0)/100.0) {
+            } else if (Math.random() < pixel.getPropOrDefault("charcoal", 0) / 100.0) {
                 grid.setPixel(x, y, new Charcoal());
-            } else if (Math.random() < pixel.getPropOrDefault("ash", 0)/100.0) {
+            } else if (Math.random() < pixel.getPropOrDefault("ash", 0) / 100.0) {
                 grid.setPixel(x, y, new Ash());
             } else {
                 grid.setPixel(x, y, new Air());
