@@ -22,7 +22,8 @@ public class Pixel implements Serializable {
         this.type = type;
         this.color = color;
         this.moved = false;
-        this.setProperty("temperature", 50);
+        this.setProperty("temperature", 50)
+            .setProperty("heatConduct", 100);
     }
 
     public Pixel duplicate() {
