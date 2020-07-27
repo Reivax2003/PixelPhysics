@@ -706,7 +706,7 @@ public class GameLogic extends TimerTask {
                     light(original, x + xpos, y + ypos);
                     if (x == 0 || y == 0) {
                         hasFuel = true;
-                        loseFuel(grid.getPixel(x + xpos, y + ypos), r.nextInt(3), x + xpos, y + ypos);
+                        loseFuel(grid.getPixel(x + xpos, y + ypos), r.nextInt(10), x + xpos, y + ypos);
                     }
                 }
             }
