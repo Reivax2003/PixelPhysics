@@ -34,7 +34,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
             new Plant(),
             new AlienPlant(true),
             new Plant3(),
-            new Slime()
+            new Slime(),
+            new Grass(),
     };
     private final Pixel[] solid = {
             new WetSand(),
@@ -69,6 +70,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
             new AlienPlant(true),
             new Plant3(),
             new Slime(),
+            new Grass(),
     };
 
     private ButtonGroup elementButtons;
