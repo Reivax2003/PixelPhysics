@@ -8,7 +8,7 @@ public class Ash extends Pixel {
 
         this
                 .setProperty("gravity", 1)
-                .setProperty("density", 40)
+                .setProperty("density", 41)
                 .setProperty("support", 1)
                 .setProperty("solubility", 50)
                 .setProperty("duration", 300);

@@ -11,6 +11,8 @@ import java.util.TimerTask;
 public class GameLogic extends TimerTask {
 
     public static final int DEFAULT_DENSITY = 10000;
+    public static final int MIN_TEMPERATURE = 0;
+    public static final int MAX_TEMPERATURE = 200;
 
     private final Grid grid;
     private final Renderer panel;
@@ -266,10 +268,10 @@ public class GameLogic extends TimerTask {
                         if (currentPixel.getType().equals("fire")) {
                             flicker(currentPixel, pixelX, pixelY);
                             if (currentPixel.getProperty("strength") == 100) {
-                                spread(currentPixel, "flammable", true, pixelX, pixelY);
+                                spread(currentPixel, true, pixelX, pixelY);
                             }
                         } else if (currentPixel.getType().equals("lava"))
-                            spread(new Fire(), "flammable", false, pixelX, pixelY);
+                            spread(new Fire(), false, pixelX, pixelY);
                     } else {
                         currentPixel.changeProperty("spreads", 1);
                     }
@@ -277,7 +279,7 @@ public class GameLogic extends TimerTask {
 
                 //temperature change system
                 if (currentPixel.hasProperty("heating"))
-                    currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"), 200), 0));
+                    currentPixel.changeProperty("temperature", Math.max(Math.min(currentPixel.getPropOrDefault("temperature", 50) + currentPixel.getProperty("heating"), MAX_TEMPERATURE), MIN_TEMPERATURE));
                 if (currentPixel.hasProperty("temperature")) {
                     if (currentPixel.getType().equals("stone") && currentPixel.getProperty("temperature") > 175)
                         grid.setPixel(pixelX, pixelY, new Lava());
@@ -336,6 +338,35 @@ public class GameLogic extends TimerTask {
                         currentPixel.changeProperty("gravity", 2);
                     } else {
                         currentPixel.changeProperty("gravity", 0);
+                    }
+                }
+
+                //ghost material that acts differently when conducting
+                if (currentPixel.type.equals("ghost")){
+                    if (currentPixel.getProperty("x") == -1){
+                        currentPixel.changeProperty("x", pixelX).changeProperty("y", pixelY);
+                    }
+                    if (currentPixel.getStateOrDefault("conducting", 0) != 0){
+                        int substantial = currentPixel.getProperty("substantial");
+                        substantial = Math.abs(substantial-1);
+                        currentPixel.changeProperty("substantial", substantial);
+                        if (substantial == 0){
+                            currentPixel.changeProperty("density", -Integer.MAX_VALUE);
+                        }
+                        else{
+                            currentPixel.changeProperty("density", Integer.MAX_VALUE);
+                        }
+                    }
+                    if (pixelX != currentPixel.getProperty("x") || pixelY != currentPixel.getProperty("y")){
+                        if (grid.getPixel(currentPixel.getProperty("x"), currentPixel.getProperty("y")).type.equals("air")){
+                            grid.swapPositions(pixelX, pixelY, currentPixel.getProperty("x"), currentPixel.getProperty("y"));
+                            Color color = new Color(currentPixel.getProperty("r"), currentPixel.getProperty("g"), currentPixel.getProperty("b"));
+                            currentPixel.setColor(color);
+                        }
+                        else{
+                            Pixel sample = new Air();
+                            currentPixel.setColor(sample.getColor());
+                        }
                     }
                 }
 
@@ -701,7 +732,7 @@ public class GameLogic extends TimerTask {
     }
 
     //spreads the fire to neighboring flammable pixels
-    public void spread(Pixel original, String fuel, boolean requiresFuel, int xpos, int ypos) {
+    public void spread(Pixel original, boolean requiresFuel, int xpos, int ypos) {
 
         boolean hasFuel = false;
 
@@ -713,7 +744,10 @@ public class GameLogic extends TimerTask {
                     light(original, x + xpos, y + ypos);
                     if (x == 0 || y == 0) {
                         hasFuel = true;
-                        loseFuel(grid.getPixel(x + xpos, y + ypos), r.nextInt(3), x + xpos, y + ypos);
+                        Pixel fuel = grid.getPixel(x + xpos, y + ypos);
+                        int burnAmount = r.nextInt(3) * fuel.getPropOrDefault("burnspeed", 1);
+                        loseFuel(fuel, burnAmount, x + xpos, y + ypos);
+                        original.changeProperty("temperature", Math.max(Math.min(original.getProperty("temperature")+burnAmount, MAX_TEMPERATURE), MIN_TEMPERATURE));
                     }
                 }
             }
