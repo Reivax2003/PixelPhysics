@@ -12,6 +12,7 @@ import sandbox.pixels.Pixel;
 
 public class Grid {
     private final Pixel[][] grid;
+    private int viewMode = 0;
 
     public Grid(int width, int height) {
         grid = new Pixel[width][height];
@@ -99,7 +100,7 @@ public class Grid {
             for (int x = 0; x < getWidth(); x++) {
                 for (int y = 0; y < getHeight(); y++) {
                     out.writeObject(grid[x][y]);
-                }   
+                }
             }
             out.close();
         } catch (Exception e){
@@ -113,11 +114,19 @@ public class Grid {
             for (int x = 0; x < getWidth(); x++) {
                 for (int y = 0; y < getHeight(); y++) {
                     grid[x][y] = (Pixel)out.readObject();
-                }   
+                }
             }
             out.close();
         } catch (Exception e){
             System.out.println("An error occured while loading grid.");
         }
+    }
+
+    public int getView() {
+        return viewMode;
+    }
+
+    public void setView(int viewMode) {
+        this.viewMode = viewMode;
     }
 }
