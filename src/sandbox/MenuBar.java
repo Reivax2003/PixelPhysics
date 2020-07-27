@@ -3,92 +3,99 @@ package sandbox;
 import sandbox.pixels.*;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
-  private final Grid grid;
+    private final Grid grid;
 
-  public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
-        new WetSand(),
-        new Sand(),
-        new Soil(),
-        new Stone(),
-        new Metal(),
-        new Charcoal(),
-        new Ice(),
-        new Water(),
-        new Lava(),
-        new Acid(),
-        new Smoke(),
-        new Steam(),
-        new Fire(),
-        new Electricity(),
-        new Wood(),
-        new Plant(),
-        new AlienPlant(true),
-        new Plant3(),
-        new Slime()
-  };
-  private final Pixel[] solid = {
-      new WetSand(),
-      new Sand(),
-      new Soil(),
-      new Stone(),
-      new Metal(),
-      new Charcoal(),
-      new Ice(),
-  };
-  private final Pixel[] liquid = {
-      new Water(),
-      new Lava(),
-      new Acid(),
-  };
-  private final Pixel[] gas = {
-      new Smoke(),
-      new Steam(),
-  };
-  private final Pixel[] property = {
-      new Fire(),
-      new Electricity(),
-  };
-  private final Pixel[] living = {
-      new Wood(),
-      new Plant(),
-      new AlienPlant(true),
-      new Plant3(),
-      new Slime(),
-  };
+    public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
+            new WetSand(),
+            new Sand(),
+            new Soil(),
+            new Stone(),
+            new Metal(),
+            new Charcoal(),
+            new Ice(),
+            new Ghost(),
+            new Fuse(),
+            new FusePowder(),
+            new Water(),
+            new Lava(),
+            new Acid(),
+            new Gasoline(),
+            new Smoke(),
+            new Steam(),
+            new Fire(),
+            new Electricity(),
+            new Wood(),
+            new Plant(),
+            new AlienPlant(true),
+            new Plant3(),
+            new Slime()
+    };
+    private final Pixel[] solid = {
+            new WetSand(),
+            new Sand(),
+            new Soil(),
+            new Stone(),
+            new Metal(),
+            new Charcoal(),
+            new Ice(),
+            new Ghost(),
+            new Fuse(),
+            new FusePowder(),
+    };
+    private final Pixel[] liquid = {
+            new Water(),
+            new Lava(),
+            new Acid(),
+            new Gasoline(),
+    };
+    private final Pixel[] gas = {
+            new Smoke(),
+            new Steam(),
+    };
+    private final Pixel[] property = {
+            new Fire(),
+            new Electricity(),
+    };
+    private final Pixel[] living = {
+            new Wood(),
+            new Plant(),
+            new AlienPlant(true),
+            new Plant3(),
+            new Slime(),
+    };
 
-  private ButtonGroup elementButtons;
+    private ButtonGroup elementButtons;
 
-  public int chosen = 1; //currently selected substance
+    public int chosen = 1; //currently selected substance
 
-  public MenuBar(Grid grid) {
-    this.grid = grid;
+    public MenuBar(Grid grid) {
+        this.grid = grid;
 
-    JMenu solidsMenu = new JMenu("Solid");
-    JMenu liquidsMenu = new JMenu("Liquid");
-    JMenu gassesMenu = new JMenu("Gas");
-    JMenu propertiesMenu = new JMenu("Property");
-    JMenu livingMenu = new JMenu("Living");
-    elementButtons = new ButtonGroup();
+        JMenu solidsMenu = new JMenu("Solid");
+        JMenu liquidsMenu = new JMenu("Liquid");
+        JMenu gassesMenu = new JMenu("Gas");
+        JMenu propertiesMenu = new JMenu("Property");
+        JMenu livingMenu = new JMenu("Living");
+        elementButtons = new ButtonGroup();
 
-    int imod = 0;
-    populateMenu(solidsMenu, solid, imod);
-    imod += solid.length;
-    populateMenu(liquidsMenu, liquid, imod);
-    imod += liquid.length;
-    populateMenu(gassesMenu, gas, imod);
-    imod += gas.length;
-    populateMenu(propertiesMenu, property, imod);
-    imod += property.length;
-    populateMenu(livingMenu, living, imod);
-
-
+        int imod = 0;
+        populateMenu(solidsMenu, solid, imod);
+        imod += solid.length;
+        populateMenu(liquidsMenu, liquid, imod);
+        imod += liquid.length;
+        populateMenu(gassesMenu, gas, imod);
+        imod += gas.length;
+        populateMenu(propertiesMenu, property, imod);
+        imod += property.length;
+        populateMenu(livingMenu, living, imod);
 
 
-    // Build Elements Menus
+        // Build Elements Menus
     /*JMenu elementsMenu = new JMenu("Elements");
     JMenu elementsMenu2 = new JMenu("Elem. cont.");
     ButtonGroup elementButtons = new ButtonGroup();
@@ -124,64 +131,62 @@ public class MenuBar extends JMenuBar implements ActionListener {
       button.addActionListener(this);
     }*/
 
-    // Add elments menus to bar
-    this.add(solidsMenu);
-    this.add(liquidsMenu);
-    this.add(gassesMenu);
-    this.add(propertiesMenu);
-    this.add(livingMenu);
+        // Add elments menus to bar
+        this.add(solidsMenu);
+        this.add(liquidsMenu);
+        this.add(gassesMenu);
+        this.add(propertiesMenu);
+        this.add(livingMenu);
 
-    // Whitespace
-    this.add(Box.createHorizontalGlue());
+        // Whitespace
+        this.add(Box.createHorizontalGlue());
 
-    // Build settings/control/options decide later menu
-    JMenu controlMenu = new JMenu("Control");
-    JMenuItem reset = new JMenuItem("Reset");
-    reset.setActionCommand("reset");
-    reset.addActionListener(this);
-    controlMenu.add(reset);
+        // Build settings/control/options decide later menu
+        JMenu controlMenu = new JMenu("Control");
+        JMenuItem reset = new JMenuItem("Reset");
+        reset.setActionCommand("reset");
+        reset.addActionListener(this);
+        controlMenu.add(reset);
 
-    // Add control menu to bar
-    this.add(controlMenu);
-  }
-
-
-  public void actionPerformed(ActionEvent a) { // Detects interaction with menu
-    String action = a.getActionCommand();
-    try { //Assumes all numeric action events are chosing type
-      chosen = Integer.parseInt(action);
+        // Add control menu to bar
+        this.add(controlMenu);
     }
-    catch(NumberFormatException e) {
-      if (action == "reset") {
-        grid.fillGrid(new Air());
-      }
+
+
+    public void actionPerformed(ActionEvent a) { // Detects interaction with menu
+        String action = a.getActionCommand();
+        try { //Assumes all numeric action events are chosing type
+            chosen = Integer.parseInt(action);
+        } catch (NumberFormatException e) {
+            if (action == "reset") {
+                grid.fillGrid(new Air());
+            }
+        }
     }
-  }
 
-  public void populateMenu(JMenu menu, Pixel[] list, int indexMod){
-    for(int p = 0; p < list.length; p ++) {
-      JRadioButtonMenuItem button = new JRadioButtonMenuItem(list[p].getType());
-      button.setForeground(list[p].getColor().darker()); // Color text for distinction
-      elementButtons.add(button);
-      menu.add(button);
-      String index = String.valueOf(p+indexMod);
+    public void populateMenu(JMenu menu, Pixel[] list, int indexMod) {
+        for (int p = 0; p < list.length; p++) {
+            JRadioButtonMenuItem button = new JRadioButtonMenuItem(list[p].getType());
+            button.setForeground(list[p].getColor().darker()); // Color text for distinction
+            elementButtons.add(button);
+            menu.add(button);
+            String index = String.valueOf(p + indexMod);
 
-      if(p+indexMod == 1) { // Button one is by default selected as the first option
-        button.setSelected(true);
-      }
+            if (p + indexMod == 1) { // Button one is by default selected as the first option
+                button.setSelected(true);
+            }
 
-      if (p+indexMod < 10)
-        button.setAccelerator(KeyStroke.getKeyStroke(index)); // 0-9 by key
-      else if (p+indexMod < 20){
-        button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1),ActionEvent.SHIFT_MASK)); // 10-19 by shift and first digit
-      }
-      else if (p+indexMod < 30){
-        button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1),ActionEvent.CTRL_MASK)); // 20-29 by control and first digit
-      }
+            if (p + indexMod < 10)
+                button.setAccelerator(KeyStroke.getKeyStroke(index)); // 0-9 by key
+            else if (p + indexMod < 20) {
+                button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1), ActionEvent.SHIFT_MASK)); // 10-19 by shift and first digit
+            } else if (p + indexMod < 30) {
+                button.setAccelerator(KeyStroke.getKeyStroke(index.charAt(1), ActionEvent.CTRL_MASK)); // 20-29 by control and first digit
+            }
 
 
-      button.setActionCommand(index);
-      button.addActionListener(this);
+            button.setActionCommand(index);
+            button.addActionListener(this);
+        }
     }
-  }
 }
