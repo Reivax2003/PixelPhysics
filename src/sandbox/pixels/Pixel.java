@@ -10,6 +10,7 @@ public class Pixel {
     protected boolean moved;
     HashMap<String, Integer> properties = new HashMap<>();
     HashMap<String, Integer> state = new HashMap<>();
+    public Pixel other = null;
 
     public Pixel(String type, Color color) {
         this.type = type;
@@ -90,5 +91,12 @@ public class Pixel {
 
     public void setMoved(boolean truefalse) {
         this.moved = truefalse;
+    }
+
+    public Pixel getOther(){
+        return other;
+    }
+    public void setOther(Pixel pixel){
+        other = pixel;
     }
 }
