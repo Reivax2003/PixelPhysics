@@ -95,7 +95,7 @@ public class GameLogic extends TimerTask {
                         grid.setPixel(pixelX, pixelY + 1, products[1]);
                     }
                 }
-                
+
                 if (currentPixel.hasProperty("temperature")) {
                     //Temp Change
                     if (pixelX > 0) {//left
@@ -660,6 +660,7 @@ public class GameLogic extends TimerTask {
         double spreadDecrease = 0.05;
         double decreaseAmount = 0;
 
+        double temperature = pixel.getProperty("temperature") / 200.0; //Range from 0 - 1
         double strength = pixel.getProperty("strength") / 100.0;
         Color color = pixel.getColor();
 
@@ -667,6 +668,9 @@ public class GameLogic extends TimerTask {
             if (r.nextDouble() <= strength * spreadChance && grid.getPixel(x, y - 1).hasProperty("overwritable")) {
                 Pixel newFlame = new Fire();
                 newFlame.changeProperty("strength", (int) ((strength - spreadDecrease) * 100));
+                newFlame.changeProperty("heating", 0);
+                newFlame.changeProperty("temperature", (int) ((temperature - spreadDecrease) * 200));
+
 
                 color = new Color(color.getRed() / 255.0f, (color.getGreen() / 255.0f) * (newFlame.getProperty("strength") / 100.0f), color.getBlue() / 255.0f);
                 newFlame.setColor(color);
