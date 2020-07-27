@@ -1,9 +1,12 @@
 package sandbox;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import sandbox.pixels.Pixel;
 
@@ -91,27 +94,30 @@ public class Grid {
     }
 
     public void saveGrid(File file){
-        // try(FileOutputStream out = new FileOutputStream(file)){
-        //     //iterate through each pixel
-        //     for (int x = 0; x < getWidth(); x++) {
-        //         for (int y = 0; y < getHeight(); y++) {
-        //             Pixel pixel = grid[x][y];
-        //             //name: length, data
-        //             out.write(pixel.getType().length());
-        //             out.write(pixel.getType().getBytes());
-        //             //color: RGB as int
-        //             out.write(pixel.getColor().getRGB());
-        //             //properties: length, 
-                    
-        //         }   
-        //     }
-        //     out.close();
-        // } catch (Exception e){
-        //     System.out.println("An error occured while saving grid.");
-        // }
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
+            //iterate through each pixel
+            for (int x = 0; x < getWidth(); x++) {
+                for (int y = 0; y < getHeight(); y++) {
+                    out.writeObject(grid[x][y]);
+                }   
+            }
+            out.close();
+        } catch (Exception e){
+            System.out.println("An error occured while saving grid.");
+        }
     }
 
     public void loadGrid(File file){
-        
+        try(ObjectInputStream out = new ObjectInputStream(new FileInputStream(file))){
+            //iterate through each pixel
+            for (int x = 0; x < getWidth(); x++) {
+                for (int y = 0; y < getHeight(); y++) {
+                    grid[x][y] = (Pixel)out.readObject();
+                }   
+            }
+            out.close();
+        } catch (Exception e){
+            System.out.println("An error occured while loading grid.");
+        }
     }
 }
