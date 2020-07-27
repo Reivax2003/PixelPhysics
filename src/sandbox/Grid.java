@@ -1,5 +1,13 @@
 package sandbox;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import sandbox.pixels.Pixel;
 
 public class Grid {
@@ -82,6 +90,34 @@ public class Grid {
                 Pixel p = pixel.duplicate();
                 this.grid[x][y] = p;
             }
+        }
+    }
+
+    public void saveGrid(File file){
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
+            //iterate through each pixel
+            for (int x = 0; x < getWidth(); x++) {
+                for (int y = 0; y < getHeight(); y++) {
+                    out.writeObject(grid[x][y]);
+                }   
+            }
+            out.close();
+        } catch (Exception e){
+            System.out.println("An error occured while saving grid.");
+        }
+    }
+
+    public void loadGrid(File file){
+        try(ObjectInputStream out = new ObjectInputStream(new FileInputStream(file))){
+            //iterate through each pixel
+            for (int x = 0; x < getWidth(); x++) {
+                for (int y = 0; y < getHeight(); y++) {
+                    grid[x][y] = (Pixel)out.readObject();
+                }   
+            }
+            out.close();
+        } catch (Exception e){
+            System.out.println("An error occured while loading grid.");
         }
     }
 }

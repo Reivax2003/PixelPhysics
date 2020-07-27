@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 public class MenuBar extends JMenuBar implements ActionListener {
 
     private final Grid grid;
+    private final JFileChooser fileChooser = new JFileChooser();
 
     public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
             new WetSand(),
@@ -147,10 +148,18 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         // Build settings/control/options decide later menu
         JMenu controlMenu = new JMenu("Control");
-        JMenuItem reset = new JMenuItem("Reset");
-        reset.setActionCommand("reset");
-        reset.addActionListener(this);
-        controlMenu.add(reset);
+        JMenuItem menuItem = new JMenuItem("Reset");
+        menuItem.setActionCommand("reset");
+        menuItem.addActionListener(this);
+        controlMenu.add(menuItem);
+        menuItem = new JMenuItem("Save");
+        menuItem.setActionCommand("save");
+        menuItem.addActionListener(this);
+        controlMenu.add(menuItem);
+        menuItem = new JMenuItem("Load");
+        menuItem.setActionCommand("load");
+        menuItem.addActionListener(this);
+        controlMenu.add(menuItem);
 
         // Add control menu to bar
         this.add(controlMenu);
@@ -164,6 +173,16 @@ public class MenuBar extends JMenuBar implements ActionListener {
         } catch (NumberFormatException e) {
             if (action == "reset") {
                 grid.fillGrid(new Air());
+            }if (action == "save") {
+                int option = fileChooser.showSaveDialog(this);
+                if(option == JFileChooser.APPROVE_OPTION){
+                     grid.saveGrid(fileChooser.getSelectedFile());
+                }
+            }if (action == "load") {
+               int option = fileChooser.showOpenDialog(this);
+               if(option == JFileChooser.APPROVE_OPTION){
+                    grid.loadGrid(fileChooser.getSelectedFile());
+               }
             }
         }
     }
