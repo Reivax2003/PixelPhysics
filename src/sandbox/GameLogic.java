@@ -769,10 +769,10 @@ public class GameLogic extends TimerTask {
             }
         } catch (Exception ignored) {
         }
-        boolean hasBase = false;
+        boolean hasBase = strength == 1;
         int maxGap = pixel.getPropOrDefault("maxgap", 5);
         for (int i = y+1; i < grid.getHeight() && i < y + maxGap; i++) {
-            if(grid.getPixel(x, i).getType() == "fire"){
+            if(grid.getPixel(x, i).getType().equals("fire")){
                 hasBase = true;
             }
         }
