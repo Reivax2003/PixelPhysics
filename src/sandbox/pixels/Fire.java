@@ -9,7 +9,8 @@ public class Fire extends Pixel {
         this
                 .setProperty("spreads", 1)
                 .setProperty("density", 0)
-                .setProperty("strength", 100); //property for fire to make flickering flames
+                .setProperty("strength", 100) //property for fire to make flickering flames
+                .setProperty("maxgap", 5);
     }
 
 }
