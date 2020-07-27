@@ -1,10 +1,16 @@
 package sandbox.pixels;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Pixel {
+public class Pixel implements Serializable {
 
+    /**
+     *
+     */
+    //not sure what this is, but visual studio code said something about a serialization id
+    private static final long serialVersionUID = -812730393170643872L;
     public String type;
     protected Color color;
     protected boolean moved;
