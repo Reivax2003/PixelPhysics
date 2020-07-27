@@ -37,7 +37,7 @@ public class Reactions {
       if (b.hasProperty("temperature"))
       {
           int avgTemp = (a.getProperty("temperature") + b.getProperty("temperature"))/2;
-          int quarterChange = (a.getProperty("temperature") - avgTemp) / 2;
+          int quarterChange = ((a.getProperty("temperature") - avgTemp) / 2) * (a.getType() == "air" || b.getType() == "air" ?  0 : 1);//Heat transfer currently disabled for air
           return new Pixel[]{a.changeProperty("temperature", a.getProperty("temperature") - quarterChange), b.changeProperty("temperature", b.getProperty("temperature") + quarterChange)};
       }
       else
