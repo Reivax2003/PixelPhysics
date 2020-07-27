@@ -10,7 +10,7 @@ public class Soil extends Pixel {
                 .setProperty("gravity", 1)
                 .setProperty("density", 80)
                 .setProperty("support", 1)
-                .setProperty("fertile", 1)
+                .setProperty("fertile", 2)
                 .setProperty("solubility", 50);
     }
 }
