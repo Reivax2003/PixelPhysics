@@ -302,6 +302,10 @@ public class GameLogic extends TimerTask {
                     else if (currentPixel.getType().equals("steam") && currentPixel.getProperty("temperature") < 90)
                         grid.setPixel(pixelX, pixelY, new Water());
                     grid.getPixel(pixelX, pixelY).changeProperty("temperature", currentPixel.getProperty("temperature")); //Keep old temp
+
+                    if(!currentPixel.getType().equals("air") && currentPixel.getProperty("temperature") > 175){
+                        spread(new Fire(), false, pixelX, pixelY);
+                    }
                 }
 
                 //plants
