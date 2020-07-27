@@ -10,60 +10,60 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     private final Grid grid;
 
-    public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
-            new WetSand(),
-            new Sand(),
-            new Soil(),
-            new Stone(),
-            new Metal(),
-            new Charcoal(),
-            new Ice(),
-            new Fuse(),
-            new FusePowder(),
-            new Water(),
-            new Lava(),
-            new Acid(),
-            new Smoke(),
-            new Steam(),
-            new Fire(),
-            new Electricity(),
-            new Wood(),
-            new Plant(),
-            new AlienPlant(true),
-            new Plant3(),
-            new Slime()
-    };
-    private final Pixel[] solid = {
-            new WetSand(),
-            new Sand(),
-            new Soil(),
-            new Stone(),
-            new Metal(),
-            new Charcoal(),
-            new Ice(),
-            new Fuse(),
-            new FusePowder(),
-    };
-    private final Pixel[] liquid = {
-            new Water(),
-            new Lava(),
-            new Acid(),
-    };
-    private final Pixel[] gas = {
-            new Smoke(),
-            new Steam(),
-    };
-    private final Pixel[] property = {
-            new Fire(),
-            new Electricity(),
-    };
-    private final Pixel[] living = {
-            new Wood(),
-            new Plant(),
-            new AlienPlant(true),
-            new Plant3(),
-            new Slime(),
-    };
+  public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
+        new WetSand(),
+        new Sand(),
+        new Soil(),
+        new Stone(),
+        new Metal(),
+        new Charcoal(),
+        new Ice(),
+        new Ghost(),
+        new Water(),
+        new Lava(),
+        new Acid(),
+        new Gasoline(),
+        new Smoke(),
+        new Steam(),
+        new Fire(),
+        new Electricity(),
+        new Wood(),
+        new Plant(),
+        new AlienPlant(true),
+        new Plant3(),
+        new Slime()
+  };
+  private final Pixel[] solid = {
+      new WetSand(),
+      new Sand(),
+      new Soil(),
+      new Stone(),
+      new Metal(),
+      new Charcoal(),
+      new Ice(),
+      new Ghost(),
+  };
+  private final Pixel[] liquid = {
+      new Water(),
+      new Lava(),
+      new Acid(),
+      new Gasoline(),
+  };
+  private final Pixel[] gas = {
+      new Smoke(),
+      new Steam(),
+  };
+  private final Pixel[] property = {
+      new Fire(),
+      new Electricity(),
+  };
+  private final Pixel[] living = {
+      new Wood(),
+      new Plant(),
+      new AlienPlant(true),
+      new Plant3(),
+      new Slime(),
+  };
 
     private ButtonGroup elementButtons;
 

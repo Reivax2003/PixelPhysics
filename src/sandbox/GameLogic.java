@@ -339,6 +339,35 @@ public class GameLogic extends TimerTask {
                     }
                 }
 
+                //ghost material that acts differently when conducting
+                if (currentPixel.type.equals("ghost")){
+                    if (currentPixel.getProperty("x") == -1){
+                        currentPixel.changeProperty("x", pixelX).changeProperty("y", pixelY);
+                    }
+                    if (currentPixel.getStateOrDefault("conducting", 0) != 0){
+                        int substantial = currentPixel.getProperty("substantial");
+                        substantial = Math.abs(substantial-1);
+                        currentPixel.changeProperty("substantial", substantial);
+                        if (substantial == 0){
+                            currentPixel.changeProperty("density", -Integer.MAX_VALUE);
+                        }
+                        else{
+                            currentPixel.changeProperty("density", Integer.MAX_VALUE);
+                        }
+                    }
+                    if (pixelX != currentPixel.getProperty("x") || pixelY != currentPixel.getProperty("y")){
+                        if (grid.getPixel(currentPixel.getProperty("x"), currentPixel.getProperty("y")).type.equals("air")){
+                            grid.swapPositions(pixelX, pixelY, currentPixel.getProperty("x"), currentPixel.getProperty("y"));
+                            Color color = new Color(currentPixel.getProperty("r"), currentPixel.getProperty("g"), currentPixel.getProperty("b"));
+                            currentPixel.setColor(color);
+                        }
+                        else{
+                            Pixel sample = new Air();
+                            currentPixel.setColor(sample.getColor());
+                        }
+                    }
+                }
+
                 //certain substances will go away over time
                 if (currentPixel.hasProperty("duration")) {
                     int duration = currentPixel.getProperty("duration");
