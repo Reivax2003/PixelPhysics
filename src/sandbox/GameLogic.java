@@ -500,6 +500,8 @@ public class GameLogic extends TimerTask {
         steps--;
     }
 
+    //Slime Logic
+
     // refreshes the list of air pixels around the slime
     public void refreshEdges() {
         slimeEdgesEmpty.clear();
@@ -558,6 +560,8 @@ public class GameLogic extends TimerTask {
         double dist = Math.sqrt((x * x) + (y * y));
         return dist;
     }
+
+    //Plant Logic
 
     public void grow1(Pixel pixel, int x, int y) {
         int growing = pixel.getProperty("growing");
@@ -729,6 +733,8 @@ public class GameLogic extends TimerTask {
             }
         }
     }
+
+    //Fire Logic
 
     //adds fire pixels about the main fire pixel to give a special effect
     public void flicker(Pixel pixel, int x, int y) {
