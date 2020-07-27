@@ -77,6 +77,12 @@ public class Renderer extends JPanel {
                     pixel.setState("flower", flower);
                     color = pastels[flower - 1];
                 }
+
+                if(grid.getView() == 1 && pixel.getType() != "air") { // Heat map
+                    int temperature = pixel.getPropOrDefault("temperature",50);
+                    color = gradientColor(temperature, 200, Color.blue.darker(), Color.red.brighter());
+                }
+
                 g.setColor(bool ? nudgeColor(color) : color);
                 g.fillRect(x * pixelsPerSquare + xOffset, y * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
             }
@@ -105,5 +111,15 @@ public class Renderer extends JPanel {
         float h = hsb[0];
         h = (h + hOffset) % 1.0f;
         return Color.getHSBColor(h, hsb[1], hsb[2]);
+    }
+
+    private Color gradientColor(int level, int max, Color low, Color high) {
+      double portionHigh = level / (double) max;
+
+      double red = high.getRed() * portionHigh + low.getRed()  * (1 - portionHigh);
+      double green = high.getGreen() * portionHigh + low.getGreen()  * (1 - portionHigh);
+      double blue = high.getBlue() * portionHigh + low.getBlue()  * (1 - portionHigh);
+
+      return new Color((int) red, (int) green, (int) blue);
     }
 }

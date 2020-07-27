@@ -146,9 +146,23 @@ public class MenuBar extends JMenuBar implements ActionListener {
         // Whitespace
         this.add(Box.createHorizontalGlue());
 
+        // Build view Menu (IF this gets big enough modify element list builder to do it)
+        JMenu viewMenu = new JMenu("View");
+        JMenuItem menuItem = new JMenuItem("Normal");
+        menuItem.setActionCommand("normal"); //Possibly change these to radio buttons, but that is an asthetic choice
+        menuItem.addActionListener(this); //Probably add hotkeys
+        viewMenu.add(menuItem);
+        menuItem = new JMenuItem("Heat");
+        menuItem.setActionCommand("heat");
+        menuItem.addActionListener(this);
+        viewMenu.add(menuItem);
+
+        // Add view menu
+        this.add(viewMenu);
+
         // Build settings/control/options decide later menu
         JMenu controlMenu = new JMenu("Control");
-        JMenuItem menuItem = new JMenuItem("Reset");
+        menuItem = new JMenuItem("Reset");
         menuItem.setActionCommand("reset");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
@@ -183,6 +197,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
                if(option == JFileChooser.APPROVE_OPTION){
                     grid.loadGrid(fileChooser.getSelectedFile());
                }
+            }if (action == "normal") {
+                grid.setView(0);
+            }if (action == "heat") {
+                grid.setView(1);
             }
         }
     }
