@@ -20,8 +20,6 @@ public class Reactions {
             return new Pixel[]{a, new Air()};
         else if (a.getType().equals("electricity") && b.hasProperty("flammable"))
             return new Pixel[]{new Fire(), b};
-        else if (a.getStateOrDefault("conducting", 0) != 0 && b.hasProperty("flammable"))
-            return new Pixel[]{a, new Fire()};
 
         // else if (a.getType().equals("water") && b.getPropOrDefault("temperature", 50) > 60)
         //     return new Pixel[]{new Steam(), b.changeProperty("temperature", b.getProperty("temperature")-50)};

@@ -155,6 +155,9 @@ public class GameLogic extends TimerTask {
 
                     if (currentPixel.getStateOrDefault("conducting", 0) != 0) {
                         currentPixel.setState("recovering", 1);
+
+                        // Ignite flamable neighbors
+                        spread(new Fire(), false, pixelX, pixelY);
                     }
 
                     if (!wasRecovering) {
