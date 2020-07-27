@@ -18,6 +18,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         new Charcoal(),
         new Ice(),
         new Ghost(),
+        new Duplicate(),
         new Water(),
         new Lava(),
         new Acid(),
@@ -41,6 +42,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
       new Charcoal(),
       new Ice(),
       new Ghost(),
+      new Duplicate(),
   };
   private final Pixel[] liquid = {
       new Water(),

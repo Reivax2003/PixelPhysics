@@ -368,6 +368,55 @@ public class GameLogic extends TimerTask {
                     }
                 }
 
+                //duplication material
+                if (currentPixel.type.equals("duplicate")){
+                    if (currentPixel.getStateOrDefault("conducting", 0) != 0){
+                        int active = Math.abs(currentPixel.getProperty("active")-1);
+                        currentPixel.changeProperty("active", active);
+                    }
+                    if (currentPixel.getOther() != null) {
+                        if (currentPixel.getProperty("active") == 1){
+                            if (pixelY > 0 && grid.getPixel(pixelX, pixelY - 1).type.equals("air")) {
+                                grid.setPixel(pixelX, pixelY - 1, currentPixel.getOther().duplicate());
+                            }
+                            if (pixelX < grid.getWidth() - 1 && grid.getPixel(pixelX + 1, pixelY).type.equals("air")) {
+                                grid.setPixel(pixelX + 1, pixelY, currentPixel.getOther().duplicate());
+                            }
+                            if (pixelY < grid.getHeight() - 1 && grid.getPixel(pixelX, pixelY + 1).type.equals("air")) {
+                                grid.setPixel(pixelX, pixelY + 1, currentPixel.getOther().duplicate());
+                            }
+                            if (pixelX > 0 && grid.getPixel(pixelX - 1, pixelY).type.equals("air")) {
+                                grid.setPixel(pixelX - 1, pixelY, currentPixel.getOther().duplicate());
+                            }
+                        }
+                    } else{
+                        if (pixelY > 0) {
+                            if (!grid.getPixel(pixelX, pixelY-1).hasProperty("duplicateImmune"))
+                                currentPixel.setOther(grid.getPixel(pixelX, pixelY - 1));
+                            else
+                                currentPixel.setOther(grid.getPixel(pixelX, pixelY - 1).getOther());
+                        }
+                        if (pixelX < grid.getWidth() - 1 && currentPixel.getOther() == null) {
+                            if (!grid.getPixel(pixelX+1, pixelY).hasProperty("duplicateImmune"))
+                                currentPixel.setOther(grid.getPixel(pixelX+1, pixelY));
+                            else
+                                currentPixel.setOther(grid.getPixel(pixelX+1, pixelY).getOther());
+                        }
+                        if (pixelY < grid.getHeight() - 1 && currentPixel.getOther() == null) {
+                            if (!grid.getPixel(pixelX, pixelY+1).hasProperty("duplicateImmune"))
+                                currentPixel.setOther(grid.getPixel(pixelX, pixelY + 1));
+                            else
+                                currentPixel.setOther(grid.getPixel(pixelX, pixelY + 1).getOther());
+                        }
+                        if (pixelX > 0 && currentPixel.getOther() == null) {
+                            if (!grid.getPixel(pixelX-1, pixelY).hasProperty("duplicateImmune"))
+                                currentPixel.setOther(grid.getPixel(pixelX-1, pixelY));
+                            else
+                                currentPixel.setOther(grid.getPixel(pixelX-1, pixelY).getOther());
+                        }
+                    }
+                }
+
                 //certain substances will go away over time
                 if (currentPixel.hasProperty("duration")) {
                     int duration = currentPixel.getProperty("duration");
