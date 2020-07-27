@@ -362,10 +362,12 @@ public class GameLogic extends TimerTask {
                             grid.swapPositions(pixelX, pixelY, currentPixel.getProperty("x"), currentPixel.getProperty("y"));
                             Color color = new Color(currentPixel.getProperty("r"), currentPixel.getProperty("g"), currentPixel.getProperty("b"));
                             currentPixel.setColor(color);
+                            currentPixel.changeProperty("conductive", 100);
                         }
                         else{
                             Pixel sample = new Air();
                             currentPixel.setColor(sample.getColor());
+                            currentPixel.changeProperty("conductive", 0);
                         }
                     }
                 }
