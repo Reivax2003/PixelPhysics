@@ -654,8 +654,8 @@ public class GameLogic extends TimerTask {
         double spreadDecrease = 0.05;
         double decreaseAmount = 0;
 
-        double temperature = pixel.getProperty("temperature") / 200.0; //Range from 0 - 1
-        double strength = pixel.getProperty("strength") / 100.0;
+        double temperature = pixel.getProperty("temperature") / 100.0; //Range from 0 - 2 starts at 1.5
+        double strength = pixel.getProperty("strength") / 100.0; //Range from 0 - 1 starts at 1
         Color color = pixel.getColor();
 
         try {
@@ -663,7 +663,7 @@ public class GameLogic extends TimerTask {
                 Pixel newFlame = new Fire();
                 newFlame.changeProperty("strength", (int) ((strength - spreadDecrease) * 100));
                 newFlame.changeProperty("heating", 0);
-                newFlame.changeProperty("temperature", (int) ((temperature - spreadDecrease) * 200));
+                newFlame.changeProperty("temperature", (int) ((temperature - spreadDecrease*2) * 100));
 
 
                 color = new Color(color.getRed() / 255.0f, (color.getGreen() / 255.0f) * (newFlame.getProperty("strength") / 100.0f), color.getBlue() / 255.0f);
@@ -681,7 +681,14 @@ public class GameLogic extends TimerTask {
             }
         }
 
-        if (!hasBase || r.nextDouble() > strength) {
+        double burnOut = r.nextDouble();
+        // System.out.println("Temp - .5 and strength");
+        // System.out.println(temperature - .5);
+        // System.out.println(burnOut > temperature - .5);
+        // System.out.println(strength + .1);
+        // System.out.println(burnOut > strength + .1);
+
+        if (!hasBase || burnOut > temperature - .5 || burnOut > strength + .1) {
             strength *= decreaseAmount;
             if (strength == 0) {
                 if (r.nextDouble() < 0.01) {
