@@ -9,6 +9,7 @@ public class FusePowder extends Pixel {
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 25)
+                .setProperty("burnspeed", 5)
                 .setProperty("ash", 5)
                 .setProperty("support", 1)
                 .setProperty("gravity", 1)
