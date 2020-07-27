@@ -275,6 +275,11 @@ public class GameLogic extends TimerTask {
                             }
                         } else if (currentPixel.getType().equals("lava"))
                             spread(new Fire(), false, pixelX, pixelY);
+                        else if (currentPixel.getType().equals("grass"))
+                            if (checkSurroundingsFor(currentPixel, pixelX, pixelY, "fertile", 1, Integer.MAX_VALUE, 1, false) > 0){
+                                coldSpread(new Grass(), pixelX, pixelY, "fertile", 2, 2, true);
+                                currentPixel.changeProperty("gravity", 0);
+                            }
                     } else {
                         currentPixel.changeProperty("spreads", 1);
                     }
@@ -324,11 +329,11 @@ public class GameLogic extends TimerTask {
                         panel.slimeExists = true;
                     }
                     int neighbors = checkSurroundingsFor(currentPixel, pixelX, pixelY, "group", 1, 1, 1, false);
-                    int supports = checkSurroundingsFor(currentPixel, pixelX, pixelY, "support", 1, Integer.MAX_VALUE, 1, true);
+                    int supports = checkSurroundingsFor(currentPixel, pixelX, pixelY, "density", 1, Integer.MAX_VALUE, 1, true);
                     if (currentPixel.getProperty("group") == 1 && neighbors < 8) {
                         slimeEdges.add(new ArrayList<Integer>(Arrays.asList(pixelX, pixelY)));
                     }
-                    if (supports > 0) {
+                    if (supports > 0 && currentPixel.getProperty("stable") == 0) {
                         slimeSupports += 1;
                         currentPixel.changeProperty("stable", 1);
                     } else {
@@ -337,11 +342,11 @@ public class GameLogic extends TimerTask {
                             slimeSupports -= 1;
                         }
                     }
-                    if (supports == 0) {
+                    /*if (supports == 0) {
                         currentPixel.changeProperty("gravity", 2);
                     } else {
                         currentPixel.changeProperty("gravity", 0);
-                    }
+                    }*/
                 }
 
                 //ghost material that acts differently when conducting
@@ -782,6 +787,23 @@ public class GameLogic extends TimerTask {
                     grid.setPixel(x, y, new Air());
                 }
             }
+        }
+    }
+    public void coldSpread(Pixel original, int xpos, int ypos, String spreadable, int min, int max, boolean needsFuel){
+        boolean fuel = !needsFuel;
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                if (x + xpos >= 0 && x + xpos < grid.getWidth() && y + ypos >= 0 && y + ypos < grid.getHeight() && grid.getPixel(x + xpos, y + ypos).hasProperty(spreadable) && grid.getPixel(x + xpos, y + ypos).getProperty(spreadable) >= min && grid.getPixel(x + xpos, y + ypos).getProperty(spreadable) <= max) {
+                    if (grid.getPixel(x + xpos, y + ypos - 1).hasProperty("overwritable") && Math.random() < 0.1) {
+                        grid.setPixel(x + xpos, y + ypos - 1, original.duplicate());
+                    }
+                    if (x == 0 || y == 0)
+                        fuel = true;
+                }
+            }
+        }
+        if (!fuel) {
+            grid.setPixel(xpos, ypos, new Air());
         }
     }
 
