@@ -89,9 +89,9 @@ public class Renderer extends JPanel {
                     color = pastels[flower - 1];
                 }
 
-                if (grid.getView() == 1 && !pixel.getType().equals("air")) { // Heat map
+                if (grid.getView() == 1 /*&& !pixel.getType().equals("air")*/) { // Heat map
                     int temperature = pixel.getPropOrDefault("temperature", 50);
-                    color = gradientColor(temperature, 200, Color.blue.darker(), Color.red.brighter());
+                    color = gradientColor(1, 2, color, gradientColor(temperature, 200, Color.blue.darker(), Color.red.brighter()));
                 }
 
                 g.setColor(bool ? nudgeColor(color) : color);
