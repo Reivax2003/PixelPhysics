@@ -788,7 +788,7 @@ public class GameLogic extends TimerTask {
         double burnOut = r.nextDouble();
 
 
-        if (!hasBase || burnOut > temperature - .80 || burnOut > strength + .1) {
+        if (!hasBase || burnOut > temperature - .60|| burnOut > strength + .1) {
             strength *= decreaseAmount;
             if (strength == 0) {
                 if (r.nextDouble() < 0.01) {
