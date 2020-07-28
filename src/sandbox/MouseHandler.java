@@ -89,10 +89,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
         if (squareY < 0 || squareY > grid.getHeight() - 1) {
             return;
         }
-
-        if(menuBar.infiniteEnergy)
-            panel.energy = 1000000;
-
+        
         //left click to add pixels, right click to remove
         if (lastMouseX == -1) {
             if (button == MouseEvent.BUTTON1) {
