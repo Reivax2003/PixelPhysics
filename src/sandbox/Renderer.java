@@ -108,7 +108,7 @@ public class Renderer extends JPanel {
         if(menuBar.infiniteEnergy)
             grid.energy = 1000000;
         g.setColor(Color.yellow);
-        g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, grid.energy * pixelsPerSquare / 10, pixelsPerSquare / 2);
+        g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, Math.min(grid.energy, grid.MAX_ENERGY) * pixelsPerSquare / 10, pixelsPerSquare / 2);
 
         if (!imagesFailedLoading) {
             if (paused) {
