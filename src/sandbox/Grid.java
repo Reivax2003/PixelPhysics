@@ -7,11 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Random;
 
-import sandbox.pixels.Pixel;
+import sandbox.pixels.*;
 
 public class Grid {
     private final Pixel[][] grid;
+    private Random r;
 
     public Grid(int width, int height) {
         grid = new Pixel[width][height];
@@ -118,6 +120,81 @@ public class Grid {
             out.close();
         } catch (Exception e){
             System.out.println("An error occured while loading grid.");
+        }
+    }
+    public void worldGen(long seed){
+        r = new Random(seed);
+        genDirt(this.getHeight()/5, 1);
+        genLake();
+    }
+    public void genDirt(int maxHeight, int minHeight){
+        int plus = 15;
+        int minus = 15;
+
+        int yChange = (maxHeight-minHeight);
+
+        int yCoord = (int) (r.nextDouble()*yChange+minHeight);
+
+
+        for (int x = 0; x < grid.length; x++){
+
+            this.setPixel(x, (this.getHeight()-1)-yCoord, new Grass());
+            for (int i = yCoord-1; i >= 0; i--){
+                this.setPixel(x, (this.getHeight()-1)-i, new Soil());
+            }
+
+            if (r.nextDouble()*100 < plus && yCoord < maxHeight){
+                yCoord++;
+                plus--;
+                minus++;
+            }
+            else if (r.nextDouble()*(100-plus) < minus && yCoord > minHeight){
+                yCoord--;
+                plus++;
+                minus--;
+            }
+        }
+    }
+    public void genLake(){
+        double center = (r.nextDouble()*this.getWidth()/1.2)+(this.getWidth()*(11/12));
+        double width = (r.nextDouble()*(this.getWidth()/2));
+        double startHeight = 0;
+
+        for (int i = this.getHeight()-1; i >= 0; i--){
+            if (this.getPixel((int) center, i).type.equals("grass")){
+                startHeight = i;
+                break;
+            }
+        }
+        double depth = (r.nextDouble()*(this.getHeight()-startHeight));
+
+        for (int x = 0; x < this.getWidth(); x++){
+            for (int y = this.getHeight()-1; y >= 0; y--){
+                if (x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight()){
+                    double isLake = startHeight+Math.sqrt(Math.pow(width/2, 2)-Math.pow(x-center, 2))/((width/2)/depth);
+                    if (y < isLake && y > startHeight){
+                        this.setPixel(x, y, new WetSand());
+                    }
+                    else if (y < isLake){
+                        this.setPixel(x, y, new Air());
+                    }
+                    else if (y > isLake){
+                        this.setPixel(x, y, new Soil());
+                    }
+                }
+            }
+        }
+        width -= 2;
+        depth -= 1;
+        for (int x = 0; x < this.getWidth(); x++){
+            for (int y = this.getHeight()-1; y >= 0; y--){
+                if (x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight()){
+                    boolean isLake = y < startHeight+Math.sqrt(Math.pow(width/2, 2)-Math.pow(x-center, 2))/((width/2)/depth);
+                    if (isLake && y > startHeight){
+                        this.setPixel(x, y, new Water());
+                    }
+                }
+            }
         }
     }
 }
