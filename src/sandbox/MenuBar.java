@@ -11,6 +11,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     private final Grid grid;
     private final JFileChooser fileChooser = new JFileChooser();
+    public boolean infiniteEnergy = false;
 
     public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
             new WetSand(),
@@ -176,6 +177,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
         menuItem.setActionCommand("load");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
+        menuItem = new JMenuItem("Energy");
+        menuItem.setActionCommand("energy");
+        menuItem.addActionListener(this);
+        controlMenu.add(menuItem);
 
         // Add control menu to bar
         this.add(controlMenu);
@@ -189,20 +194,22 @@ public class MenuBar extends JMenuBar implements ActionListener {
         } catch (NumberFormatException e) {
             if (action.equals("reset")) {
                 grid.fillGrid(new Air());
-            }if (action.equals("save")) {
+            }else if (action.equals("save")) {
                 int option = fileChooser.showSaveDialog(this);
                 if(option == JFileChooser.APPROVE_OPTION){
                      grid.saveGrid(fileChooser.getSelectedFile());
                 }
-            }if (action.equals("load")) {
+            }else if (action.equals("load")) {
                int option = fileChooser.showOpenDialog(this);
                if(option == JFileChooser.APPROVE_OPTION){
                     grid.loadGrid(fileChooser.getSelectedFile());
                }
-            }if (action.equals("normal")) {
+            }else if (action.equals("normal")) {
                 grid.setView(0);
-            }if (action.equals("heat")) {
+            }else if (action.equals("heat")) {
                 grid.setView(1);
+            }else if (action.equals("energy")) {
+                infiniteEnergy = true;
             }
         }
     }

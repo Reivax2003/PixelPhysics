@@ -90,30 +90,29 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
             return;
         }
 
+        if(menuBar.infiniteEnergy)
+            panel.energy = 1000000;
+
         //left click to add pixels, right click to remove
         if (lastMouseX == -1) {
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                if(pixel.getType().equals("electricity") && grid.getPixel(squareX, squareY).hasProperty("conductive")) {
-                    grid.getPixel(squareX, squareY).setState("conducting", 1);
-                } else {
-                    grid.setPixel(squareX, squareY, pixel);
-                }
+                panel.energy = grid.drawPixel(squareX, squareY, pixel, panel.energy);
             } else if (button == MouseEvent.BUTTON2) {
                 panel.slimeGoalX = squareX;
                 panel.slimeGoalY = squareY;
             } else if (button == MouseEvent.BUTTON3) {
-                grid.setPixel(squareX, squareY, new Air());
+                panel.energy = grid.drawPixel(squareX, squareY, new Air(), panel.energy);
             }
         } else {  //draw line if dragging over screen
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
+                panel.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel, panel.energy);
             } else if (button == MouseEvent.BUTTON2) {
                 panel.slimeGoalX = squareX;
                 panel.slimeGoalY = squareY;
             } else if (button == MouseEvent.BUTTON3) {
-                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air());
+                panel.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(), panel.energy);
             }
         }
         lastMouseX = squareX;
