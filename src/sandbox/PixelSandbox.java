@@ -33,6 +33,9 @@ public class PixelSandbox {
 
         // set all spaces to air
         grid.fillGrid(new Air());
+
+        //generate some simple terrain
+        grid.worldGen(70269);
     }
 
     private void initializeFrame() {
