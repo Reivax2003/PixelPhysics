@@ -24,8 +24,19 @@ public class Renderer extends JPanel {
     private boolean paused = false;
     private boolean imagesFailedLoading;
 
-    public Renderer(Grid grid) {
+    // width and height of the renderer in grid pixels - i.e. how much of the grid to show
+    private int renderWidth;
+    private int renderHeight;
+
+    // offset from the start of the grid
+    private int gridStartOffsetX = 0;
+    private int gridStartOffsetY = 0;
+
+    public Renderer(Grid grid, int width, int height) {
         this.grid = grid;
+        this.renderWidth = width;
+        this.renderHeight = height;
+
         try {
             File pausedFile = new File(this.getClass().getClassLoader().getResource("assets/paused.png").getFile());
             File unpausedFile = new File(this.getClass().getClassLoader().getResource("assets/unpaused.png").getFile());
@@ -42,17 +53,15 @@ public class Renderer extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        int gridWidth = grid.getWidth();
-        int gridHeight = grid.getHeight();
         // set sandbox.pixels per square to the smallest dimension, so
-        int pixelsPerSquare = Math.min(getWidth() / gridWidth, getHeight() / gridHeight);
+        int pixelsPerSquare = Math.min(getWidth() / renderWidth, getHeight() / renderHeight);
 
         // get the size of the unused margins (getWidth - used space), then divide it by two to get the center
-        int xOffset = (getWidth() - gridWidth * pixelsPerSquare) / 2;
-        int yOffset = (getHeight() - gridHeight * pixelsPerSquare) / 2;
+        int xOffset = (getWidth() - renderWidth * pixelsPerSquare) / 2;
+        int yOffset = (getHeight() - renderHeight * pixelsPerSquare) / 2;
 
-        for (int x = 0; x < grid.getWidth(); x++) {
-            for (int y = 0; y < grid.getHeight(); y++) {
+        for (int x = gridStartOffsetX; x < grid.getWidth() && x < gridStartOffsetX + renderWidth; x++) {
+            for (int y = gridStartOffsetY; y < grid.getHeight() && y < gridStartOffsetY + renderHeight; y++) {
                 Pixel pixel = grid.getPixel(x, y);
 
                 Color color = pixel.getColor();
@@ -78,13 +87,13 @@ public class Renderer extends JPanel {
                     color = pastels[flower - 1];
                 }
 
-                if(grid.getView() == 1 && pixel.getType() != "air") { // Heat map
+                if(grid.getView() == 1 && !pixel.getType().equals("air")) { // Heat map
                     int temperature = pixel.getPropOrDefault("temperature",50);
                     color = gradientColor(temperature, 200, Color.blue.darker(), Color.red.brighter());
                 }
 
                 g.setColor(bool ? nudgeColor(color) : color);
-                g.fillRect(x * pixelsPerSquare + xOffset, y * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+                g.fillRect((x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
             }
         }
 
@@ -100,6 +109,30 @@ public class Renderer extends JPanel {
                 g.drawImage(unpausedImage, xOffset + 2, yOffset + 2, null);
             }
         }
+    }
+
+    public void setGridStartOffsetX(int offset) {
+        this.gridStartOffsetX = offset;
+    }
+
+    public void setGridStartOffsetY(int offset) {
+        this.gridStartOffsetY = offset;
+    }
+
+    public int getGridStartOffsetX() {
+        return gridStartOffsetX;
+    }
+
+    public int getGridStartOffsetY() {
+        return gridStartOffsetY;
+    }
+
+    public int getRenderWidth() {
+        return renderWidth;
+    }
+
+    public int getRenderHeight() {
+        return renderHeight;
     }
 
     public void setPaused(boolean paused) {

@@ -29,7 +29,7 @@ public class PixelSandbox {
     private void initializeGrid() {
 
         // initialize a new grid
-        grid = new Grid(100, 50);
+        grid = new Grid(200, 50);
 
         // set all spaces to air
         grid.fillGrid(new Air());
@@ -51,7 +51,7 @@ public class PixelSandbox {
     private void initializeComponents() {
 
         //simulation
-        renderer = new Renderer(grid);
+        renderer = new Renderer(grid, 100, 50);
         //menu bar
         menuBar = new MenuBar(grid);
     }
@@ -69,6 +69,7 @@ public class PixelSandbox {
         //add listeners for user inputs
         renderer.addMouseMotionListener(mouseHandler);
         renderer.addMouseListener(mouseHandler);
+        renderer.addMouseWheelListener(mouseHandler);
         frame.addKeyListener(keyHandler);
 
         java.util.Timer timer = new java.util.Timer();
