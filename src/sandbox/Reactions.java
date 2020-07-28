@@ -38,7 +38,7 @@ public class Reactions {
       {
           int avgTemp = (a.getProperty("temperature") + b.getProperty("temperature"))/2;
           //Reduce rate and apply conductivity, heat transfer is currently disabled for air, divides by 10000 to undo the 100% of multiplying by 100 twice
-          int quarterChange = ((a.getProperty("temperature") - avgTemp) / 2) * a.getProperty("heatConduct") * b.getProperty("heatConduct") / 10000;
+          int quarterChange = ((a.getProperty("temperature") - avgTemp) / 2) * a.getPropOrDefault("heatConduct", 100) * b.getPropOrDefault("heatConduct", 100) / 10000;
           return new Pixel[]{a.changeProperty("temperature", a.getProperty("temperature") - quarterChange), b.changeProperty("temperature", b.getProperty("temperature") + quarterChange)};
       }
       else
