@@ -18,7 +18,8 @@ public class Plant extends Pixel {
                 .setProperty("minheight", 2)
                 .setProperty("maxheight", 5)
                 .setProperty("speed", 2)
-                .setProperty("solubility", 100);
+                .setProperty("solubility", 100)
+                .setProperty("cost", 10);
     }
 
 }

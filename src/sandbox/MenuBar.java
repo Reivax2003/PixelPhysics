@@ -5,11 +5,13 @@ import sandbox.pixels.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
     private final Grid grid;
     private final JFileChooser fileChooser = new JFileChooser();
+    public boolean infiniteEnergy = false;
 
     public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
             new WetSand(),
@@ -99,6 +101,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         imod += property.length;
         populateMenu(livingMenu, living, imod);
 
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 
         // Build Elements Menus
     /*JMenu elementsMenu = new JMenu("Elements");
@@ -146,9 +149,23 @@ public class MenuBar extends JMenuBar implements ActionListener {
         // Whitespace
         this.add(Box.createHorizontalGlue());
 
+        // Build view Menu (IF this gets big enough modify element list builder to do it)
+        JMenu viewMenu = new JMenu("View");
+        JMenuItem menuItem = new JMenuItem("Normal");
+        menuItem.setActionCommand("normal"); //Possibly change these to radio buttons, but that is an asthetic choice
+        menuItem.addActionListener(this); //Probably add hotkeys
+        viewMenu.add(menuItem);
+        menuItem = new JMenuItem("Heat");
+        menuItem.setActionCommand("heat");
+        menuItem.addActionListener(this);
+        viewMenu.add(menuItem);
+
+        // Add view menu
+        this.add(viewMenu);
+
         // Build settings/control/options decide later menu
         JMenu controlMenu = new JMenu("Control");
-        JMenuItem menuItem = new JMenuItem("Reset");
+        menuItem = new JMenuItem("Reset");
         menuItem.setActionCommand("reset");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
@@ -158,6 +175,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
         controlMenu.add(menuItem);
         menuItem = new JMenuItem("Load");
         menuItem.setActionCommand("load");
+        menuItem.addActionListener(this);
+        controlMenu.add(menuItem);
+        menuItem = new JMenuItem("Energy");
+        menuItem.setActionCommand("energy");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
 
@@ -171,18 +192,24 @@ public class MenuBar extends JMenuBar implements ActionListener {
         try { //Assumes all numeric action events are chosing type
             chosen = Integer.parseInt(action);
         } catch (NumberFormatException e) {
-            if (action == "reset") {
+            if (action.equals("reset")) {
                 grid.fillGrid(new Air());
-            }if (action == "save") {
+            }else if (action.equals("save")) {
                 int option = fileChooser.showSaveDialog(this);
                 if(option == JFileChooser.APPROVE_OPTION){
                      grid.saveGrid(fileChooser.getSelectedFile());
                 }
-            }if (action == "load") {
+            }else if (action.equals("load")) {
                int option = fileChooser.showOpenDialog(this);
                if(option == JFileChooser.APPROVE_OPTION){
                     grid.loadGrid(fileChooser.getSelectedFile());
                }
+            }else if (action.equals("normal")) {
+                grid.setView(0);
+            }else if (action.equals("heat")) {
+                grid.setView(1);
+            }else if (action.equals("energy")) {
+                infiniteEnergy = true;
             }
         }
     }

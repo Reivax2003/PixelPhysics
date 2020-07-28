@@ -10,7 +10,9 @@ public class Air extends Pixel {
         this
                 .setProperty("density", -1000)
                 .setProperty("duplicateImmune", 1)
-                .setProperty("overwritable", 1);
+                .setProperty("overwritable", 1)
+                .setProperty("heatConduct", 0)
+                .setProperty("cost", 1);
     }
 
     @Override

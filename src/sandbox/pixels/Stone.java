@@ -8,7 +8,8 @@ public class Stone extends Pixel {
         super("stone", Color.gray);
 
         this.setProperty("solubility", 100)
-            .setProperty("temperature", 50);
+            .setProperty("temperature", 50)
+            .setProperty("cost", 1);
     }
 
 }
