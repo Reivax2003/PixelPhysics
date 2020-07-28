@@ -55,7 +55,7 @@ public class Renderer extends JPanel {
         super.paintComponent(g);
 
         // set sandbox.pixels per square to the smallest dimension, so
-        int pixelsPerSquare = Math.min(getWidth() / renderWidth, getHeight() / renderHeight);
+        int pixelsPerSquare = Math.min(getWidth() / renderWidth, (getHeight() + 1 /* energy bar */ ) / renderHeight);
 
         // get the size of the unused margins (getWidth - used space), then divide it by two to get the center
         int xOffset = (getWidth() - renderWidth * pixelsPerSquare) / 2;
@@ -88,8 +88,8 @@ public class Renderer extends JPanel {
                     color = pastels[flower - 1];
                 }
 
-                if(grid.getView() == 1 && !pixel.getType().equals("air")) { // Heat map
-                    int temperature = pixel.getPropOrDefault("temperature",50);
+                if (grid.getView() == 1 && !pixel.getType().equals("air")) { // Heat map
+                    int temperature = pixel.getPropOrDefault("temperature", 50);
                     color = gradientColor(temperature, 200, Color.blue.darker(), Color.red.brighter());
                 }
 
@@ -104,7 +104,7 @@ public class Renderer extends JPanel {
         }
 
         g.setColor(Color.yellow);
-        g.fillRect(xOffset, yOffset, energy*pixelsPerSquare/10, pixelsPerSquare/2);
+        g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, energy * pixelsPerSquare / 10, pixelsPerSquare / 2);
 
         if (!imagesFailedLoading) {
             if (paused) {
@@ -151,12 +151,12 @@ public class Renderer extends JPanel {
     }
 
     private Color gradientColor(int level, int max, Color low, Color high) {
-      double portionHigh = level / (double) max;
+        double portionHigh = level / (double) max;
 
-      double red = high.getRed() * portionHigh + low.getRed()  * (1 - portionHigh);
-      double green = high.getGreen() * portionHigh + low.getGreen()  * (1 - portionHigh);
-      double blue = high.getBlue() * portionHigh + low.getBlue()  * (1 - portionHigh);
+        double red = high.getRed() * portionHigh + low.getRed() * (1 - portionHigh);
+        double green = high.getGreen() * portionHigh + low.getGreen() * (1 - portionHigh);
+        double blue = high.getBlue() * portionHigh + low.getBlue() * (1 - portionHigh);
 
-      return new Color((int) red, (int) green, (int) blue);
+        return new Color((int) red, (int) green, (int) blue);
     }
 }
