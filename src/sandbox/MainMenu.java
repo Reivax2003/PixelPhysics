@@ -17,7 +17,7 @@ public class MainMenu extends JPanel implements ActionListener {
       fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir"))); //Sets file viewer to program directory
 
       JLabel title = new JLabel("Pixel Physics",JLabel.CENTER); //Title
-      title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 100));
+      title.setFont(new Font(title.getFont().getName(), Font.BOLD + Font.ITALIC, 100));
       title.setHorizontalAlignment(SwingConstants.CENTER);
       title.setVerticalAlignment(SwingConstants.CENTER);
       title.setAlignmentX(Component.CENTER_ALIGNMENT);
