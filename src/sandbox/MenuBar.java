@@ -11,6 +11,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     private final Grid grid;
     private final JFileChooser fileChooser = new JFileChooser();
+    public boolean infiniteEnergy = false;
 
     public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
             new WetSand(),
@@ -176,6 +177,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
         menuItem.setActionCommand("load");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
+        menuItem = new JMenuItem("Energy");
+        menuItem.setActionCommand("energy");
+        menuItem.addActionListener(this);
+        controlMenu.add(menuItem);
 
         // Add control menu to bar
         this.add(controlMenu);
@@ -187,22 +192,24 @@ public class MenuBar extends JMenuBar implements ActionListener {
         try { //Assumes all numeric action events are chosing type
             chosen = Integer.parseInt(action);
         } catch (NumberFormatException e) {
-            if (action == "reset") {
+            if (action.equals("reset")) {
                 grid.fillGrid(new Air());
-            }if (action == "save") {
+            }else if (action.equals("save")) {
                 int option = fileChooser.showSaveDialog(this);
                 if(option == JFileChooser.APPROVE_OPTION){
                      grid.saveGrid(fileChooser.getSelectedFile());
                 }
-            }if (action == "load") {
+            }else if (action.equals("load")) {
                int option = fileChooser.showOpenDialog(this);
                if(option == JFileChooser.APPROVE_OPTION){
                     grid.loadGrid(fileChooser.getSelectedFile());
                }
-            }if (action == "normal") {
+            }else if (action.equals("normal")) {
                 grid.setView(0);
-            }if (action == "heat") {
+            }else if (action.equals("heat")) {
                 grid.setView(1);
+            }else if (action.equals("energy")) {
+                infiniteEnergy = true;
             }
         }
     }

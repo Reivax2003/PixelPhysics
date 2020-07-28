@@ -13,6 +13,7 @@ public class GameLogic extends TimerTask {
     public static final int DEFAULT_DENSITY = 10000;
     public static final int MIN_TEMPERATURE = 0;
     public static final int MAX_TEMPERATURE = 200;
+    public static final int MAX_ENERGY = 1000;
 
     private final Grid grid;
     private final Renderer panel;
@@ -49,6 +50,10 @@ public class GameLogic extends TimerTask {
             return;
         }
 
+        //increase and check max energy
+        if((panel.energy += 3) > MAX_ENERGY){
+            panel.energy = MAX_ENERGY;
+        }
         // System.out.println("next frame "+frameNum++);
 
         //Start left to right

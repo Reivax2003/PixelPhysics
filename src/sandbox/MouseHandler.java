@@ -3,12 +3,9 @@ package sandbox;
 import sandbox.pixels.Air;
 import sandbox.pixels.Pixel;
 
-import javax.swing.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
-public class MouseHandler implements MouseMotionListener, MouseListener {
+public class MouseHandler implements MouseMotionListener, MouseListener, MouseWheelListener {
 
     private final Renderer panel;
     private final Grid grid;
@@ -63,8 +60,8 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         int height = panel.getHeight();
 
         // width and height of grid in pixels
-        int gridWidth = grid.getWidth();
-        int gridHeight = grid.getHeight();
+        int gridWidth = panel.getRenderWidth();
+        int gridHeight = panel.getRenderHeight();
 
         // units per square
         int pixelsPerSquare = Math.min(width / gridWidth, height / gridHeight);
@@ -77,42 +74,45 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
         int adjustedX = x - xOffset;
         int adjustedY = y - yOffset;
 
+        // offset of grid scroll position
+        int gridOffsetX = panel.getGridStartOffsetX();
+        int gridOffsetY = panel.getGridStartOffsetY();
+
         // coordinates of the square that was clicked
-        int squareX = adjustedX / pixelsPerSquare;
-        int squareY = adjustedY / pixelsPerSquare;
+        int squareX = adjustedX / pixelsPerSquare + gridOffsetX;
+        int squareY = adjustedY / pixelsPerSquare + gridOffsetY;
 
         // out of bounds
-        if (squareX < 0 || squareX > gridWidth - 1) {
+        if (squareX < 0 || squareX > grid.getWidth() - 1) {
             return;
         }
-        if (squareY < 0 || squareY > gridHeight - 1) {
+        if (squareY < 0 || squareY > grid.getHeight() - 1) {
             return;
         }
+
+        if(menuBar.infiniteEnergy)
+            panel.energy = 1000000;
 
         //left click to add pixels, right click to remove
         if (lastMouseX == -1) {
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                if(pixel.getType().equals("electricity") && grid.getPixel(squareX, squareY).hasProperty("conductive")) {
-                    grid.getPixel(squareX, squareY).setState("conducting", 1);
-                } else {
-                    grid.setPixel(squareX, squareY, pixel);
-                }
+                panel.energy = grid.drawPixel(squareX, squareY, pixel, panel.energy);
             } else if (button == MouseEvent.BUTTON2) {
                 panel.slimeGoalX = squareX;
                 panel.slimeGoalY = squareY;
             } else if (button == MouseEvent.BUTTON3) {
-                grid.setPixel(squareX, squareY, new Air());
+                panel.energy = grid.drawPixel(squareX, squareY, new Air(), panel.energy);
             }
         } else {  //draw line if dragging over screen
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
+                panel.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel, panel.energy);
             } else if (button == MouseEvent.BUTTON2) {
                 panel.slimeGoalX = squareX;
                 panel.slimeGoalY = squareY;
             } else if (button == MouseEvent.BUTTON3) {
-                grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air());
+                panel.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(), panel.energy);
             }
         }
         lastMouseX = squareX;
@@ -145,5 +145,19 @@ public class MouseHandler implements MouseMotionListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        int rotation = e.getWheelRotation() * 5;
+        int gridOffsetX = panel.getGridStartOffsetX() + rotation;
+        if (gridOffsetX < 0) {
+            gridOffsetX = 0;
+        }
+        if (gridOffsetX > (grid.getWidth() - panel.getRenderWidth())) {
+            gridOffsetX = grid.getWidth() - panel.getRenderWidth();
+        }
+        panel.setGridStartOffsetX(gridOffsetX);
+        panel.repaint();
     }
 }
