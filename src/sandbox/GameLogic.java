@@ -767,7 +767,7 @@ public class GameLogic extends TimerTask {
                 Pixel newFlame = new Fire();
                 newFlame.changeProperty("strength", (int) ((strength - spreadDecrease) * 100));
                 newFlame.changeProperty("heating", 0);
-                newFlame.changeProperty("temperature", (int) ((temperature - spreadDecrease) * 100));
+                newFlame.changeProperty("temperature", (int) ((temperature - spreadDecrease/2) * 100));
 
 
                 color = new Color(color.getRed() / 255.0f, (color.getGreen() / 255.0f) * (newFlame.getProperty("strength") / 100.0f), color.getBlue() / 255.0f);
