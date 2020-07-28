@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Air extends Pixel {
     public Air() {
-        super("air", new Color(30, 30, 30));
+        super("air", new Color(127, 200, 227));
 
         this
                 .setProperty("density", -1000)
