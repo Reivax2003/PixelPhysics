@@ -13,6 +13,7 @@ public class GameLogic extends TimerTask {
     public static final int DEFAULT_DENSITY = 10000;
     public static final int MIN_TEMPERATURE = 0;
     public static final int MAX_TEMPERATURE = 200;
+    public static final int MAX_ENERGY = 1000;
 
     private final Grid grid;
     private final Renderer panel;
@@ -30,6 +31,7 @@ public class GameLogic extends TimerTask {
 
         panel.slimeGoalX = (int) (Math.random() * grid.getWidth());
         panel.slimeGoalY = (int) (Math.random() * grid.getHeight());
+        panel.energy = MAX_ENERGY;
     }
 
     public void setPaused(boolean paused) {
@@ -49,6 +51,10 @@ public class GameLogic extends TimerTask {
             return;
         }
 
+        //increase and check max energy
+        if((panel.energy += 3) > MAX_ENERGY){
+            panel.energy = MAX_ENERGY;
+        }
         // System.out.println("next frame "+frameNum++);
 
         //Start left to right
@@ -302,6 +308,10 @@ public class GameLogic extends TimerTask {
                     else if (currentPixel.getType().equals("steam") && currentPixel.getProperty("temperature") < 90)
                         grid.setPixel(pixelX, pixelY, new Water());
                     grid.getPixel(pixelX, pixelY).changeProperty("temperature", currentPixel.getProperty("temperature")); //Keep old temp
+
+                    if(!currentPixel.getType().equals("air") && currentPixel.getProperty("temperature") > 175){
+                        spread(new Fire(), false, pixelX, pixelY);
+                    }
                 }
 
                 //plants
@@ -769,22 +779,18 @@ public class GameLogic extends TimerTask {
             }
         } catch (Exception ignored) {
         }
-        boolean hasBase = false;
+        boolean hasBase = strength == 1;
         int maxGap = pixel.getPropOrDefault("maxgap", 5);
         for (int i = y+1; i < grid.getHeight() && i < y + maxGap; i++) {
-            if(grid.getPixel(x, i).getType() == "fire"){
+            if(grid.getPixel(x, i).getType().equals("fire")){
                 hasBase = true;
             }
         }
 
         double burnOut = r.nextDouble();
-        // System.out.println("Temp - .5 and strength");
-        // System.out.println(temperature - .5);
-        // System.out.println(burnOut > temperature - .5);
-        // System.out.println(strength + .1);
-        // System.out.println(burnOut > strength + .1);
 
-        if (!hasBase || burnOut > temperature - 1 || burnOut > strength + .1) {
+
+        if (!hasBase || burnOut > temperature - .80 || burnOut > strength + .1) {
             strength *= decreaseAmount;
             if (strength == 0) {
                 if (r.nextDouble() < 0.01) {

@@ -12,6 +12,7 @@ public class Water extends Pixel {
                 .setProperty("fluidity", 100)
                 .setProperty("conductive", 25)
                 .setProperty("support", 1)
-                .setProperty("temperature",50);
+                .setProperty("temperature",50)
+                .setProperty("cost", 1);
     }
 }

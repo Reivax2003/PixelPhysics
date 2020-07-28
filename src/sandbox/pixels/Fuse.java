@@ -9,6 +9,7 @@ public class Fuse extends Pixel {
         this
                 .setProperty("flammable", 1)
                 .setProperty("burnspeed", 5)
-                .setProperty("fuel", 50);
+                .setProperty("fuel", 50)
+                .setProperty("cost", 3);
     }
 }
