@@ -9,6 +9,7 @@ public class Electricity extends Pixel {
         this
                 .setProperty("gravity", 1)
                 .setProperty("density", -1)
-                .setProperty("fragile", 1);
+                .setProperty("fragile", 1)
+                .setProperty("cost", 1);
     }
 }

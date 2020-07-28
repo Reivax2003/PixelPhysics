@@ -3,8 +3,6 @@ package sandbox;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -65,23 +63,44 @@ public class Grid {
         grid[x2][y2] = position1;
     }
 
+    public int drawPixel(int x, int y, Pixel pixel, int energy){
+        int cost = pixel.getPropOrDefault("cost", 1);
+        if(cost <= energy){
+            if(pixel.getType().equals("electricity") && this.grid[x][y].hasProperty("conductive")) {
+                this.grid[x][y].setState("conducting", 1);
+                energy -= cost;
+            }
+            else if(cost <= energy && !this.grid[x][y].getType().equals(pixel.getType())){
+                this.grid[x][y] = pixel;
+                energy -= cost;
+            }
+        }
+        return energy;
+    }
+
     //draws a line of pixels on the grid
-    public void drawLine(int x1, int y1, int x2, int y2, Pixel pixel) {
+    public int drawLine(int x1, int y1, int x2, int y2, Pixel pixel, int energy) {
         double dirX = x2 - x1, dirY = y2 - y1;
         double length = Math.sqrt(dirX * dirX + dirY * dirY);
         dirX /= length;
         dirY /= length;
+        int cost = pixel.getPropOrDefault("cost", 1);
 
-        for (double i = 0; i < length; i++) {
+        for (double i = 0; i < length && cost <= energy; i++) {
             int x = (int) (x1 + dirX * i);
             int y = (int) (y1 + dirY * i);
             if(pixel.getType().equals("electricity") && this.grid[x][y].hasProperty("conductive")) {
                 this.grid[x][y].setState("conducting", 1);
+                energy -= cost;
                 continue;
             }
-            Pixel p = pixel.duplicate();
-            this.grid[x][y] = p;
+            else if(!this.grid[x][y].getType().equals(pixel.getType())){
+                Pixel p = pixel.duplicate();
+                this.grid[x][y] = p;
+                energy -= cost;
+            }
         }
+        return energy;
     }
 
     // Fills the grid with a pixel type
