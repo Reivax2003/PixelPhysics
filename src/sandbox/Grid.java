@@ -221,6 +221,7 @@ public class Grid {
                 }
             }
         }
+    }
 
     public int getView() {
         return viewMode;
