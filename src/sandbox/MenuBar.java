@@ -187,21 +187,21 @@ public class MenuBar extends JMenuBar implements ActionListener {
         try { //Assumes all numeric action events are chosing type
             chosen = Integer.parseInt(action);
         } catch (NumberFormatException e) {
-            if (action == "reset") {
+            if (action.equals("reset")) {
                 grid.fillGrid(new Air());
-            }if (action == "save") {
+            }if (action.equals("save")) {
                 int option = fileChooser.showSaveDialog(this);
                 if(option == JFileChooser.APPROVE_OPTION){
                      grid.saveGrid(fileChooser.getSelectedFile());
                 }
-            }if (action == "load") {
+            }if (action.equals("load")) {
                int option = fileChooser.showOpenDialog(this);
                if(option == JFileChooser.APPROVE_OPTION){
                     grid.loadGrid(fileChooser.getSelectedFile());
                }
-            }if (action == "normal") {
+            }if (action.equals("normal")) {
                 grid.setView(0);
-            }if (action == "heat") {
+            }if (action.equals("heat")) {
                 grid.setView(1);
             }
         }
