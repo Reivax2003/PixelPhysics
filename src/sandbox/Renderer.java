@@ -100,7 +100,7 @@ public class Renderer extends JPanel {
 
         if (slimeExists) {
             g.setColor(Color.red);
-            g.drawRect(slimeGoalX * pixelsPerSquare + xOffset, slimeGoalY * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+            g.drawRect((slimeGoalX - gridStartOffsetX) * pixelsPerSquare + xOffset, (slimeGoalY - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
         }
 
         g.setColor(Color.yellow);
