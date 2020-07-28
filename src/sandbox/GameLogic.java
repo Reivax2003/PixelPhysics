@@ -13,7 +13,6 @@ public class GameLogic extends TimerTask {
     public static final int DEFAULT_DENSITY = 10000;
     public static final int MIN_TEMPERATURE = 0;
     public static final int MAX_TEMPERATURE = 200;
-    public static final int MAX_ENERGY = 1000;
 
     private final Grid grid;
     private final Renderer panel;
@@ -31,7 +30,6 @@ public class GameLogic extends TimerTask {
 
         panel.slimeGoalX = (int) (Math.random() * grid.getWidth());
         panel.slimeGoalY = (int) (Math.random() * grid.getHeight());
-        panel.energy = MAX_ENERGY;
     }
 
     public void setPaused(boolean paused) {
@@ -52,8 +50,8 @@ public class GameLogic extends TimerTask {
         }
 
         //increase and check max energy
-        if((panel.energy += 3) > MAX_ENERGY){
-            panel.energy = MAX_ENERGY;
+        if((grid.energy += 3) > grid.MAX_ENERGY){
+            grid.energy = grid.MAX_ENERGY;
         }
         // System.out.println("next frame "+frameNum++);
 
