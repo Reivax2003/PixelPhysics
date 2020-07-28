@@ -56,10 +56,10 @@ public class PixelSandbox {
 
     private void initializeComponents() {
 
-        //simulation
-        renderer = new Renderer(grid, 100, 50);
         //menu bar
         menuBar = new MenuBar(grid);
+        //simulation
+        renderer = new Renderer(grid, menuBar, 100, 50);
     }
 
     private void initializeLogic() {
