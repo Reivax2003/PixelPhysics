@@ -414,25 +414,25 @@ public class GameLogic extends TimerTask {
                     } else{
                         if (pixelY > 0) {
                             if (!grid.getPixel(pixelX, pixelY-1).hasProperty("duplicateImmune"))
-                                currentPixel.setOther(grid.getPixel(pixelX, pixelY - 1));
+                                currentPixel.setOther(grid.getPixel(pixelX, pixelY - 1).duplicate());
                             else
                                 currentPixel.setOther(grid.getPixel(pixelX, pixelY - 1).getOther());
                         }
                         if (pixelX < grid.getWidth() - 1 && currentPixel.getOther() == null) {
                             if (!grid.getPixel(pixelX+1, pixelY).hasProperty("duplicateImmune"))
-                                currentPixel.setOther(grid.getPixel(pixelX+1, pixelY));
+                                currentPixel.setOther(grid.getPixel(pixelX+1, pixelY).duplicate());
                             else
                                 currentPixel.setOther(grid.getPixel(pixelX+1, pixelY).getOther());
                         }
                         if (pixelY < grid.getHeight() - 1 && currentPixel.getOther() == null) {
                             if (!grid.getPixel(pixelX, pixelY+1).hasProperty("duplicateImmune"))
-                                currentPixel.setOther(grid.getPixel(pixelX, pixelY + 1));
+                                currentPixel.setOther(grid.getPixel(pixelX, pixelY + 1).duplicate());
                             else
                                 currentPixel.setOther(grid.getPixel(pixelX, pixelY + 1).getOther());
                         }
                         if (pixelX > 0 && currentPixel.getOther() == null) {
                             if (!grid.getPixel(pixelX-1, pixelY).hasProperty("duplicateImmune"))
-                                currentPixel.setOther(grid.getPixel(pixelX-1, pixelY));
+                                currentPixel.setOther(grid.getPixel(pixelX-1, pixelY).duplicate());
                             else
                                 currentPixel.setOther(grid.getPixel(pixelX-1, pixelY).getOther());
                         }
