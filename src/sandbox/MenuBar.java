@@ -10,7 +10,6 @@ import java.io.File;
 public class MenuBar extends JMenuBar implements ActionListener {
 
     private final Grid grid;
-    private final JFileChooser fileChooser = new JFileChooser();
     public boolean infiniteEnergy = false;
 
     public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
@@ -101,8 +100,6 @@ public class MenuBar extends JMenuBar implements ActionListener {
         imod += property.length;
         populateMenu(livingMenu, living, imod);
 
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-
         // Build Elements Menus
     /*JMenu elementsMenu = new JMenu("Elements");
     JMenu elementsMenu2 = new JMenu("Elem. cont.");
@@ -169,14 +166,22 @@ public class MenuBar extends JMenuBar implements ActionListener {
         menuItem.setActionCommand("reset");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
-        menuItem = new JMenuItem("Save");
-        menuItem.setActionCommand("save");
-        menuItem.addActionListener(this);
-        controlMenu.add(menuItem);
-        menuItem = new JMenuItem("Load");
-        menuItem.setActionCommand("load");
-        menuItem.addActionListener(this);
-        controlMenu.add(menuItem);
+        JMenu saveMenu = new JMenu("Save");
+        for (int i = 0; i < 10; i++) {  //add 10 save slots
+            menuItem = new JMenuItem("slot " + i);
+            menuItem.setActionCommand("save" + i);
+            menuItem.addActionListener(this);
+            saveMenu.add(menuItem);
+        }
+        controlMenu.add(saveMenu);
+        saveMenu = new JMenu("Load");
+        for (int i = 0; i < 10; i++) {  //add 10 save slots
+            menuItem = new JMenuItem("slot " + i);
+            menuItem.setActionCommand("load" + i);
+            menuItem.addActionListener(this);
+            saveMenu.add(menuItem);
+        }
+        controlMenu.add(saveMenu);
         menuItem = new JMenuItem("Energy");
         menuItem.setActionCommand("energy");
         menuItem.addActionListener(this);
@@ -195,16 +200,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
             if (action.equals("reset")) {
                 grid.fillGrid(new Air());
                 grid.energy = grid.MAX_ENERGY;
-            }else if (action.equals("save")) {
-                int option = fileChooser.showSaveDialog(this);
-                if(option == JFileChooser.APPROVE_OPTION){
-                     grid.saveGrid(fileChooser.getSelectedFile());
-                }
-            }else if (action.equals("load")) {
-               int option = fileChooser.showOpenDialog(this);
-               if(option == JFileChooser.APPROVE_OPTION){
-                    grid.loadGrid(fileChooser.getSelectedFile());
-               }
+            }else if (action.startsWith("save")) {
+                grid.saveGrid(new File("save/slot"+action.substring(4)+".lvl"));
+            }else if (action.startsWith("load")) {
+                grid.loadGrid(new File("save/slot"+action.substring(4)+".lvl"));
             }else if (action.equals("normal")) {
                 grid.setView(0);
             }else if (action.equals("heat")) {
