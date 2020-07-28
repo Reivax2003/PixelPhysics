@@ -118,6 +118,10 @@ public class Grid {
     }
 
     public void saveGrid(File file){
+        File directory = file.getParentFile();
+        if(!directory.exists()){
+            directory.mkdirs();
+        }
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
             //iterate through each pixel
             for (int x = 0; x < getWidth(); x++) {

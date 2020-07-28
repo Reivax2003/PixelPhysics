@@ -21,29 +21,50 @@ public class MainMenu extends JPanel implements ActionListener {
       title.setHorizontalAlignment(SwingConstants.CENTER);
       title.setVerticalAlignment(SwingConstants.CENTER);
       title.setAlignmentX(Component.CENTER_ALIGNMENT);
+      title.setPreferredSize(new Dimension(500,200));
+      title.setMaximumSize(new Dimension(Short.MAX_VALUE,Short.MAX_VALUE));
 
       add(title);
+
+      JPanel buttonPanel = new JPanel(new GridBagLayout()); //Pannel for button organisation
+      GridBagConstraints c = new GridBagConstraints();
+
+      c.weightx = .5;
+      c.weighty = .5;
+      c.insets = new Insets(5, 20, 5, 20);
 
       JButton creative = new JButton("Creative"); //Freeplay option
       creative.setAlignmentX(Component.CENTER_ALIGNMENT);
       creative.setActionCommand("creative");
       creative.addActionListener(this);
+      c.gridx = 0;
+      c.gridy = 0;
 
-      add(creative);
+      buttonPanel.add(creative,c);
+
+      add(Box.createRigidArea(new Dimension(0,10))); // Spacing
 
       JButton load = new JButton("Load"); //Load file option
       load.setAlignmentX(Component.CENTER_ALIGNMENT);
       load.setActionCommand("load");
       load.addActionListener(this);
+      c.gridy = 1;
 
-      add(load);
+      buttonPanel.add(load,c);
+
+      add(Box.createRigidArea(new Dimension(0,10))); // Spacing
 
       JButton exit = new JButton("Exit"); //Exit option
       exit.setAlignmentX(Component.CENTER_ALIGNMENT);
       exit.setActionCommand("exit");
       exit.addActionListener(this);
+      c.gridy = 2;
 
-      add(exit);
+      buttonPanel.add(exit,c);
+
+      add(buttonPanel); //Add buttons
+
+      add(Box.createRigidArea(new Dimension(0,10))); // Spacing
 
       //Sets vertical box layout
       setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -88,6 +109,6 @@ public class MainMenu extends JPanel implements ActionListener {
         }
 
         PixelSandbox.main(args); // Most ways out of the menu will eventually require loading a sandbox
-        frame.dispose();
+        frame.dispose(); // Closes menu
     }
 }

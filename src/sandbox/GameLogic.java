@@ -69,38 +69,40 @@ public class GameLogic extends TimerTask {
                 int pixelX = x;
                 int pixelY = y;
 
-                //check for any reactions with neighbor pixels
-                if (pixelX > 0) {//left
-                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelLeft(pixelX, pixelY));
-                    if (products != null) {
-                        currentPixel = products[0];
-                        grid.setPixel(pixelX, pixelY, currentPixel);
-                        grid.setPixel(pixelX - 1, pixelY, products[1]);
-                    }
-                }
-                if (pixelX < grid.getWidth() - 1) {//right
-                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelRight(pixelX, pixelY));
-                    if (products != null) {
-                        currentPixel = products[0];
-                        grid.setPixel(pixelX, pixelY, currentPixel);
-                        grid.setPixel(pixelX + 1, pixelY, products[1]);
-                    }
-                }
-                if (pixelY > 0) {//up
-                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelUp(pixelX, pixelY));
-                    if (products != null) {
-                        currentPixel = products[0];
-                        grid.setPixel(pixelX, pixelY, currentPixel);
-                        grid.setPixel(pixelX, pixelY - 1, products[1]);
-                    }
-                }
-                if (pixelY < grid.getHeight() - 1) {//down
-                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelDown(pixelX, pixelY));
-                    if (products != null) {
-                        currentPixel = products[0];
-                        grid.setPixel(pixelX, pixelY, currentPixel);
-                        grid.setPixel(pixelX, pixelY + 1, products[1]);
-                    }
+                if(!currentPixel.getType().equals("air")) {
+                  //check for any reactions with neighbor pixels
+                  if (pixelX > 0) {//left
+                      Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelLeft(pixelX, pixelY));
+                      if (products != null) {
+                          currentPixel = products[0];
+                          grid.setPixel(pixelX, pixelY, currentPixel);
+                          grid.setPixel(pixelX - 1, pixelY, products[1]);
+                      }
+                  }
+                  if (pixelX < grid.getWidth() - 1) {//right
+                      Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelRight(pixelX, pixelY));
+                      if (products != null) {
+                          currentPixel = products[0];
+                          grid.setPixel(pixelX, pixelY, currentPixel);
+                          grid.setPixel(pixelX + 1, pixelY, products[1]);
+                      }
+                  }
+                  if (pixelY > 0) {//up
+                      Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelUp(pixelX, pixelY));
+                      if (products != null) {
+                          currentPixel = products[0];
+                          grid.setPixel(pixelX, pixelY, currentPixel);
+                          grid.setPixel(pixelX, pixelY - 1, products[1]);
+                      }
+                  }
+                  if (pixelY < grid.getHeight() - 1) {//down
+                      Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelDown(pixelX, pixelY));
+                      if (products != null) {
+                          currentPixel = products[0];
+                          grid.setPixel(pixelX, pixelY, currentPixel);
+                          grid.setPixel(pixelX, pixelY + 1, products[1]);
+                      }
+                  }
                 }
 
                 if (currentPixel.hasProperty("temperature")) {
@@ -768,7 +770,7 @@ public class GameLogic extends TimerTask {
                 Pixel newFlame = new Fire();
                 newFlame.changeProperty("strength", (int) ((strength - spreadDecrease) * 100));
                 newFlame.changeProperty("heating", 0);
-                newFlame.changeProperty("temperature", (int) ((temperature - spreadDecrease) * 100));
+                newFlame.changeProperty("temperature", (int) ((temperature - spreadDecrease/2) * 100));
 
 
                 color = new Color(color.getRed() / 255.0f, (color.getGreen() / 255.0f) * (newFlame.getProperty("strength") / 100.0f), color.getBlue() / 255.0f);
@@ -789,7 +791,7 @@ public class GameLogic extends TimerTask {
         double burnOut = r.nextDouble();
 
 
-        if (!hasBase || burnOut > temperature - .80 || burnOut > strength + .1) {
+        if (!hasBase || burnOut > temperature - .60|| burnOut > strength + .1) {
             strength *= decreaseAmount;
             if (strength == 0) {
                 if (r.nextDouble() < 0.01) {
