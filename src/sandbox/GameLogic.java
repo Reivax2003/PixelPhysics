@@ -31,6 +31,7 @@ public class GameLogic extends TimerTask {
 
         panel.slimeGoalX = (int) (Math.random() * grid.getWidth());
         panel.slimeGoalY = (int) (Math.random() * grid.getHeight());
+        panel.energy = MAX_ENERGY;
     }
 
     public void setPaused(boolean paused) {
