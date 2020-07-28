@@ -14,6 +14,7 @@ public class Renderer extends JPanel {
     public boolean slimeExists = false;
     public int slimeGoalX;
     public int slimeGoalY;
+    public int energy;
 
     public float hOffset = 0;
     public boolean bool = false;
@@ -92,6 +93,9 @@ public class Renderer extends JPanel {
             g.setColor(Color.red);
             g.drawRect(slimeGoalX * pixelsPerSquare + xOffset, slimeGoalY * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
         }
+
+        g.setColor(Color.yellow);
+        g.fillRect(xOffset, yOffset, energy*pixelsPerSquare/10, pixelsPerSquare/2);
 
         if (!imagesFailedLoading) {
             if (paused) {

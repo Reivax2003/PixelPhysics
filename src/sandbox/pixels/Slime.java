@@ -13,7 +13,8 @@ public class Slime extends Pixel {
                 .setProperty("support", 1)
                 .setProperty("group", 1)
                 .setProperty("stable", 0)
-                .setProperty("distance", 0);
+                .setProperty("distance", 0)
+                .setProperty("cost", 10);
     }
 
 }
