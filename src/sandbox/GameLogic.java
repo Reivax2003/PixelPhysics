@@ -68,38 +68,40 @@ public class GameLogic extends TimerTask {
                 int pixelX = x;
                 int pixelY = y;
 
-                //check for any reactions with neighbor pixels
-                if (pixelX > 0) {//left
-                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelLeft(pixelX, pixelY));
-                    if (products != null) {
-                        currentPixel = products[0];
-                        grid.setPixel(pixelX, pixelY, currentPixel);
-                        grid.setPixel(pixelX - 1, pixelY, products[1]);
-                    }
-                }
-                if (pixelX < grid.getWidth() - 1) {//right
-                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelRight(pixelX, pixelY));
-                    if (products != null) {
-                        currentPixel = products[0];
-                        grid.setPixel(pixelX, pixelY, currentPixel);
-                        grid.setPixel(pixelX + 1, pixelY, products[1]);
-                    }
-                }
-                if (pixelY > 0) {//up
-                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelUp(pixelX, pixelY));
-                    if (products != null) {
-                        currentPixel = products[0];
-                        grid.setPixel(pixelX, pixelY, currentPixel);
-                        grid.setPixel(pixelX, pixelY - 1, products[1]);
-                    }
-                }
-                if (pixelY < grid.getHeight() - 1) {//down
-                    Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelDown(pixelX, pixelY));
-                    if (products != null) {
-                        currentPixel = products[0];
-                        grid.setPixel(pixelX, pixelY, currentPixel);
-                        grid.setPixel(pixelX, pixelY + 1, products[1]);
-                    }
+                if(!currentPixel.getType().equals("air")) {
+                  //check for any reactions with neighbor pixels
+                  if (pixelX > 0) {//left
+                      Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelLeft(pixelX, pixelY));
+                      if (products != null) {
+                          currentPixel = products[0];
+                          grid.setPixel(pixelX, pixelY, currentPixel);
+                          grid.setPixel(pixelX - 1, pixelY, products[1]);
+                      }
+                  }
+                  if (pixelX < grid.getWidth() - 1) {//right
+                      Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelRight(pixelX, pixelY));
+                      if (products != null) {
+                          currentPixel = products[0];
+                          grid.setPixel(pixelX, pixelY, currentPixel);
+                          grid.setPixel(pixelX + 1, pixelY, products[1]);
+                      }
+                  }
+                  if (pixelY > 0) {//up
+                      Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelUp(pixelX, pixelY));
+                      if (products != null) {
+                          currentPixel = products[0];
+                          grid.setPixel(pixelX, pixelY, currentPixel);
+                          grid.setPixel(pixelX, pixelY - 1, products[1]);
+                      }
+                  }
+                  if (pixelY < grid.getHeight() - 1) {//down
+                      Pixel[] products = reactions.getReaction(currentPixel, grid.getPixelDown(pixelX, pixelY));
+                      if (products != null) {
+                          currentPixel = products[0];
+                          grid.setPixel(pixelX, pixelY, currentPixel);
+                          grid.setPixel(pixelX, pixelY + 1, products[1]);
+                      }
+                  }
                 }
 
                 if (currentPixel.hasProperty("temperature")) {
