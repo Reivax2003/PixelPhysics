@@ -89,27 +89,27 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
         if (squareY < 0 || squareY > grid.getHeight() - 1) {
             return;
         }
-        
+
         //left click to add pixels, right click to remove
         if (lastMouseX == -1) {
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                panel.energy = grid.drawPixel(squareX, squareY, pixel, panel.energy);
+                grid.energy = grid.drawPixel(squareX, squareY, pixel, grid.energy);
             } else if (button == MouseEvent.BUTTON2) {
                 panel.slimeGoalX = squareX;
                 panel.slimeGoalY = squareY;
             } else if (button == MouseEvent.BUTTON3) {
-                panel.energy = grid.drawPixel(squareX, squareY, new Air(), panel.energy);
+                grid.energy = grid.drawPixel(squareX, squareY, new Air(), grid.energy);
             }
         } else {  //draw line if dragging over screen
             if (button == MouseEvent.BUTTON1) {
                 Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                panel.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel, panel.energy);
+                grid.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel, grid.energy);
             } else if (button == MouseEvent.BUTTON2) {
                 panel.slimeGoalX = squareX;
                 panel.slimeGoalY = squareY;
             } else if (button == MouseEvent.BUTTON3) {
-                panel.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(), panel.energy);
+                grid.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(), grid.energy);
             }
         }
         lastMouseX = squareX;

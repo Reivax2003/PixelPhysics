@@ -13,6 +13,8 @@ public class Grid {
     private final Pixel[][] grid;
     private Random r;
     private int viewMode = 0;
+    public final int MAX_ENERGY = 1000;
+    public int energy = MAX_ENERGY;
 
     public Grid(int width, int height) {
         grid = new Pixel[width][height];
@@ -123,6 +125,7 @@ public class Grid {
                     out.writeObject(grid[x][y]);
                 }
             }
+            out.writeInt(energy);  //save grid's energy
             out.close();
         } catch (Exception e){
             System.out.println("An error occured while saving grid.");
@@ -130,14 +133,16 @@ public class Grid {
     }
 
     public void loadGrid(File file){
-        try(ObjectInputStream out = new ObjectInputStream(new FileInputStream(file))){
+        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
             //iterate through each pixel
             for (int x = 0; x < getWidth(); x++) {
                 for (int y = 0; y < getHeight(); y++) {
-                    grid[x][y] = (Pixel)out.readObject();
+                    Pixel temp = (Pixel)in.readObject();
+                    grid[x][y] = temp;
                 }
             }
-            out.close();
+            energy = in.readInt();  //energy 
+            in.close();
         } catch (Exception e){
             System.out.println("An error occured while loading grid.");
         }

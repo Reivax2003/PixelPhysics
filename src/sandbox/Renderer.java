@@ -15,7 +15,6 @@ public class Renderer extends JPanel {
     public boolean slimeExists = false;
     public int slimeGoalX;
     public int slimeGoalY;
-    public int energy;
 
     public float hOffset = 0;
     public boolean bool = false;
@@ -107,9 +106,9 @@ public class Renderer extends JPanel {
 
         //energy bar
         if(menuBar.infiniteEnergy)
-            energy = 1000000;
+            grid.energy = 1000000;
         g.setColor(Color.yellow);
-        g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, energy * pixelsPerSquare / 10, pixelsPerSquare / 2);
+        g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, grid.energy * pixelsPerSquare / 10, pixelsPerSquare / 2);
 
         if (!imagesFailedLoading) {
             if (paused) {

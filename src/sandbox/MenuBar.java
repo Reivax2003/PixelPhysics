@@ -194,6 +194,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         } catch (NumberFormatException e) {
             if (action.equals("reset")) {
                 grid.fillGrid(new Air());
+                grid.energy = grid.MAX_ENERGY;
             }else if (action.equals("save")) {
                 int option = fileChooser.showSaveDialog(this);
                 if(option == JFileChooser.APPROVE_OPTION){
