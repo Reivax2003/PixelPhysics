@@ -4,6 +4,7 @@ import sandbox.pixels.Air;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class PixelSandbox {
     private final JFrame frame = new JFrame();
@@ -15,15 +16,20 @@ public class PixelSandbox {
     private GameLogic gameLogic;
     private PauseManager pauseManager;
 
-    private PixelSandbox() {
+    private PixelSandbox(String[] args) {
         initializeGrid();
+        if (args.length > 0) {
+          File file = new File(args[0]);
+          grid.loadGrid(file);
+        }
+
         initializeComponents();
         initializeFrame();
         initializeLogic();
     }
 
     public static void main(String[] args) {
-        new PixelSandbox();
+        new PixelSandbox(args);
     }
 
     private void initializeGrid() {
