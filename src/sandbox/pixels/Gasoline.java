@@ -13,6 +13,7 @@ public class Gasoline extends Pixel {
                 .setProperty("support", 1)
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 100)
-                .setProperty("burnspeed", 5);
+                .setProperty("burnspeed", 5)
+                .setProperty("cost", 4);
     }
 }

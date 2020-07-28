@@ -19,7 +19,8 @@ public class AlienPlant extends Pixel {
                 .setProperty("loss", 3)
                 .setProperty("split", 25)
                 .setProperty("turning", 0)
-                .setProperty("direction", 0);
+                .setProperty("direction", 0)
+                .setProperty("cost", 50);
             
         if(falls)
             this
