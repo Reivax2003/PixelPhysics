@@ -11,6 +11,7 @@ public class Ash extends Pixel {
                 .setProperty("density", 41)
                 .setProperty("support", 1)
                 .setProperty("solubility", 50)
-                .setProperty("duration", 300);
+                .setProperty("duration", 300)
+                .setProperty("cost", 1);
     }
 }

@@ -16,7 +16,8 @@ public class Grass extends Pixel {
                 .setProperty("support", 1)
                 .setProperty("growing", 0)
                 .setProperty("spreads", 1)
-                .setProperty("solubility", 100);
+                .setProperty("solubility", 100)
+                .setProperty("cost", 10);
     }
 
 }
