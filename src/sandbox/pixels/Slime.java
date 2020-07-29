@@ -14,6 +14,7 @@ public class Slime extends Pixel {
                 .setProperty("group", 1)
                 .setProperty("stable", 0)
                 .setProperty("distance", 0)
+                .setProperty("heatConduct", 90)
                 .setProperty("cost", 10);
     }
 

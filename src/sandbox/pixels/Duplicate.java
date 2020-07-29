@@ -11,6 +11,7 @@ public class Duplicate extends Pixel {
                 .setProperty("active", 1)
                 .setProperty("duplicateImmune", 1)
                 .setProperty("conductive", 100)
+                .setProperty("heatConduct", 100)
                 .setProperty("cost", 100);
     }
 

@@ -11,6 +11,7 @@ public class Smoke extends Pixel {
                 .setProperty("density", -10)
                 .setProperty("fluidity", 100)
                 .setProperty("duration", 100)
+                .setProperty("heatConduct", 60)
                 .setProperty("cost", 1);
     }
 }
