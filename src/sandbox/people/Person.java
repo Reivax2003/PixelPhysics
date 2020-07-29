@@ -179,10 +179,10 @@ public class Person {
         return (rootY-foot2Y)/(rootX-foot2X);
     }
     public boolean isStanding(Grid grid){
-        if (foot1Y + 1 == grid.getHeight() || grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("density", -1) > 0){
+        if (foot1Y + 1 == grid.getHeight() || grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("density", 100) > 20){
             return true;
         }
-        if (foot2Y + 1 == grid.getHeight() || grid.getPixel(foot2X, foot2Y + 1).getPropOrDefault("density", -1) > 0){
+        if (foot2Y + 1 == grid.getHeight() || grid.getPixel(foot2X, foot2Y + 1).getPropOrDefault("density", 100) > 20){
             return true;
         }
         return false;
@@ -195,5 +195,8 @@ public class Person {
     }
     public int[] getRoot(){
         return (new int[]{(int) rootX, (int) rootY});
+    }
+    public double getR(){
+        return headR;
     }
 }
