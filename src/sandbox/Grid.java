@@ -11,13 +11,17 @@ import sandbox.pixels.*;
 
 public class Grid {
     private final Pixel[][] grid;
-    private Long seed = null;
-    private boolean loaded = false;
-    private File loadFrom = null;
+
     private Random r;
-    private int viewMode = 0;
+
+    private Long seed = null;
+    private File loadFrom = null;
+    private boolean loaded = false;
+
     public final int MAX_ENERGY = 1000;
     public int energy = MAX_ENERGY;
+
+    private int viewMode = 0;
     public boolean needsRedraw;
 
     public Grid(int width, int height) {
@@ -167,7 +171,7 @@ public class Grid {
     public void worldGen(long seed){
         this.seed = seed;
         r = new Random(seed);
-        clearGrid();
+        clearGrid(); // Assumes world gen replaces old world if any
         genDirt(this.getHeight()/5, 1);
         genLake();
         loaded = false;
@@ -260,6 +264,20 @@ public class Grid {
             }
             else { // Else reset grid
                 clearGrid();
+            }
+        }
+    }
+
+    public String[] getInfo() {
+        if (loaded) { // Return filepath
+            return new String[] {"1",loadFrom.getPath()};
+        }
+        else {
+            if (seed != null) { // Return seed
+                  return new String[] {"2",String.valueOf(seed)};
+            }
+            else { // Return code signaling it started clear
+                return new String[] {"0",""};
             }
         }
     }

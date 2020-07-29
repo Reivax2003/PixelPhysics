@@ -162,14 +162,17 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         // Build settings/control/options decide later menu
         JMenu controlMenu = new JMenu("Control");
+
         menuItem = new JMenuItem("Reload"); //Reloads world as it was intitialy
         menuItem.setActionCommand("reload");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
+
         menuItem = new JMenuItem("Clear"); //Clears grid as air only
         menuItem.setActionCommand("clear");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
+
         JMenu saveMenu = new JMenu("Save");
         for (int i = 0; i < 10; i++) {  //add 10 save slots
             menuItem = new JMenuItem("slot " + i);
@@ -178,6 +181,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
             saveMenu.add(menuItem);
         }
         controlMenu.add(saveMenu);
+
         saveMenu = new JMenu("Load");
         for (int i = 0; i < 10; i++) {  //add 10 save slots
             menuItem = new JMenuItem("slot " + i);
@@ -186,8 +190,14 @@ public class MenuBar extends JMenuBar implements ActionListener {
             saveMenu.add(menuItem);
         }
         controlMenu.add(saveMenu);
+
         menuItem = new JMenuItem("Energy");
         menuItem.setActionCommand("energy");
+        menuItem.addActionListener(this);
+        controlMenu.add(menuItem);
+
+        menuItem = new JMenuItem("Info");
+        menuItem.setActionCommand("info");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
 
@@ -201,21 +211,34 @@ public class MenuBar extends JMenuBar implements ActionListener {
         try { //Assumes all numeric action events are chosing type
             chosen = Integer.parseInt(action);
         } catch (NumberFormatException e) {
-            if (action.equals("reload")) {
-                grid.reloadGrid();
-            }else if (action.equals("clear")) {
-                grid.clearGrid();
-            }else if (action.startsWith("save")) {
-                grid.saveGrid(new File("save/slot"+action.substring(4)+".lvl"));
-            }else if (action.startsWith("load")) {
-                grid.loadGrid(new File("save/slot"+action.substring(4)+".lvl"));
-            }else if (action.equals("normal")) {
-                grid.setView(0);
-            }else if (action.equals("heat")) {
-                grid.setView(1);
-            }else if (action.equals("energy")) {
-                infiniteEnergy = true;
-                grid.needsRedraw = true;
+            switch (action) {
+                //Control Menu
+                case "reload":
+                    grid.reloadGrid();
+                    break;
+                case "clear":
+                    grid.clearGrid();
+                    break;
+                case "save":
+                    grid.saveGrid(new File("save/slot"+action.substring(4)+".lvl"));
+                    break;
+                case "load":
+                    grid.loadGrid(new File("save/slot"+action.substring(4)+".lvl"));
+                    break;
+                case "energy":
+                    infiniteEnergy = true;
+                    grid.needsRedraw = true;
+                    break;
+                case "info":
+                    String[] info = grid.getInfo();
+                    break;
+                //View Menu
+                case "normal":
+                    grid.setView(0);
+                    break;
+                case "heat":
+                    grid.setView(1);
+                    break;
             }
         }
     }
