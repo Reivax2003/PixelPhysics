@@ -127,8 +127,14 @@ public class Renderer extends JPanel {
             if (person.getRoot()[0] < xOffset+renderWidth && person.getRoot()[0] > gridStartOffsetX) {
                 g.fillRect((person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
             }
-            /*g.drawLine(person.getFoot1()[0], person.getFoot1()[1], person.getRoot()[0], person.getRoot()[1]);
-            g.drawLine(person.getFoot2()[0], person.getFoot2()[1], person.getRoot()[0], person.getRoot()[1]);*/
+            for (int x = (int) -person.getR(); x < person.getR(); x++){
+                for (int y = (int) -person.getR(); y < person.getR(); y++){
+                    if ((x*x)+(y*y) < person.getR()*person.getR()){
+                        g.fillRect(((x+person.getRoot()[0]) - gridStartOffsetX) * pixelsPerSquare + xOffset, (int) ((y+person.getRoot()[1]-person.getR()+1) - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+                    }
+                }
+            }
+
             double xChange = person.getRoot()[0]-person.getFoot1()[0];
             double yChange = person.getRoot()[1]-person.getFoot1()[1];
 
