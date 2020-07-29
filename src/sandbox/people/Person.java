@@ -132,6 +132,12 @@ public class Person {
         return false;
     }
     public int[] getFoot1(){
-        return (new int[]{(int) foot1X, (int) foot2X})
+        return (new int[]{(int) foot1X, (int) foot1Y});
+    }
+    public int[] getFoot2(){
+        return (new int[]{(int) foot2X, (int) foot2Y});
+    }
+    public int[] getRoot(){
+        return (new int[]{(int) rootX, (int) rootY});
     }
 }
