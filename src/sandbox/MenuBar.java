@@ -200,16 +200,21 @@ public class MenuBar extends JMenuBar implements ActionListener {
             if (action.equals("reset")) {
                 grid.fillGrid(new Air());
                 grid.energy = grid.MAX_ENERGY;
+                grid.needsRedraw = true;
             }else if (action.startsWith("save")) {
                 grid.saveGrid(new File("save/slot"+action.substring(4)+".lvl"));
             }else if (action.startsWith("load")) {
                 grid.loadGrid(new File("save/slot"+action.substring(4)+".lvl"));
+                grid.needsRedraw = true;
             }else if (action.equals("normal")) {
                 grid.setView(0);
+                grid.needsRedraw = true;
             }else if (action.equals("heat")) {
                 grid.setView(1);
+                grid.needsRedraw = true;
             }else if (action.equals("energy")) {
                 infiniteEnergy = true;
+                grid.needsRedraw = true;
             }
         }
     }
