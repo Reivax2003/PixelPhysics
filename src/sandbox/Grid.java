@@ -181,8 +181,8 @@ public class Grid {
             //earth-like terrain
             genLand(new Soil(), new Grass(), this.getHeight()/5, 1);
             genLake();
-            genPlant(new Plant(), new Soil(), 0.3);
-            genPlant(new Plant3(), new Soil(), 0.03);
+            genPlant(new Plant(), new Soil(), new Water(), 0.3);
+            genPlant(new Plant3(), new Soil(), new Water(), 0.03);
         }
         else{
             //alien planet
@@ -192,7 +192,7 @@ public class Grid {
             cover.setColor(new Color(139,0,139));
             genLand(land, cover, this.getHeight()/4, 1);
             genMountain(land, r.nextInt(10) + this.getHeight()*3/4, r.nextInt(20)+10, r.nextInt(20)+10);
-            genPlant(new AlienPlant(true), new Soil(), 0.03);
+            genPlant(new AlienPlant(true), new Soil(), new Stone(), 0.03);
         }
         loaded = false;
     }
@@ -264,7 +264,7 @@ public class Grid {
             }
         }
     }
-    public void genPlant(Pixel plant, Pixel soilType, double frequency){
+    public void genPlant(Pixel plant, Pixel soilType, Pixel cantPlace, double frequency){
         //adds plants randomly at the frequency (0-1)
         for (int x = 0; x < grid.length; x++) {
             if(r.nextDouble() < frequency)
@@ -272,6 +272,9 @@ public class Grid {
                     if(this.getPixel(x, y+1).getType().equals(soilType.getType())){
                         setPixel(x, y, plant.duplicate());
                         break;
+                    }
+                    else if(this.getPixel(x, y+1).getType().equals(cantPlace.getType())){
+                        break;  //only place plants if it isn't covered
                     }
                 }
         }
