@@ -211,36 +211,59 @@ public class MenuBar extends JMenuBar implements ActionListener {
         try { //Assumes all numeric action events are chosing type
             chosen = Integer.parseInt(action);
         } catch (NumberFormatException e) {
-            switch (action) {
-                //Control Menu
-                case "reload":
-                    grid.reloadGrid();
-                    break;
-                case "clear":
-                    grid.clearGrid();
-                    break;
-                case "save":
-                    grid.saveGrid(new File("save/slot"+action.substring(4)+".lvl"));
-                    break;
-                case "load":
-                    grid.loadGrid(new File("save/slot"+action.substring(4)+".lvl"));
-                    break;
-                case "energy":
-                    infiniteEnergy = true;
-                    grid.needsRedraw = true;
-                    break;
-                case "info":
-                    String[] info = grid.getInfo();
-                    break;
-                //View Menu
-                case "normal":
-                    grid.setView(0);
-                    break;
-                case "heat":
-                    grid.setView(1);
-                    break;
+
+            if (action.startsWith("save")) { //Save and load special case
+                grid.saveGrid(new File("save/slot"+action.substring(4)+".lvl"));
+            }else if (action.startsWith("load")) {
+                grid.loadGrid(new File("save/slot"+action.substring(4)+".lvl"));
+            } else {
+                switch (action) {
+                    //Control Menu
+                    case "reload":
+                        grid.reloadGrid();
+                        break;
+                    case "clear":
+                        grid.clearGrid();
+                        break;
+                    case "energy":
+                        infiniteEnergy = true;
+                        grid.needsRedraw = true;
+                        break;
+                    case "info":
+                        displayInfo();
+                        break;
+                    //View Menu
+                    case "normal":
+                        grid.setView(0);
+                        break;
+                    case "heat":
+                        grid.setView(1);
+                        break;
+                }
             }
         }
+    }
+
+    private void displayInfo() {
+        String[] info = grid.getInfo();
+        int type = Integer.parseInt(info[0]);
+        String message = "Sandbox initially";
+
+        switch(type) {
+            case 0: // Empty grid
+                message = message + " an empty grid.\n";
+                break;
+            case 1: // Loaded from file
+                message = message + " loaded from file " + info[1] + ".\n";
+                break;
+            case 2: // Generated from seed
+                message = message + " generated from seed " + info[1] + ".\n";
+                break;
+        }
+
+        message = message + "Other default info.\n" + "Version 1.0";
+
+        JOptionPane.showMessageDialog(null, message, "Sandbox Info", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void populateMenu(JMenu menu, Pixel[] list, int indexMod) {
