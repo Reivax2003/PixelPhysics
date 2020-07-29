@@ -161,12 +161,12 @@ public class Grid {
             }
             energy = in.readInt();  //energy
             in.close();
+            loadFrom = file;
+            loaded = true;
+            needsRedraw = true;
         } catch (Exception e){
             System.out.println("An error occured while loading grid.");
         }
-        loadFrom = file;
-        loaded = true;
-        needsRedraw = true;
     }
     public void worldGen(long seed){
         this.seed = seed;
