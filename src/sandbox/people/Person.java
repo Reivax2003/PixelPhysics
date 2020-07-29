@@ -13,12 +13,16 @@ public class Person {
     private final double maxStep = 3; //must be less than 2*legLen
     private final double maxStepHeight = 2;
     private final double headR = 2;
-    private final double legLen = 2;
+    private final double legLen = 2*Math.sqrt(13);
     private int direction = -1; //-1 left 1 right
 
     public Person(int x, int y) {
         rootX = (double) x;
         rootY = (double) y;
+        foot1X = x - 1;
+        foot1Y = y + 2;
+        foot2X = x + 1;
+        foot2Y = y + 2;
     }
 
     //valid pixel cannot have fluidity property nor temp above 80
@@ -29,7 +33,7 @@ public class Person {
         int y = -1;
 
         if (direction == -1) {
-            if (foot1X < foot2X) {
+            if (foot1X > foot2X) {
                 x = foot1X;
                 y = foot1Y;
             } else {
@@ -37,7 +41,7 @@ public class Person {
                 y = foot2Y;
             }
         } else {
-            if (foot1X > foot2X) {
+            if (foot1X < foot2X) {
                 x = foot1X;
                 y = foot1Y;
             } else {
@@ -68,7 +72,7 @@ public class Person {
             direction *= -1;
         else{
             if (direction == -1) {
-                if (foot1X < foot2X) {
+                if (foot1X > foot2X) {
                     foot1X = x;
                     foot1Y = y;
                 } else {
@@ -76,7 +80,7 @@ public class Person {
                     foot2Y = y;
                 }
             } else {
-                if (foot1X > foot2X) {
+                if (foot1X < foot2X) {
                     foot1X = x;
                     foot1Y = y;
                 } else {
@@ -91,11 +95,14 @@ public class Person {
         }
     }
     public void update(){
-        double feetXenterX = (foot1X+foot2X)/2;
+        rootX = (foot1X+foot2X)/2;
+        rootY = (foot1Y+foot2Y)/2-2;
+        /*double feetCenterX = (foot1X+foot2X)/2;
         double feetCenterY = (foot1Y+foot2Y)/2;
 
-        double spread = Math.sqrt(Math.pow(feetCenterY, 2)+Math.pow(feetXenterX, 2));
+        double spread = Math.sqrt(Math.pow(feetCenterY, 2)+Math.pow(feetCenterX, 2));
         double angle = Math.acos((spread/2)/legLen);
+        System.out.println(angle);
 
         double displacement = legLen*Math.sin(angle);
 
@@ -105,16 +112,18 @@ public class Person {
 
         double slope2 = -1/slope1;
 
-        double deltaY = -(1/slope2)+Math.sqrt(Math.pow(1/slope2, 2) - 4*Math.pow(displacement, 2));
+        double deltaY = -(1/slope2)+Math.sqrt(Math.pow(1/slope2, 2) + 4*Math.pow(displacement, 2));
+
         if (deltaY > 0){
-            deltaY = -(1/slope2)+Math.sqrt(Math.pow(1/slope2, 2) + 4*Math.pow(displacement, 2));
+            deltaY = -(1/slope2)+Math.sqrt(Math.pow(1/slope2, 2) - 4*Math.pow(displacement, 2));
         }
+
         deltaY /= 2;
 
         double deltaX = deltaY/slope2;
 
-        rootX = feetXenterX+deltaX;
-        rootY = feetCenterY+deltaY;
+        rootX = feetCenterX+deltaX;
+        rootY = feetCenterY+deltaY;*/
     }
     public double getLeg1Slope(){
         return (rootY-foot1Y)/(rootX-foot1X);
