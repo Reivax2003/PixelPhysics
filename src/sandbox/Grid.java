@@ -124,6 +124,7 @@ public class Grid {
     public void clearGrid() { // This specific pair is used enough to have its own method
         fillGrid(new Air());
         energy = MAX_ENERGY;
+        needsRedraw = true;
     }
 
     public void saveGrid(File file){
@@ -161,6 +162,7 @@ public class Grid {
         }
         loadFrom = file;
         loaded = true;
+        needsRedraw = true;
     }
     public void worldGen(long seed){
         this.seed = seed;
@@ -245,6 +247,7 @@ public class Grid {
 
     public void setView(int viewMode) {
         this.viewMode = viewMode;
+        needsRedraw = true;
     }
 
     public void reloadGrid() {
