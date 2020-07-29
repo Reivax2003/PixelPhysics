@@ -14,6 +14,9 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
     private int lastMouseX = -1;
     private int lastMouseY = -1;
 
+    private int lastGridOffsetX = 0;
+    private int lastGridOffsetY = 0;
+
     public MouseHandler(Renderer panel, Grid grid, MenuBar menuBar) {
         this.panel = panel;
         this.grid = grid;
@@ -40,7 +43,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
             button = MouseEvent.BUTTON2;
         }
 
-        clickPoint(x, y, button);
+        clickPoint(x, y, button, (e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) != 0);
     }
 
     @Override
@@ -50,10 +53,10 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
         int x = e.getX();
         int y = e.getY();
 
-        clickPoint(x, y, e.getButton());
+        clickPoint(x, y, e.getButton(), (e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) != 0);
     }
 
-    private void clickPoint(int x, int y, int button) {
+    private void clickPoint(int x, int y, int button, boolean controlHeld) {
 
         // size of panel
         int width = panel.getWidth();
@@ -92,28 +95,57 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
 
         //left click to add pixels, right click to remove
         if (lastMouseX == -1) {
-            if (button == MouseEvent.BUTTON1) {
-                Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                grid.energy = grid.drawPixel(squareX, squareY, pixel, grid.energy);
-            } else if (button == MouseEvent.BUTTON2) {
-                panel.slimeGoalX = squareX;
-                panel.slimeGoalY = squareY;
-            } else if (button == MouseEvent.BUTTON3) {
-                grid.energy = grid.drawPixel(squareX, squareY, new Air(), grid.energy);
+            if (!controlHeld) {
+                switch (button) {
+                    case MouseEvent.BUTTON1 -> {
+                        Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
+                        grid.energy = grid.drawPixel(squareX, squareY, pixel, grid.energy);
+                    }
+                    case MouseEvent.BUTTON2 -> {
+                        panel.slimeGoalX = squareX;
+                        panel.slimeGoalY = squareY;
+                    }
+                    case MouseEvent.BUTTON3 -> grid.energy = grid.drawPixel(squareX, squareY, new Air(), grid.energy);
+                }
             }
         } else {  //draw line if dragging over screen
-            if (button == MouseEvent.BUTTON1) {
-                Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                grid.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel, grid.energy);
-            } else if (button == MouseEvent.BUTTON2) {
-                panel.slimeGoalX = squareX;
-                panel.slimeGoalY = squareY;
-            } else if (button == MouseEvent.BUTTON3) {
-                grid.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(), grid.energy);
+            if (!controlHeld) {
+                switch (button) {
+                    case MouseEvent.BUTTON1 -> {
+                        Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
+                        grid.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel, grid.energy);
+                    }
+                    case MouseEvent.BUTTON2 -> {
+                        panel.slimeGoalX = squareX;
+                        panel.slimeGoalY = squareY;
+                    }
+                    case MouseEvent.BUTTON3 -> grid.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(), grid.energy);
+                }
+            } else {
+                int newGridOffsetX = (panel.getGridStartOffsetX() + lastMouseX - squareX - lastGridOffsetX + gridOffsetX);
+                int newGridOffsetY = (panel.getGridStartOffsetY() + lastMouseY - squareY - lastGridOffsetY + gridOffsetY);
+                if (newGridOffsetX > (grid.getWidth() - panel.getRenderWidth())) {
+                    newGridOffsetX = grid.getWidth() - panel.getRenderWidth();
+                }
+                if (newGridOffsetX < 0) {
+                    newGridOffsetX = 0;
+                }
+                if (newGridOffsetY > (grid.getHeight() - panel.getRenderHeight())) {
+                    newGridOffsetY = grid.getHeight() - panel.getRenderHeight();
+                }
+                if (newGridOffsetY < 0) {
+                    newGridOffsetY = 0;
+                }
+                panel.setGridStartOffsetX(newGridOffsetX);
+                panel.setGridStartOffsetY(newGridOffsetY);
             }
         }
+
         lastMouseX = squareX;
         lastMouseY = squareY;
+
+        lastGridOffsetX = gridOffsetX;
+        lastGridOffsetY = gridOffsetY;
 
         // repaint panel so it displays
         panel.repaint();
@@ -132,6 +164,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
     @Override
     public void mouseReleased(MouseEvent e) {
         lastMouseX = lastMouseY = -1;
+        lastGridOffsetX = lastGridOffsetY = 0;
     }
 
     @Override
