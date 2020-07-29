@@ -57,7 +57,7 @@ public class Person {
             else if (x+direction >= 0 && x+direction < grid.getWidth()){
                 blocked = true;
                 for (int v = 1; v <= maxStepHeight; v++){
-                    if (grid.getPixel(x+direction, y-v).hasProperty("overwritable")){
+                    if (x+direction >= 0 && x+direction < grid.getWidth() && grid.getPixel(x+direction, y-v).hasProperty("overwritable")){
                         blocked = false;
                         x += direction;
                         y -= v;
