@@ -49,6 +49,11 @@ public class GameLogic extends TimerTask {
     public void run() {
         panel.hOffset += 0.075f;
         if (isPaused && !(steps > 0)) {
+            if(grid.needsRedraw){  //check if visual update needed
+                panel.repaint();
+                grid.needsRedraw = false;
+            }
+
             return;
         }
 

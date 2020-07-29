@@ -15,6 +15,7 @@ public class Grid {
     private int viewMode = 0;
     public final int MAX_ENERGY = 1000;
     public int energy = MAX_ENERGY;
+    public boolean needsRedraw;
 
     public Grid(int width, int height) {
         grid = new Pixel[width][height];
