@@ -162,8 +162,12 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         // Build settings/control/options decide later menu
         JMenu controlMenu = new JMenu("Control");
-        menuItem = new JMenuItem("Reset");
-        menuItem.setActionCommand("reset");
+        menuItem = new JMenuItem("Reload"); //Reloads world as it was intitialy
+        menuItem.setActionCommand("reload");
+        menuItem.addActionListener(this);
+        controlMenu.add(menuItem);
+        menuItem = new JMenuItem("Clear"); //Clears grid as air only
+        menuItem.setActionCommand("clear");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
         JMenu saveMenu = new JMenu("Save");
@@ -197,9 +201,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
         try { //Assumes all numeric action events are chosing type
             chosen = Integer.parseInt(action);
         } catch (NumberFormatException e) {
-            if (action.equals("reset")) {
-                grid.fillGrid(new Air());
-                grid.energy = grid.MAX_ENERGY;
+            if (action.equals("reload")) {
+                grid.reloadGrid();
+            }else if (action.equals("clear")) {
+                grid.clearGrid();
             }else if (action.startsWith("save")) {
                 grid.saveGrid(new File("save/slot"+action.substring(4)+".lvl"));
             }else if (action.startsWith("load")) {
@@ -210,6 +215,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 grid.setView(1);
             }else if (action.equals("energy")) {
                 infiniteEnergy = true;
+                grid.needsRedraw = true;
             }
         }
     }
