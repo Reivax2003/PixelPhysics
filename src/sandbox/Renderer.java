@@ -126,27 +126,29 @@ public class Renderer extends JPanel {
             }
             /*g.drawLine(person.getFoot1()[0], person.getFoot1()[1], person.getRoot()[0], person.getRoot()[1]);
             g.drawLine(person.getFoot2()[0], person.getFoot2()[1], person.getRoot()[0], person.getRoot()[1]);*/
-            int xChange = person.getRoot()[0]-person.getFoot1()[0];
-            int yChange = person.getRoot()[1]-person.getFoot1()[1];
+            double xChange = person.getRoot()[0]-person.getFoot1()[0];
+            double yChange = person.getRoot()[1]-person.getFoot1()[1];
 
-            int x = person.getFoot1()[0];
+            double x = (double) person.getFoot1()[0];
             for (int y = person.getFoot1()[1]; y > person.getRoot()[1]; y--) {
-                /*if (yChange != 0){
-                    x = (int) Math.abs((i-person.getFoot1()[1])*(yChange/xChange)+person.getFoot1()[0]);
-                }*/
+                if (yChange != 0 && xChange != 0){
+                    x -= (xChange/yChange);
+                }
                 if (x < xOffset + renderWidth && person.getRoot()[0] > gridStartOffsetX) {
-                    g.fillRect((x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+                    g.fillRect(((int) x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
                 }
             }
 
             x = person.getFoot2()[0];
-            g.setColor(Color.gray.brighter());
+            g.setColor(Color.gray);
+            xChange = person.getRoot()[0]-person.getFoot2()[0];
+            yChange = person.getRoot()[1]-person.getFoot2()[1];
             for (int y = person.getFoot2()[1]; y > person.getRoot()[1]; y--) {
-                /*if (yChange != 0){
-                    x = (int) Math.abs((i-person.getFoot1()[1])*(yChange/xChange)+person.getFoot1()[0]);
-                }*/
+                if (yChange != 0 && xChange != 0){
+                    x -= (xChange/yChange);
+                }
                 if (x < xOffset + renderWidth && person.getRoot()[0] > gridStartOffsetX) {
-                    g.fillRect((x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+                    g.fillRect(((int)x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
                 }
             }
         }

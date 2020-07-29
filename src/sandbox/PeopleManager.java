@@ -17,8 +17,7 @@ public class PeopleManager {
 
     public void updatePeople(){
         for (Person each : people){
-            each.takeNextStep(grid);
-            each.update();
+            each.update(grid);
         }
     }
     public int getPopulation(){

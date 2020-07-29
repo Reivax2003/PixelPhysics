@@ -10,8 +10,12 @@ public class Person {
 
     private double rootX, rootY;
     private int foot1X, foot1Y, foot2X, foot2Y;
-    private final double maxStep = 3; //must be less than 2*legLen
-    private final double maxStepHeight = 2;
+    private int foot1Xgoal = -1;
+    private int foot1Ygoal = -1;
+    private int foot2Xgoal = -1;
+    private int foot2Ygoal = -1;
+    private final double maxStep = 4;
+    private final double maxStepHeight = 3;
     private final double headR = 2;
     private final double legLen = 2*Math.sqrt(13);
     private int direction = -1; //-1 left 1 right
@@ -32,35 +36,51 @@ public class Person {
         int x = -1;
         int y = -1;
 
+        int difference = 0;
+
         if (direction == -1) {
             if (foot1X > foot2X) {
                 x = foot1X;
                 y = foot1Y;
+                difference = (foot1X-foot2X);
             } else {
                 x = foot2X;
                 y = foot2Y;
+                difference = (foot2X-foot1X);
             }
         } else {
             if (foot1X < foot2X) {
                 x = foot1X;
                 y = foot1Y;
+                difference = (foot2X-foot1X);
             } else {
                 x = foot2X;
                 y = foot2Y;
+                difference = (foot1X-foot2X);
             }
         }
 
-        for (int i = 0; i < maxStep; i++){
-            if (x+direction >= 0 && x+direction < grid.getWidth() && grid.getPixel(x+direction, y).hasProperty("overwritable")){//DON'T FORGET TO ADD OTHER CONDITIONS LATER
+        for (int i = 0; i < maxStep+difference; i++){
+            if (x+direction >= 0 && x+direction < grid.getWidth() && grid.getPixel(x+direction, y).getPropOrDefault(("density"), 100) < 20){//DON'T FORGET TO ADD OTHER CONDITIONS LATER
                 x += direction;
+                blocked = true;
+                for (int v = 1; v <= maxStepHeight; v++) {
+                    if (y < grid.getHeight() - 1 && grid.getPixel(x, y + 1).getPropOrDefault(("density"), 100) < 20) {
+                        y += 1;
+                    }
+                    else{
+                        blocked = false;
+                    }
+                }
             }
             else if (x+direction >= 0 && x+direction < grid.getWidth()){
                 blocked = true;
                 for (int v = 1; v <= maxStepHeight; v++){
-                    if (grid.getPixel(x+direction, y-v).hasProperty("overwritable")){
+                    if (grid.getPixel(x+direction, y-v).getPropOrDefault(("density"), 100) < 20){
                         blocked = false;
                         x += direction;
                         y -= v;
+                        break;
                     }
                 }
             }
@@ -73,30 +93,57 @@ public class Person {
         else{
             if (direction == -1) {
                 if (foot1X > foot2X) {
-                    foot1X = x;
-                    foot1Y = y;
+                    foot1Xgoal = x;
+                    foot1Ygoal = y;
                 } else {
-                    foot2X = x;
-                    foot2Y = y;
+                    foot2Xgoal = x;
+                    foot2Ygoal = y;
                 }
             } else {
                 if (foot1X < foot2X) {
-                    foot1X = x;
-                    foot1Y = y;
+                    foot1Xgoal = x;
+                    foot1Ygoal = y;
                 } else {
-                    foot2X = x;
-                    foot2Y = y;
+                    foot2Xgoal = x;
+                    foot2Ygoal = y;
                 }
             }
         }
+    }
+    public void update(Grid grid){
         if (!isStanding(grid)){
             foot1Y += 1;
             foot2Y += 1;
+            foot1Xgoal = -1;
+            foot2Xgoal = -1;
+        } else if (foot1Xgoal != -1 || foot2Xgoal != -1){
+            if (foot1X != foot1Xgoal || foot1Y != foot1Ygoal) {
+                if (foot1X != foot1Xgoal) {
+                    foot1Y = foot1Ygoal - 1;
+                    foot1X += direction;
+                } else {
+                    foot1Y = foot1Ygoal;
+                }
+            } else if (foot2X != foot2Xgoal || foot2Y != foot2Ygoal) {
+                if (foot2X != foot2Xgoal) {
+                    foot2Y = foot2Ygoal - 1;
+                    foot2X += direction;
+                } else {
+                    foot2Y = foot2Ygoal;
+                }
+            } else {
+                takeNextStep(grid);
+            }
         }
-    }
-    public void update(){
+        else{
+            foot2Xgoal = foot2X;
+            foot1Xgoal = foot1X;
+            foot1Ygoal = foot1Y;
+            foot2Ygoal = foot2Y;
+        }
+
         rootX = (foot1X+foot2X)/2;
-        rootY = (foot1Y+foot2Y)/2-2;
+        rootY = (foot1Y+foot2Y)/2-5;
         /*double feetCenterX = (foot1X+foot2X)/2;
         double feetCenterY = (foot1Y+foot2Y)/2;
 
@@ -132,10 +179,10 @@ public class Person {
         return (rootY-foot2Y)/(rootX-foot2X);
     }
     public boolean isStanding(Grid grid){
-        if (foot1Y + 1 >= grid.getHeight() || grid.getPixel(foot1X, foot1Y+1).getPropOrDefault("density", -1) > 0){
+        if (foot1Y + 1 == grid.getHeight() || grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("density", -1) > 0){
             return true;
         }
-        if (foot2Y + 1 >= grid.getHeight() || grid.getPixel(foot2X, foot2Y+1).getPropOrDefault("density", -1) > 0){
+        if (foot2Y + 1 == grid.getHeight() || grid.getPixel(foot2X, foot2Y + 1).getPropOrDefault("density", -1) > 0){
             return true;
         }
         return false;
