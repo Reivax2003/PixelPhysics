@@ -1,5 +1,6 @@
 package sandbox;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,10 +12,18 @@ import sandbox.pixels.*;
 
 public class Grid {
     private final Pixel[][] grid;
+
     private Random r;
-    private int viewMode = 0;
+
+    private Long seed = null;
+    private File loadFrom = null;
+    private boolean loaded = false;
+
     public final int MAX_ENERGY = 1000;
     public int energy = MAX_ENERGY;
+
+    private int viewMode = 0;
+    public boolean needsRedraw;
 
     public Grid(int width, int height) {
         grid = new Pixel[width][height];
@@ -117,6 +126,12 @@ public class Grid {
         }
     }
 
+    public void clearGrid() { // This specific pair is used enough to have its own method
+        fillGrid(new Air());
+        energy = MAX_ENERGY;
+        needsRedraw = true;
+    }
+
     public void saveGrid(File file){
         File directory = file.getParentFile();
         if(!directory.exists()){
@@ -145,18 +160,40 @@ public class Grid {
                     grid[x][y] = temp;
                 }
             }
-            energy = in.readInt();  //energy 
+            energy = in.readInt();  //energy
             in.close();
+            loadFrom = file;
+            loaded = true;
+            needsRedraw = true;
         } catch (Exception e){
             System.out.println("An error occured while loading grid.");
         }
     }
     public void worldGen(long seed){
+        this.seed = seed;
         r = new Random(seed);
-        genDirt(this.getHeight()/5, 1);
-        genLake();
+        clearGrid(); // Assumes world gen replaces old world if any
+        r.nextDouble();
+        if(r.nextDouble() < 0.5){
+            //earth-like terrain
+            genLand(new Soil(), new Grass(), this.getHeight()/5, 1);
+            genLake();
+            genPlant(new Plant(), new Soil(), 0.3);
+            genPlant(new Plant3(), new Soil(), 0.03);
+        }
+        else{
+            //alien planet
+            Pixel land = new Stone();
+            land.setColor(new Color(186, 85, 211));
+            Pixel cover = new Soil();
+            cover.setColor(new Color(139,0,139));
+            genLand(land, cover, this.getHeight()/4, 1);
+            // genMountain();
+            genPlant(new AlienPlant(true), new Soil(), 0.03);
+        }
+        loaded = false;
     }
-    public void genDirt(int maxHeight, int minHeight){
+    public void genLand(Pixel land, Pixel cover, int maxHeight, int minHeight){
         int plus = 15;
         int minus = 15;
 
@@ -167,9 +204,9 @@ public class Grid {
 
         for (int x = 0; x < grid.length; x++){
 
-            this.setPixel(x, (this.getHeight()-1)-yCoord, new Grass());
+            this.setPixel(x, (this.getHeight()-1)-yCoord, cover);
             for (int i = yCoord-1; i >= 0; i--){
-                this.setPixel(x, (this.getHeight()-1)-i, new Soil());
+                this.setPixel(x, (this.getHeight()-1)-i, land);
             }
 
             if (r.nextDouble()*100 < plus && yCoord < maxHeight){
@@ -224,6 +261,18 @@ public class Grid {
             }
         }
     }
+    public void genPlant(Pixel plant, Pixel soilType, double frequency){
+        //adds plants randomly at the frequency (0-1)
+        for (int x = 0; x < grid.length; x++) {
+            if(r.nextDouble() < frequency)
+                for (int y = 0; y < grid[0].length-1; y++) {
+                    if(this.getPixel(x, y+1).getType().equals(soilType.getType())){
+                        setPixel(x, y, plant.duplicate());
+                        break;
+                    }
+                }
+        }
+    }
 
     public int getView() {
         return viewMode;
@@ -231,5 +280,34 @@ public class Grid {
 
     public void setView(int viewMode) {
         this.viewMode = viewMode;
+        needsRedraw = true;
+    }
+
+    public void reloadGrid() {
+        if (loaded) { // Reload if loaded from save
+            loadGrid(loadFrom);
+        }
+        else {
+            if (seed != null) { // If a seed does exist use that
+                worldGen(seed);
+            }
+            else { // Else reset grid
+                clearGrid();
+            }
+        }
+    }
+
+    public String[] getInfo() {
+        if (loaded) { // Return filepath
+            return new String[] {"1",loadFrom.getPath()};
+        }
+        else {
+            if (seed != null) { // Return seed
+                  return new String[] {"2",String.valueOf(seed)};
+            }
+            else { // Return code signaling it started clear
+                return new String[] {"0",""};
+            }
+        }
     }
 }
