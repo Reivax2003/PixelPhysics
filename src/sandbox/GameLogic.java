@@ -278,10 +278,12 @@ public class GameLogic extends TimerTask {
                 if (currentPixel.hasProperty("spreads")) {
                     if (currentPixel.getProperty("spreads") == 1) {
                         if (currentPixel.getType().equals("fire")) {
-                            flicker(currentPixel, pixelX, pixelY);
+                            boolean extinguished = flicker(currentPixel, pixelX, pixelY);
                             if (currentPixel.getProperty("strength") == 100) {
-                                spread(currentPixel, true, pixelX, pixelY);
+                                extinguished = spread(currentPixel, true, pixelX, pixelY) || extinguished;
                             }
+                            if(extinguished)
+                                currentPixel = grid.getPixel(pixelX, pixelY);
                         } else if (currentPixel.getType().equals("lava"))
                             spread(new Fire(), false, pixelX, pixelY);
                         else if (currentPixel.getType().equals("grass"))
@@ -757,7 +759,7 @@ public class GameLogic extends TimerTask {
     //Fire Logic
 
     //adds fire pixels about the main fire pixel to give a special effect
-    public void flicker(Pixel pixel, int x, int y) {
+    public boolean flicker(Pixel pixel, int x, int y) {
 
         Random r = new Random();
 
@@ -803,8 +805,10 @@ public class GameLogic extends TimerTask {
                 } else {
                     grid.setPixel(x, y, new Air());
                 }
+                return true;
             }
         }
+        return false;
     }
     public void coldSpread(Pixel original, int xpos, int ypos, String spreadable, int min, int max, boolean needsFuel){
         boolean fuel = !needsFuel;
@@ -825,7 +829,7 @@ public class GameLogic extends TimerTask {
     }
 
     //spreads the fire to neighboring flammable pixels
-    public void spread(Pixel original, boolean requiresFuel, int xpos, int ypos) {
+    public boolean spread(Pixel original, boolean requiresFuel, int xpos, int ypos) {
 
         boolean hasFuel = false;
 
@@ -848,7 +852,9 @@ public class GameLogic extends TimerTask {
 
         if (!hasFuel && requiresFuel) {
             grid.setPixel(xpos, ypos, new Air());
+            return true;
         }
+        return false;
     }
 
     //lights flammables by putting fire pixels around them

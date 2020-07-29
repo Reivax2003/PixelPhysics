@@ -17,7 +17,7 @@ public class MainMenu extends JPanel implements ActionListener {
       fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir"))); //Sets file viewer to program directory
 
       JLabel title = new JLabel("Pixel Physics",JLabel.CENTER); //Title
-      title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 100));
+      title.setFont(new Font(title.getFont().getName(), Font.BOLD + Font.ITALIC, 100));
       title.setHorizontalAlignment(SwingConstants.CENTER);
       title.setVerticalAlignment(SwingConstants.CENTER);
       title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -26,39 +26,54 @@ public class MainMenu extends JPanel implements ActionListener {
 
       add(title);
 
+      add(Box.createRigidArea(new Dimension(0,20))); // Spacing
+
       JPanel buttonPanel = new JPanel(new GridBagLayout()); //Pannel for button organisation
       GridBagConstraints c = new GridBagConstraints();
 
       c.weightx = .5;
       c.weighty = .5;
-      c.insets = new Insets(5, 20, 5, 20);
+      c.insets = new Insets(5, 0, 5, 0);
+      c.fill = GridBagConstraints.HORIZONTAL;
+      for(int y = 0; y < 3; y++){
+          c.gridy = y;
+
+          c.gridx = 0;
+          buttonPanel.add(Box.createHorizontalGlue(), c);
+          c.gridx = 2;
+          buttonPanel.add(Box.createHorizontalGlue(), c);
+      }
 
       JButton creative = new JButton("Creative"); //Freeplay option
       creative.setAlignmentX(Component.CENTER_ALIGNMENT);
       creative.setActionCommand("creative");
       creative.addActionListener(this);
-      c.gridx = 0;
+      c.gridx = 1;
       c.gridy = 0;
 
       buttonPanel.add(creative,c);
 
-      add(Box.createRigidArea(new Dimension(0,10))); // Spacing
+      JButton campaign = new JButton("Campaign"); //Campaign option
+      campaign.setAlignmentX(Component.CENTER_ALIGNMENT);
+      campaign.setActionCommand("campaign");
+      campaign.addActionListener(this);
+      c.gridy += 1;
+
+      buttonPanel.add(campaign,c);
 
       JButton load = new JButton("Load"); //Load file option
       load.setAlignmentX(Component.CENTER_ALIGNMENT);
       load.setActionCommand("load");
       load.addActionListener(this);
-      c.gridy = 1;
+      c.gridy += 1;
 
       buttonPanel.add(load,c);
-
-      add(Box.createRigidArea(new Dimension(0,10))); // Spacing
 
       JButton exit = new JButton("Exit"); //Exit option
       exit.setAlignmentX(Component.CENTER_ALIGNMENT);
       exit.setActionCommand("exit");
       exit.addActionListener(this);
-      c.gridy = 2;
+      c.gridy += 1;
 
       buttonPanel.add(exit,c);
 
@@ -101,11 +116,14 @@ public class MainMenu extends JPanel implements ActionListener {
                 args = new String[] {fileChooser.getSelectedFile().getPath()}; // Sets arguments to chosen file
             }
             else {
-                return; //Stops path if no file is selected
+                return; // Stops path if no file is selected
             }
         }
+        else if (action.equals("campagin")) { // Placeholder for when it is implemented
+            return;
+        }
         else if (action.equals("creative")) {
-            args = new String[] {}; //Sets default arguments, does nothing
+            args = new String[] {}; // Sets default arguments, does nothing
         }
 
         PixelSandbox.main(args); // Most ways out of the menu will eventually require loading a sandbox
