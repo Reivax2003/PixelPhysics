@@ -215,6 +215,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 grid.setView(1);
             }else if (action.equals("energy")) {
                 infiniteEnergy = true;
+                grid.needsRedraw = true;
             }
         }
     }
