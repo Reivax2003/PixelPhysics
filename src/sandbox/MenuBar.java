@@ -243,8 +243,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                         grid.clearGrid();
                         break;
                     case "energy":
-                        infiniteEnergy = true;
-                        grid.needsRedraw = true;
+                        grid.setInfEnergy();
                         break;
                     case "info":
                         displayInfo();
@@ -280,7 +279,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 break;
         }
 
-        message = message + "Left Click to Place.<br>" + "Right Click to Delete.<br>" + "Change material in menus.<br>" + "Version 1.0";
+        message = message + "Left Click to Place.<br>" + "Right Click to Delete.<br>"  + "Space to Pause.<br>" + "Right Arrow to Advance Time.<small> (While Paused)</small><br>" + "Change Material in Menus.<br>" + "Version 1.0";
         JLabel messageLabel = (new JLabel(message));
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         messageLabel.setVerticalAlignment(SwingConstants.CENTER);

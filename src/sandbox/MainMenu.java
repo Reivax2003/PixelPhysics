@@ -10,7 +10,7 @@ import java.io.File;
 
 public class MainMenu extends JPanel implements ActionListener {
 
-    Object[] saveSlots = {
+    private Object[] saveSlots = {
       "slot 0",
       "slot 1",
       "slot 2",
@@ -24,7 +24,7 @@ public class MainMenu extends JPanel implements ActionListener {
       "Load from file",
     };
 
-    JFrame frame = new JFrame();
+    private JFrame frame = new JFrame();
     private final JFileChooser fileChooser = new JFileChooser();
 
     private MainMenu() {

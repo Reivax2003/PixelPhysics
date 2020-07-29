@@ -65,7 +65,7 @@ public class PixelSandbox {
         //calculations for people
         peopleManager = new PeopleManager(grid);
         //simulation
-        renderer = new Renderer(grid, menuBar, peopleManager, 100, 50);
+        renderer = new Renderer(grid, peopleManager, 100, 50);
     }
 
     private void initializeLogic() {
