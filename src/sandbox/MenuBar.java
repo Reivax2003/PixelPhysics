@@ -201,6 +201,20 @@ public class MenuBar extends JMenuBar implements ActionListener {
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
 
+        menuItem = new JMenuItem("Quit");
+        menuItem.setActionCommand("quit");
+        menuItem.addActionListener(this);
+        controlMenu.add(menuItem);
+
+        saveMenu = new JMenu("Save&Quit");
+        for (int i = 0; i < 10; i++) {  //add 10 save slots
+            menuItem = new JMenuItem("slot " + i);
+            menuItem.setActionCommand("qsave" + i);
+            menuItem.addActionListener(this);
+            saveMenu.add(menuItem);
+        }
+        controlMenu.add(saveMenu);
+
         // Add control menu to bar
         this.add(controlMenu);
     }
@@ -216,6 +230,9 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 grid.saveGrid(new File("save/slot"+action.substring(4)+".lvl"));
             }else if (action.startsWith("load")) {
                 grid.loadGrid(new File("save/slot"+action.substring(4)+".lvl"));
+            }else if (action.startsWith("qsave")) { //Save and quit
+                grid.saveGrid(new File("save/slot"+action.substring(5)+".lvl"));
+                System.exit(0); // Ends the process
             } else {
                 switch (action) {
                     //Control Menu
@@ -232,6 +249,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
                     case "info":
                         displayInfo();
                         break;
+                    case "quit":
+                        System.exit(0); // Ends the process
                     //View Menu
                     case "normal":
                         grid.setView(0);

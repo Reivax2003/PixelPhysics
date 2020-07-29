@@ -121,22 +121,20 @@ public class MainMenu extends JPanel implements ActionListener {
         String action = a.getActionCommand();
         String[] args = new String[] {}; // By default has grid create its new file
 
-        if (action.equals("exit")) {
-            System.exit(0); // Ends the process
-        }
-        if (action.equals("load")) {
-            args = loadChoice();
-
-            if (args == null) {
-                return; // Return if no file is chosen
-            }
-
-        }
-        else if (action.equals("campagin")) { // Placeholder for when it is implemented
-            return;
-        }
-        else if (action.equals("creative")) {
-            args = new String[] {}; // Sets default arguments, does nothing
+        switch (action) {
+            case "exit":
+                System.exit(0); // Ends the process
+            case "load":
+                args = loadChoice();
+                if (args == null) {
+                    return; // Return if no file is chosen
+                }
+                break;
+            case "campaign":
+                return; // Placeholder for when it is implemented
+            case "creative":
+                args = new String[] {}; // Sets default arguments, does nothing
+                break;
         }
 
         PixelSandbox.main(args); // Most ways out of the menu will eventually require loading a sandbox
@@ -152,8 +150,8 @@ public class MainMenu extends JPanel implements ActionListener {
       String choice = (String) choiceObj;
 
       try {
-          Integer.parseInt(choice.substring(4)); // Tests wether save slot is chosen
-          return new String[] {"save/slot"+choice.substring(4)+".lvl"}; // Returns chosen file
+          Integer.parseInt(choice.substring(5)); // Tests wether save slot is chosen
+          return new String[] {"save/slot"+choice.substring(5)+".lvl"}; // Returns chosen file
       }
       catch (NumberFormatException e) {
           int option = fileChooser.showOpenDialog(this);
