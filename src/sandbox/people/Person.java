@@ -14,6 +14,7 @@ public class Person {
     private final double maxStepHeight = 2;
     private final double headR = 2;
     private final double legLen = 2;
+    private int direction = -1;
 
     public Person(int x, int y) {
         rootX = (double) x;
@@ -21,7 +22,7 @@ public class Person {
     }
 
     //valid pixel cannot have fluidity property nor temp above 80
-    public int[] getNextStep(Grid grid, int direction){ //-1 = left, 1 = right
+    public void takeNextStep(Grid grid){ //-1 = left, 1 = right
         boolean blocked = false;
 
         int x = -1;
@@ -52,18 +53,35 @@ public class Person {
             else{
                 blocked = true;
                 for (int v = 1; v <= maxStepHeight; v++){
-                    if (grid.getPixel(x+direction, y+v).hasProperty("overwritable")){
+                    if (grid.getPixel(x+direction, y-v).hasProperty("overwritable")){
                         blocked = false;
                         x += direction;
-                        y += v;
+                        y -= v;
                     }
                 }
             }
         }
         if (blocked)
-            return new int[]{-1, -1};
-        else
-            return new int[]{x, y};
+            direction *= -1;
+        else{
+            if (direction == -1) {
+                if (foot1X < foot2X) {
+                    foot1X = x;
+                    foot1Y = y;
+                } else {
+                    foot2X = x;
+                    foot2Y = y;
+                }
+            } else {
+                if (foot1X > foot2X) {
+                    foot1X = x;
+                    foot1Y = y;
+                } else {
+                    foot2X = x;
+                    foot2Y = y;
+                }
+            }
+        }
     }
     public void update(){
         double feetXenterX = (foot1X+foot2X)/2;
@@ -78,7 +96,7 @@ public class Person {
         double slope2 = -1/slope1;
 
         double deltaY = -(1/slope2)+Math.sqrt(Math.pow(1/slope2, 2) - 4*Math.pow(displacement, 2));
-        if (deltaY < 0){
+        if (deltaY > 0){
             deltaY = -(1/slope2)+Math.sqrt(Math.pow(1/slope2, 2) + 4*Math.pow(displacement, 2));
         }
         deltaY /= 2;
@@ -93,5 +111,14 @@ public class Person {
     }
     public double getLeg2Slope(){
         return (rootY-foot2Y)/(rootX-foot2X);
+    }
+    public boolean isStanding(Grid grid){
+        if (grid.getPixel(foot1X, foot1Y+1).getPropOrDefault("density", -1) > 0){
+            return true;
+        }
+        if (grid.getPixel(foot2X, foot2Y+1).getPropOrDefault("density", -1) > 0){
+            return true;
+        }
+        return false;
     }
 }

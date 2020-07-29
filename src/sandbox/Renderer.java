@@ -12,6 +12,7 @@ public class Renderer extends JPanel {
 
     private final Grid grid;
     private final MenuBar menuBar;
+    private final PeopleManager peopleManager;
     public boolean slimeExists = false;
     public int slimeGoalX;
     public int slimeGoalY;
@@ -33,9 +34,10 @@ public class Renderer extends JPanel {
     private int gridStartOffsetX = 0;
     private int gridStartOffsetY = 0;
 
-    public Renderer(Grid grid, MenuBar menuBar, int width, int height) {
+    public Renderer(Grid grid, MenuBar menuBar, PeopleManager peopleManager, int width, int height) {
         this.grid = grid;
         this.menuBar = menuBar;
+        this.peopleManager = peopleManager;
         this.renderWidth = width;
         this.renderHeight = height;
 
@@ -102,6 +104,8 @@ public class Renderer extends JPanel {
         if (slimeExists) {
             g.setColor(Color.red);
             g.drawRect((slimeGoalX - gridStartOffsetX) * pixelsPerSquare + xOffset, (slimeGoalY - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+            //test
+            g.drawLine(0, 0, 50, 50);
         }
 
         //energy bar

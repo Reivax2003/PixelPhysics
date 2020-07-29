@@ -15,6 +15,7 @@ public class PixelSandbox {
     private KeyHandler keyHandler;
     private GameLogic gameLogic;
     private PauseManager pauseManager;
+    private PeopleManager peopleManager;
 
     private PixelSandbox(String[] args) {
         initializeGrid();
@@ -61,14 +62,16 @@ public class PixelSandbox {
 
         //menu bar
         menuBar = new MenuBar(grid);
+        //calculations for people
+        peopleManager = new PeopleManager(grid);
         //simulation
-        renderer = new Renderer(grid, menuBar, 100, 50);
+        renderer = new Renderer(grid, menuBar, peopleManager, 100, 50);
     }
 
     private void initializeLogic() {
 
         //game mechanics
-        gameLogic = new GameLogic(grid, renderer);
+        gameLogic = new GameLogic(grid, renderer, peopleManager);
         pauseManager = new PauseManager(gameLogic);
 
         //handles user inputs

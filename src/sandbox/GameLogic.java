@@ -17,6 +17,7 @@ public class GameLogic extends TimerTask {
 
     private final Grid grid;
     private final Renderer panel;
+    private final PeopleManager peopleManager;
     Reactions reactions = new Reactions();
     private boolean isPaused = false;
     private int steps = 0;
@@ -25,9 +26,10 @@ public class GameLogic extends TimerTask {
     int slimeSupports = 0;
     // int frameNum = 0;
 
-    public GameLogic(Grid grid, Renderer panel) {
+    public GameLogic(Grid grid, Renderer panel, PeopleManager peopleManager) {
         this.grid = grid;
         this.panel = panel;
+        this.peopleManager = peopleManager;
 
         panel.slimeGoalX = (int) (Math.random() * grid.getWidth());
         panel.slimeGoalY = (int) (Math.random() * grid.getHeight());
@@ -511,6 +513,8 @@ public class GameLogic extends TimerTask {
                 pixel.setMoved(false);
             }
         }
+
+        peopleManager.updatePeople();
 
         panel.repaint();
         steps--;
