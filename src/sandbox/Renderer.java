@@ -1,6 +1,7 @@
 package sandbox;
 
 import sandbox.pixels.Pixel;
+import sandbox.people.Person;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -104,8 +105,6 @@ public class Renderer extends JPanel {
         if (slimeExists) {
             g.setColor(Color.red);
             g.drawRect((slimeGoalX - gridStartOffsetX) * pixelsPerSquare + xOffset, (slimeGoalY - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
-            //test
-            g.drawLine(0, 0, 50, 50);
         }
 
         //energy bar
@@ -119,6 +118,40 @@ public class Renderer extends JPanel {
                 g.drawImage(pausedImage, xOffset, yOffset + 2, null);
             } else {
                 g.drawImage(unpausedImage, xOffset + 2, yOffset + 2, null);
+            }
+        }
+
+        //rendering people
+        g.setColor(Color.gray.darker());
+        for (int i = 0; i < peopleManager.getPopulation(); i++) {
+            Person person = peopleManager.getPerson(i);
+            if (person.getRoot()[0] < xOffset+renderWidth && person.getRoot()[0] > gridStartOffsetX) {
+                g.fillRect((person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+            }
+            /*g.drawLine(person.getFoot1()[0], person.getFoot1()[1], person.getRoot()[0], person.getRoot()[1]);
+            g.drawLine(person.getFoot2()[0], person.getFoot2()[1], person.getRoot()[0], person.getRoot()[1]);*/
+            int xChange = person.getRoot()[0]-person.getFoot1()[0];
+            int yChange = person.getRoot()[1]-person.getFoot1()[1];
+
+            int x = person.getFoot1()[0];
+            for (int y = person.getFoot1()[1]; y > person.getRoot()[1]; y--) {
+                /*if (yChange != 0){
+                    x = (int) Math.abs((i-person.getFoot1()[1])*(yChange/xChange)+person.getFoot1()[0]);
+                }*/
+                if (x < xOffset + renderWidth && person.getRoot()[0] > gridStartOffsetX) {
+                    g.fillRect((x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+                }
+            }
+
+            x = person.getFoot2()[0];
+            g.setColor(Color.gray.brighter());
+            for (int y = person.getFoot2()[1]; y > person.getRoot()[1]; y--) {
+                /*if (yChange != 0){
+                    x = (int) Math.abs((i-person.getFoot1()[1])*(yChange/xChange)+person.getFoot1()[0]);
+                }*/
+                if (x < xOffset + renderWidth && person.getRoot()[0] > gridStartOffsetX) {
+                    g.fillRect((x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+                }
             }
         }
     }
