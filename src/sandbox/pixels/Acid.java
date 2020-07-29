@@ -11,6 +11,7 @@ public class Acid extends Pixel {
                 .setProperty("density", 60)
                 .setProperty("fluidity", 100)
                 .setProperty("acidity", 10)
+                .setProperty("heatConduct", 85)
                 .setProperty("cost", 5);
     }
 

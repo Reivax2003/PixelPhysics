@@ -14,6 +14,7 @@ public class Wood extends Pixel {
                 .setProperty("ash", 50)
                 .setProperty("gravity", 0)
                 .setProperty("solubility", 30)
+                .setProperty("heatConduct", 75)
                 .setProperty("cost", 10);
     }
 

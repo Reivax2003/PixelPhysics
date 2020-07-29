@@ -13,6 +13,7 @@ public class WetSand extends Pixel {
                 .setProperty("support", 1)
                 .setProperty("steepness", 2)
                 .setProperty("solubility", 50)
+                .setProperty("heatConduct", 75)
                 .setProperty("cost", 2);
     }
 
