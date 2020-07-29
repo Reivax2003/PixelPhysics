@@ -1,5 +1,6 @@
 package sandbox;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -168,11 +169,27 @@ public class Grid {
         this.seed = seed;
         r = new Random(seed);
         clearGrid();
-        genDirt(this.getHeight()/5, 1);
-        genLake();
+        r.nextDouble();
+        if(r.nextDouble() < 0.5){
+            //earth-like terrain
+            genLand(new Soil(), new Grass(), this.getHeight()/5, 1);
+            genLake();
+            genPlant(new Plant(), new Soil(), 0.3);
+            genPlant(new Plant3(), new Soil(), 0.03);
+        }
+        else{
+            //alien planet
+            Pixel land = new Stone();
+            land.setColor(new Color(186, 85, 211));
+            Pixel cover = new Soil();
+            cover.setColor(new Color(139,0,139));
+            genLand(land, cover, this.getHeight()/4, 1);
+            // genMountain();
+            genPlant(new AlienPlant(true), new Soil(), 0.03);
+        }
         loaded = false;
     }
-    public void genDirt(int maxHeight, int minHeight){
+    public void genLand(Pixel land, Pixel cover, int maxHeight, int minHeight){
         int plus = 15;
         int minus = 15;
 
@@ -183,9 +200,9 @@ public class Grid {
 
         for (int x = 0; x < grid.length; x++){
 
-            this.setPixel(x, (this.getHeight()-1)-yCoord, new Grass());
+            this.setPixel(x, (this.getHeight()-1)-yCoord, cover);
             for (int i = yCoord-1; i >= 0; i--){
-                this.setPixel(x, (this.getHeight()-1)-i, new Soil());
+                this.setPixel(x, (this.getHeight()-1)-i, land);
             }
 
             if (r.nextDouble()*100 < plus && yCoord < maxHeight){
@@ -238,6 +255,18 @@ public class Grid {
                     }
                 }
             }
+        }
+    }
+    public void genPlant(Pixel plant, Pixel soilType, double frequency){
+        //adds plants randomly at the frequency (0-1)
+        for (int x = 0; x < grid.length; x++) {
+            if(r.nextDouble() < frequency)
+                for (int y = 0; y < grid[0].length-1; y++) {
+                    if(this.getPixel(x, y+1).getType().equals(soilType.getType())){
+                        setPixel(x, y, plant.duplicate());
+                        break;
+                    }
+                }
         }
     }
 
