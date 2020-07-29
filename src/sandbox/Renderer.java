@@ -34,6 +34,9 @@ public class Renderer extends JPanel {
         this.peopleManager = peopleManager;
         this.renderWidth = width;
         this.renderHeight = height;
+
+        // start at bottom left instead of top left
+        this.gridStartOffsetY = grid.getHeight() - renderHeight;
     }
 
     @Override
