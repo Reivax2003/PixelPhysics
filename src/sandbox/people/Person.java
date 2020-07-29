@@ -123,10 +123,10 @@ public class Person {
         return (rootY-foot2Y)/(rootX-foot2X);
     }
     public boolean isStanding(Grid grid){
-        if (grid.getPixel(foot1X, foot1Y+1).getPropOrDefault("density", -1) > 0){
+        if (foot1Y + 1 >= grid.getHeight() || grid.getPixel(foot1X, foot1Y+1).getPropOrDefault("density", -1) > 0){
             return true;
         }
-        if (grid.getPixel(foot2X, foot2Y+1).getPropOrDefault("density", -1) > 0){
+        if (foot2Y + 1 >= grid.getHeight() || grid.getPixel(foot2X, foot2Y+1).getPropOrDefault("density", -1) > 0){
             return true;
         }
         return false;
