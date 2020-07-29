@@ -3,11 +3,8 @@ package sandbox;
 import sandbox.pixels.Pixel;
 import sandbox.people.Person;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class Renderer extends JPanel {
 
@@ -21,11 +18,7 @@ public class Renderer extends JPanel {
     public float hOffset = 0;
     public boolean bool = false;
 
-    private BufferedImage pausedImage;
-    private BufferedImage unpausedImage;
-
     private boolean paused = false;
-    private boolean imagesFailedLoading;
 
     // width and height of the renderer in grid pixels - i.e. how much of the grid to show
     private int renderWidth;
@@ -41,17 +34,6 @@ public class Renderer extends JPanel {
         this.peopleManager = peopleManager;
         this.renderWidth = width;
         this.renderHeight = height;
-
-        try {
-            File pausedFile = new File(this.getClass().getClassLoader().getResource("assets/paused.png").getFile());
-            File unpausedFile = new File(this.getClass().getClassLoader().getResource("assets/unpaused.png").getFile());
-            pausedImage = ImageIO.read(pausedFile);
-            unpausedImage = ImageIO.read(unpausedFile);
-            imagesFailedLoading = false;
-        } catch (Exception e) {
-            imagesFailedLoading = true;
-            System.out.println("Pause images failed loading, disabled indicator.");
-        }
     }
 
     @Override
@@ -108,17 +90,31 @@ public class Renderer extends JPanel {
         }
 
         //energy bar
-        if(menuBar.infiniteEnergy)
+        if(menuBar.infiniteEnergy) {
             grid.energy = 1000000;
+        }
         g.setColor(Color.yellow);
         g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, Math.min(grid.energy, grid.MAX_ENERGY) * pixelsPerSquare / 10, pixelsPerSquare / 2);
 
-        if (!imagesFailedLoading) {
-            if (paused) {
-                g.drawImage(pausedImage, xOffset, yOffset + 2, null);
-            } else {
-                g.drawImage(unpausedImage, xOffset + 2, yOffset + 2, null);
-            }
+        g.setColor(new Color(255, 255, 255, 127));
+        // render horizontal scrollbar
+        if (grid.getWidth() > renderWidth) {
+            // fraction of the grid renderable by the renderer
+            double widthFraction = renderWidth / (double) grid.getWidth();
+
+            // width necessary to cover fraction of the screen
+            double width = (renderWidth * pixelsPerSquare) * widthFraction;
+            g.fillRect((int) (xOffset + (gridStartOffsetX * widthFraction) * pixelsPerSquare), yOffset + renderHeight * pixelsPerSquare - pixelsPerSquare, (int) width, pixelsPerSquare);
+        }
+
+        // render vertical scrollbar
+        if (grid.getHeight() > renderHeight) {
+            // fraction of the grid renderable by the renderer
+            double heightFraction = renderHeight / (double) grid.getHeight();
+
+            // height necessary to cover fraction of the screen
+            double height = (renderHeight * pixelsPerSquare) * heightFraction;
+            g.fillRect(xOffset, (int) (yOffset + (gridStartOffsetY * heightFraction) * pixelsPerSquare), pixelsPerSquare, (int) height);
         }
 
         //rendering people
