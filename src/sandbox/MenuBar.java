@@ -266,23 +266,26 @@ public class MenuBar extends JMenuBar implements ActionListener {
     private void displayInfo() {
         String[] info = grid.getInfo();
         int type = Integer.parseInt(info[0]);
-        String message = "Sandbox initially";
+        String message = "<html><center>Sandbox initially";
 
         switch(type) {
             case 0: // Empty grid
-                message = message + " an empty grid.\n";
+                message = message + " an empty grid.<br>";
                 break;
             case 1: // Loaded from file
-                message = message + " loaded from file " + info[1] + ".\n";
+                message = message + " loaded from file " + info[1] + ".<br>";
                 break;
             case 2: // Generated from seed
-                message = message + " generated from seed " + info[1] + ".\n";
+                message = message + " generated from seed " + info[1] + ".<br>";
                 break;
         }
 
-        message = message + "Other default info.\n" + "Version 1.0";
+        message = message + "Left Click to Place.<br>" + "Right Click to Delete.<br>" + "Change material in menus.<br>" + "Version 1.0";
+        JLabel messageLabel = (new JLabel(message));
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        JOptionPane.showMessageDialog(null, message, "Sandbox Info", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, messageLabel, "Sandbox Info", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void populateMenu(JMenu menu, Pixel[] list, int indexMod) {
