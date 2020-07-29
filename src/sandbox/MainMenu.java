@@ -10,6 +10,20 @@ import java.io.File;
 
 public class MainMenu extends JPanel implements ActionListener {
 
+    Object[] saveSlots = {
+      "slot 0",
+      "slot 1",
+      "slot 2",
+      "slot 3",
+      "slot 4",
+      "slot 5",
+      "slot 6",
+      "slot 7",
+      "slot 8",
+      "slot 9",
+      "Load from file",
+    };
+
     JFrame frame = new JFrame();
     private final JFileChooser fileChooser = new JFileChooser();
 
@@ -111,13 +125,12 @@ public class MainMenu extends JPanel implements ActionListener {
             System.exit(0); // Ends the process
         }
         if (action.equals("load")) {
-            int option = fileChooser.showOpenDialog(this);
-            if(option == JFileChooser.APPROVE_OPTION){
-                args = new String[] {fileChooser.getSelectedFile().getPath()}; // Sets arguments to chosen file
+            args = loadChoice();
+
+            if (args == null) {
+                return; // Return if no file is chosen
             }
-            else {
-                return; // Stops path if no file is selected
-            }
+
         }
         else if (action.equals("campagin")) { // Placeholder for when it is implemented
             return;
@@ -128,5 +141,29 @@ public class MainMenu extends JPanel implements ActionListener {
 
         PixelSandbox.main(args); // Most ways out of the menu will eventually require loading a sandbox
         frame.dispose(); // Closes menu
+    }
+
+    private String[] loadChoice() {
+      Object choiceObj = JOptionPane.showInputDialog(null,"Choose save slot:","Load Saved Sandbox",JOptionPane.PLAIN_MESSAGE,null,saveSlots,saveSlots[10]);
+      if (choiceObj == null) { // Cancelled or closed
+          return null; // Returns null if no choice
+      }
+
+      String choice = (String) choiceObj;
+
+      try {
+          Integer.parseInt(choice.substring(4)); // Tests wether save slot is chosen
+          return new String[] {"save/slot"+choice.substring(4)+".lvl"}; // Returns chosen file
+      }
+      catch (NumberFormatException e) {
+          int option = fileChooser.showOpenDialog(this);
+          if( option == JFileChooser.APPROVE_OPTION) {
+              return new String[] {fileChooser.getSelectedFile().getPath()}; // Returns chosen file
+          }
+          else {
+              return null; // Returns null if no choice
+          }
+      }
+
     }
 }
