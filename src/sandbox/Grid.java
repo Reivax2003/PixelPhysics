@@ -188,7 +188,7 @@ public class Grid {
             Pixel cover = new Soil();
             cover.setColor(new Color(139,0,139));
             genLand(land, cover, this.getHeight()/4, 1);
-            // genMountain();
+            genMountain(land, r.nextInt(10) + this.getHeight()*3/4, r.nextInt(20)+10, r.nextInt(20)+10);
             genPlant(new AlienPlant(true), new Soil(), 0.03);
         }
         loaded = false;
@@ -271,6 +271,19 @@ public class Grid {
                         break;
                     }
                 }
+        }
+    }
+    public void genMountain(Pixel type, int height, double lengthR, double lengthL){
+        double center = r.nextDouble() * this.getWidth();
+        double slopeL = lengthL/height;
+        double slopeR = lengthR/height;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = (int)(center-lengthL); x < center+lengthR; x++) {                
+                this.setPixel(x, this.getHeight()-y-1, type);
+            }
+            lengthL-=slopeL*r.nextDouble()*((double)y/height*4);
+            lengthR-=slopeR*r.nextDouble()*((double)y/height*4);
         }
     }
 
