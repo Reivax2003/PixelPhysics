@@ -21,6 +21,7 @@ public class Grid {
 
     public final int MAX_ENERGY = 1000;
     public int energy = MAX_ENERGY;
+    private boolean infiniteEnergy;
 
     private int viewMode = 0;
     public boolean needsRedraw;
@@ -78,6 +79,7 @@ public class Grid {
 
     public int drawPixel(int x, int y, Pixel pixel, int energy){
         int cost = pixel.getPropOrDefault("cost", 1);
+        energy = (infiniteEnergy) ? MAX_ENERGY:energy;
         if(cost <= energy){
             if(pixel.getType().equals("electricity") && this.grid[x][y].hasProperty("conductive")) {
                 this.grid[x][y].setState("conducting", 1);
@@ -88,7 +90,7 @@ public class Grid {
                 energy -= cost;
             }
         }
-        return energy;
+        return (infiniteEnergy) ? MAX_ENERGY:energy;
     }
 
     //draws a line of pixels on the grid
@@ -98,6 +100,7 @@ public class Grid {
         dirX /= length;
         dirY /= length;
         int cost = pixel.getPropOrDefault("cost", 1);
+        energy = (infiniteEnergy) ? MAX_ENERGY:energy;
 
         for (double i = 0; i < length && cost <= energy; i++) {
             int x = (int) (x1 + dirX * i);
@@ -113,7 +116,7 @@ public class Grid {
                 energy -= cost;
             }
         }
-        return energy;
+        return (infiniteEnergy) ? MAX_ENERGY:energy;
     }
 
     // Fills the grid with a pixel type
@@ -279,7 +282,7 @@ public class Grid {
         double slopeR = lengthR/height;
 
         for (int y = 0; y < height; y++) {
-            for (int x = (int)(center-lengthL); x < center+lengthR; x++) {                
+            for (int x = (int)(center-lengthL); x < center+lengthR; x++) {
                 this.setPixel(x, this.getHeight()-y-1, type.duplicate());
             }
             lengthL-=slopeL*r.nextDouble()*((double)y/height*4);
@@ -322,5 +325,11 @@ public class Grid {
                 return new String[] {"0",""};
             }
         }
+    }
+
+    public void setInfEnergy() {
+        infiniteEnergy = true;
+        energy = MAX_ENERGY;
+        needsRedraw = true;
     }
 }
