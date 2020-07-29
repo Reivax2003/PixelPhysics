@@ -204,9 +204,9 @@ public class Grid {
 
         for (int x = 0; x < grid.length; x++){
 
-            this.setPixel(x, (this.getHeight()-1)-yCoord, cover);
+            this.setPixel(x, (this.getHeight()-1)-yCoord, cover.duplicate());
             for (int i = yCoord-1; i >= 0; i--){
-                this.setPixel(x, (this.getHeight()-1)-i, land);
+                this.setPixel(x, (this.getHeight()-1)-i, land.duplicate());
             }
 
             if (r.nextDouble()*100 < plus && yCoord < maxHeight){
@@ -280,7 +280,7 @@ public class Grid {
 
         for (int y = 0; y < height; y++) {
             for (int x = (int)(center-lengthL); x < center+lengthR; x++) {                
-                this.setPixel(x, this.getHeight()-y-1, type);
+                this.setPixel(x, this.getHeight()-y-1, type.duplicate());
             }
             lengthL-=slopeL*r.nextDouble()*((double)y/height*4);
             lengthR-=slopeR*r.nextDouble()*((double)y/height*4);
