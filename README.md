@@ -38,4 +38,11 @@ In the campaign mode, there is a village of pixel people who have a list of need
 In the creative mode, there are no limitations on energy or materials, and the gameplay will be closer to a sandbox style. This is great for trying out ideas for the campagin mode, or just playing and experimenting with combining materials or creating their own world.
 
 
+Controls:
+Left Click to Place
+Right Click to Delete
+Space to Pause
+Right Arrow to Advance Time (While Paused)
+Change Material in Menus
+
 Trello: https://trello.com/b/vTjLOnEO/pixel-physics
