@@ -11,10 +11,14 @@ import sandbox.pixels.*;
 
 public class Grid {
     private final Pixel[][] grid;
+    private Long seed = null;
+    private boolean loaded = false;
+    private File loadFrom = null;
     private Random r;
     private int viewMode = 0;
     public final int MAX_ENERGY = 1000;
     public int energy = MAX_ENERGY;
+    public boolean needsRedraw;
 
     public Grid(int width, int height) {
         grid = new Pixel[width][height];
@@ -117,6 +121,12 @@ public class Grid {
         }
     }
 
+    public void clearGrid() { // This specific pair is used enough to have its own method
+        fillGrid(new Air());
+        energy = MAX_ENERGY;
+        needsRedraw = true;
+    }
+
     public void saveGrid(File file){
         File directory = file.getParentFile();
         if(!directory.exists()){
@@ -145,16 +155,22 @@ public class Grid {
                     grid[x][y] = temp;
                 }
             }
-            energy = in.readInt();  //energy 
+            energy = in.readInt();  //energy
             in.close();
         } catch (Exception e){
             System.out.println("An error occured while loading grid.");
         }
+        loadFrom = file;
+        loaded = true;
+        needsRedraw = true;
     }
     public void worldGen(long seed){
+        this.seed = seed;
         r = new Random(seed);
+        clearGrid();
         genDirt(this.getHeight()/5, 1);
         genLake();
+        loaded = false;
     }
     public void genDirt(int maxHeight, int minHeight){
         int plus = 15;
@@ -231,5 +247,20 @@ public class Grid {
 
     public void setView(int viewMode) {
         this.viewMode = viewMode;
+        needsRedraw = true;
+    }
+
+    public void reloadGrid() {
+        if (loaded) { // Reload if loaded from save
+            loadGrid(loadFrom);
+        }
+        else {
+            if (seed != null) { // If a seed does exist use that
+                worldGen(seed);
+            }
+            else { // Else reset grid
+                clearGrid();
+            }
+        }
     }
 }
