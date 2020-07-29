@@ -76,7 +76,7 @@ public class Person {
             else if (x+direction >= 0 && x+direction < grid.getWidth()){
                 blocked = true;
                 for (int v = 1; v <= maxStepHeight; v++){
-                    if (grid.getPixel(x+direction, y-v).getPropOrDefault(("density"), 100) < 20){
+                    if (x+direction >= 0 && x+direction < grid.getWidth() && grid.getPixel(x+direction, y-v).getPropOrDefault(("density"), 100) < 20){
                         blocked = false;
                         x += direction;
                         y -= v;
