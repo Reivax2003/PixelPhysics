@@ -742,7 +742,8 @@ public class GameLogic extends TimerTask {
                 Pixel p = new Plant3()
                         .changeProperty("growing", 2)
                         .changeProperty("gravity", 0)
-                        .changeProperty("support", 0);
+                        .changeProperty("support", 0)
+                        .changeProperty("power", pixel.getProperty("power")-pixel.getProperty("loss"));
                 grid.setPixel(x, y, p);
 
                 //check if it will split
@@ -753,7 +754,8 @@ public class GameLogic extends TimerTask {
                         p = new Plant3()
                                 .changeProperty("growing", 1)
                                 .changeProperty("gravity", 0)
-                                .changeProperty("support", 0);
+                                .changeProperty("support", 0)
+                                .changeProperty("power", pixel.getProperty("power")-pixel.getProperty("loss"));
                         grid.setPixel(newX, y - 1, p);
                     }
                 }
