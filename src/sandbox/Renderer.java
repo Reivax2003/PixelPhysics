@@ -98,9 +98,25 @@ public class Renderer extends JPanel {
         g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, Math.min(grid.energy, grid.MAX_ENERGY) * pixelsPerSquare / 10, pixelsPerSquare / 2);
 
         g.setColor(new Color(255, 255, 255, 127));
-        double widthFraction = renderWidth / (double) grid.getWidth();
-        double width = (renderWidth * pixelsPerSquare) * widthFraction;
-        g.fillRect((int) (xOffset + (gridStartOffsetX * widthFraction) * pixelsPerSquare), yOffset + renderHeight * pixelsPerSquare - pixelsPerSquare,  (int) width, pixelsPerSquare);
+        // render horizontal scrollbar
+        if (grid.getWidth() > renderWidth) {
+            // fraction of the grid renderable by the renderer
+            double widthFraction = renderWidth / (double) grid.getWidth();
+
+            // width necessary to cover fraction of the screen
+            double width = (renderWidth * pixelsPerSquare) * widthFraction;
+            g.fillRect((int) (xOffset + (gridStartOffsetX * widthFraction) * pixelsPerSquare), yOffset + renderHeight * pixelsPerSquare - pixelsPerSquare, (int) width, pixelsPerSquare);
+        }
+
+        // render vertical scrollbar
+        if (grid.getHeight() > renderHeight) {
+            // fraction of the grid renderable by the renderer
+            double heightFraction = renderHeight / (double) grid.getHeight();
+
+            // height necessary to cover fraction of the screen
+            double height = (renderHeight * pixelsPerSquare) * heightFraction;
+            g.fillRect(xOffset, (int) (yOffset + (gridStartOffsetY * heightFraction) * pixelsPerSquare), pixelsPerSquare, (int) height);
+        }
     }
 
     public void setGridStartOffsetX(int offset) {
