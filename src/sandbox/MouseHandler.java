@@ -109,14 +109,14 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
                             System.out.println("person"+person+" happiness: "+peopleManager.getPerson(person).getHappiness());
                         }else{
                             Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                            grid.energy = grid.drawPixel(squareX, squareY, pixel, grid.energy);
+                            grid.drawPixel(squareX, squareY, pixel);
                         }
                     }
                     case MouseEvent.BUTTON2 -> {
                         panel.slimeGoalX = squareX;
                         panel.slimeGoalY = squareY;
                     }
-                    case MouseEvent.BUTTON3 -> grid.energy = grid.drawPixel(squareX, squareY, new Air(), grid.energy);
+                    case MouseEvent.BUTTON3 -> grid.drawPixel(squareX, squareY, new Air());
                 }
             }
         } else {  //draw line if dragging over screen
@@ -127,14 +127,14 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
                             peopleManager.getPerson(selectedPerson).setRoot(squareX, squareY);;
                         }else{
                             Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                            grid.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel, grid.energy);
+                            grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
                         }
                     }
                     case MouseEvent.BUTTON2 -> {
                         panel.slimeGoalX = squareX;
                         panel.slimeGoalY = squareY;
                     }
-                    case MouseEvent.BUTTON3 -> grid.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air(), grid.energy);
+                    case MouseEvent.BUTTON3 -> grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air());
                 }
             } else {
                 int newGridOffsetX = (panel.getGridStartOffsetX() + lastMouseX - squareX - lastGridOffsetX + gridOffsetX);
@@ -173,7 +173,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        
+
     }
 
     @Override
