@@ -20,6 +20,9 @@ public class Person {
     private final double legLen = 2*Math.sqrt(13);
     private int direction = -1; //-1 left 1 right
 
+    //currently looks for nutrients, tools, and building properties
+    HashMap<String, Integer> inventory = new HashMap<>();
+
     public Person(int x, int y) {
         rootX = (double) x;
         rootY = (double) y;
@@ -27,6 +30,12 @@ public class Person {
         foot1Y = y + 2;
         foot2X = x + 1;
         foot2Y = y + 2;
+        this
+                .setResource("nutrients", 25)
+                .setResource("stone", 0)
+                .setResource("wood", 0)
+                .setResource("tool", 0)
+                .setResource("energy", 100);
     }
 
     //valid pixel cannot have fluidity property nor temp above 80
@@ -110,13 +119,14 @@ public class Person {
             }
         }
     }
-    public void update(Grid grid){
-        if (!isStanding(grid)){
+    public boolean move(Grid grid) {
+        if (!isStanding(grid)) {
             foot1Y += 1;
             foot2Y += 1;
             foot1Xgoal = -1;
             foot2Xgoal = -1;
-        } else if (foot1Xgoal != -1 || foot2Xgoal != -1){
+            return false;
+        } else if (foot1Xgoal != -1 || foot2Xgoal != -1) {
             if (foot1X != foot1Xgoal || foot1Y != foot1Ygoal) {
                 if (foot1X != foot1Xgoal) {
                     foot1Y = foot1Ygoal - 1;
@@ -124,6 +134,7 @@ public class Person {
                 } else {
                     foot1Y = foot1Ygoal;
                 }
+                return true;
             } else if (foot2X != foot2Xgoal || foot2Y != foot2Ygoal) {
                 if (foot2X != foot2Xgoal) {
                     foot2Y = foot2Ygoal - 1;
@@ -131,15 +142,27 @@ public class Person {
                 } else {
                     foot2Y = foot2Ygoal;
                 }
+                return true;
             } else {
                 takeNextStep(grid);
+                return false;
             }
-        }
-        else{
+        } else {
             foot2Xgoal = foot2X;
             foot1Xgoal = foot1X;
             foot1Ygoal = foot1Y;
             foot2Ygoal = foot2Y;
+            return false;
+        }
+    }
+    public void update(Grid grid){
+        if (craft()){
+            this.changeResource("energy", this.getResource("energy")-10);
+        } else if (gather(grid)){
+            this.changeResource("energy", this.getResource("energy")-5);
+        } else if (eatFood()){
+        } else if (move(grid)){
+            this.changeResource("energy", this.getResource("energy")-1);
         }
 
         rootX = (foot1X+foot2X)/2;
@@ -172,6 +195,56 @@ public class Person {
         rootX = feetCenterX+deltaX;
         rootY = feetCenterY+deltaY;*/
     }
+    public boolean gather(Grid grid){
+        String lookingFor = "";
+        if (this.getResource("nutrients") < 100){
+            lookingFor = "nutrients";
+        }
+        else if (this.getResource("wood") < 20){
+            lookingFor = "wood";
+        }
+        else if (this.getResource("stone") < 20){
+            lookingFor = "stone";
+        }
+
+        int maxGather = 1;
+        maxGather += this.getResourceOrDefault("tool", 0);
+
+        boolean hasGathered = false;
+        int lookDist = 7;
+        for (int x = -lookDist; x < lookDist; x++){
+            for (int y = -lookDist; y < lookDist; y++){
+                if (x >= 0 && x < grid.getWidth() && y >= 0 && y < grid.getHeight() && grid.getPixel(this.getRoot()[0]+x, this.getRoot()[1]+y).getPropOrDefault(lookingFor, 0) > 0 && maxGather > 0){
+                    maxGather--;
+                    this.changeResource(lookingFor, this.getResource(lookingFor)+grid.getPixel(this.getRoot()[0]+x, this.getRoot()[1]+y).getProperty(lookingFor));
+                    grid.setPixel(this.getRoot()[0]+x, this.getRoot()[1]+y, new Air());
+                    hasGathered = true;
+                }
+            }
+        }
+        return hasGathered;
+    }
+    public boolean craft(){
+        if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2){
+            this.changeResource("tool", 2);
+            return true;
+        }
+        else if (this.getResource("wood") >= 20 && this.getResourceOrDefault("tool", 0) < 1){
+            this.changeResource("tool", 1);
+            return true;
+        }
+        return false;
+    }
+    public boolean eatFood(){
+        if (this.getResource("energy") < 100 && this.getResource("nutrients") > 0){
+            changeResource("energy", this.getResource("energy")+this.getResource("nutrients"));
+            changeResource("nutrients", 0);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     public double getLeg1Slope(){
         return (rootY-foot1Y)/(rootX-foot1X);
     }
@@ -198,5 +271,20 @@ public class Person {
     }
     public double getR(){
         return headR;
+    }
+    public void changeResource(String resource, int amount){
+        inventory.replace(resource, amount);
+    }
+    public int getResource(String resource){
+        return inventory.get(resource);
+    }
+    private Person setResource(String resource, int amount){
+        inventory.put(resource, amount);
+
+        //for chaining method calls
+        return this;
+    }
+    private int getResourceOrDefault(String resource, int other){
+        return inventory.getOrDefault(resource, other);
     }
 }
