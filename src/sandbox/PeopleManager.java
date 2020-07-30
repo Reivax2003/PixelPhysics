@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 public class PeopleManager {
     private final Grid grid;
-    private ArrayList<Person> people = new ArrayList<Person>();
+    private ArrayList<Person> people;
 
     public PeopleManager(Grid grid){
         this.grid = grid;
-
+        people = grid.getPeople();
         //test
-        people.add(new Person(50, 25));
+        
     }
 
     public void updatePeople(){
