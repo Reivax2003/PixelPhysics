@@ -15,6 +15,7 @@ public class Ghost extends Pixel {
                 .setProperty("b", 209)
                 .setProperty("conductive", 100)
                 .setProperty("density", Integer.MAX_VALUE)
+                .setProperty("heatConduct", 100)
                 .setProperty("cost", 10);
     }
 

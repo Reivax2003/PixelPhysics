@@ -21,6 +21,7 @@ public class Plant3 extends Pixel {
                 .setProperty("turning", 30)     //chance to change direction
                 .setProperty("power", 100)       //chance to keep growing
                 .setProperty("loss", 5)
+                .setProperty("heatConduct", 75)
                 .setProperty("cost", 50);
     }
 

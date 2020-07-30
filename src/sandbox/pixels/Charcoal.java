@@ -15,6 +15,7 @@ public class Charcoal extends Pixel {
                 .setProperty("density", 40)
                 .setProperty("support", 1)
                 .setProperty("solubility", 30)
+                .setProperty("heatConduct", 75)
                 .setProperty("cost", 5);
     }
 }
