@@ -21,6 +21,7 @@ public class GameLogic extends TimerTask {
     Reactions reactions = new Reactions();
     private boolean isPaused = false;
     private int steps = 0;
+    private int energyGainRate = 3;
     private ArrayList<ArrayList<Integer>> slimeEdges = new ArrayList<ArrayList<Integer>>();
     private ArrayList<ArrayList<Integer>> slimeEdgesEmpty = new ArrayList<ArrayList<Integer>>();
     int slimeSupports = 0;
@@ -58,9 +59,7 @@ public class GameLogic extends TimerTask {
         }
 
         //increase and check max energy
-        if((grid.energy += 3) > grid.MAX_ENERGY){
-            grid.energy = grid.MAX_ENERGY;
-        }
+        grid.changeEnergy(energyGainRate);
         // System.out.println("next frame "+frameNum++);
 
         //Start left to right
