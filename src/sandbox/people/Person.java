@@ -212,12 +212,16 @@ public class Person {
 
         boolean hasGathered = false;
         int lookDist = 7;
+        int rootAndX = 0;
+        int rootAndY = 0;
         for (int x = -lookDist; x < lookDist; x++){
+            rootAndX = x + this.getRoot()[0];
             for (int y = -lookDist; y < lookDist; y++){
-                if (x >= 0 && x < grid.getWidth() && y >= 0 && y < grid.getHeight() && grid.getPixel(this.getRoot()[0]+x, this.getRoot()[1]+y).getPropOrDefault(lookingFor, 0) > 0 && maxGather > 0){
+                rootAndY = y + this.getRoot()[1];
+                if (rootAndX >= 0 && rootAndX < grid.getWidth() && rootAndY>= 0 && rootAndY < grid.getHeight() && grid.getPixel(rootAndX, rootAndY).getPropOrDefault(lookingFor, 0) > 0 && maxGather > 0){
                     maxGather--;
-                    this.changeResource(lookingFor, this.getResource(lookingFor)+grid.getPixel(this.getRoot()[0]+x, this.getRoot()[1]+y).getProperty(lookingFor));
-                    grid.setPixel(this.getRoot()[0]+x, this.getRoot()[1]+y, new Air());
+                    this.changeResource(lookingFor, this.getResource(lookingFor)+grid.getPixel(rootAndX, rootAndY).getProperty(lookingFor));
+                    grid.setPixel(rootAndX, rootAndY, new Air());
                     hasGathered = true;
                 }
             }
