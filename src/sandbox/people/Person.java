@@ -276,6 +276,19 @@ public class Person {
     public double getR(){
         return headR;
     }
+    public void setRoot(double x, double y){
+        //translate all values
+        foot1X -= rootX;
+        foot1X += x;
+        foot1Y -= rootY;
+        foot1Y += y;
+        foot2X -= rootX;
+        foot2X += x;
+        foot2Y -= rootY;
+        foot2Y += y;
+        rootX = x;
+        rootY = y;
+    }
     public void changeResource(String resource, int amount){
         inventory.replace(resource, amount);
     }
