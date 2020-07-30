@@ -86,8 +86,10 @@ public class Renderer extends JPanel {
         }
 
         if (slimeExists) {
-            g.setColor(Color.red);
-            g.drawRect((slimeGoalX - gridStartOffsetX) * pixelsPerSquare + xOffset, (slimeGoalY - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+            if(slimeGoalX < gridStartOffsetX+renderWidth && slimeGoalX >= gridStartOffsetX && slimeGoalY < gridStartOffsetY + renderHeight && slimeGoalY >= gridStartOffsetY) {
+                g.setColor(Color.red);
+                g.drawRect((slimeGoalX - gridStartOffsetX) * pixelsPerSquare + xOffset, (slimeGoalY - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+            }
         }
 
         //energy bar
