@@ -4,11 +4,15 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.io.Serializable;
 
 import sandbox.*;
 import sandbox.pixels.*;
 
-public class Person {
+public class Person implements Serializable{
+
+    private static final long serialVersionUID = 9999321236742L;
+
     //all positions are in units of grid
 
     private double rootX, rootY;
@@ -315,7 +319,7 @@ public class Person {
     }
     public Set<Entry<String, Integer>> getResources(){
         return inventory.entrySet();
-    }   
+    }
     private Person setResource(String resource, int amount){
         inventory.put(resource, amount);
 

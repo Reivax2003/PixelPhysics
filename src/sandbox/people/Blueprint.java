@@ -1,10 +1,14 @@
 package sandbox.people;
 
 import java.awt.*;
+import java.io.Serializable;
 import sandbox.*;
 import sandbox.pixels.*;
 
-public class Blueprint {
+public class Blueprint implements Serializable{
+
+    private static final long serialVersionUID = 01334;
+
     private Pixel[][] structure;
     private int x;
     private int y;

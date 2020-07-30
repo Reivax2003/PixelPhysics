@@ -5,6 +5,9 @@ import sandbox.*;
 import sandbox.pixels.*;
 
 public class WoodShack extends Blueprint {
+
+    private static final long serialVersionUID = 3141592;
+
     private Pixel[][] structure;
     private int x;
     private int y;

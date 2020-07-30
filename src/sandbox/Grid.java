@@ -154,9 +154,16 @@ public class Grid {
             }
             out.writeInt(energy);  //save grid's energy
             out.writeInt((infiniteEnergy)? -1:curMaxEnergy); // Saves max energy or infinite (as -1)
+
+            out.writeInt(people.size()); //Number of people for loader
+            for (Person each : people){
+                out.writeObject(each);
+            }
+
             out.close();
         } catch (Exception e){
             System.out.println("An error occured while saving grid.");
+            e.printStackTrace();
         }
     }
 
@@ -175,6 +182,13 @@ public class Grid {
             if (curMaxEnergy == -1) { // If written value is -1 set infinite energy
                 setInfEnergy();
             }
+
+            int numPeople = in.readInt(); // Number of people to read
+            //Needs changing if person types with differing methods are made probably by getting each type in sequence
+            for (int p = 0; p < numPeople; p++) {
+                people.add((Person)in.readObject());
+            }
+
             in.close();
             loadFrom = file;
             loaded = true;
