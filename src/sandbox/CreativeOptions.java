@@ -55,7 +55,7 @@ public class CreativeOptions extends JDialog implements ActionListener {
         JLabel sLabel = new JLabel("Set Seed");
         sLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         subPanel.add(sLabel);
-        seedField = new JTextField("Seed",7);
+        seedField = new JTextField("Random",7); //Not really now but it runs default
         seedField.addActionListener(this);
         subPanel.add(seedField);
         subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.PAGE_AXIS));
@@ -118,7 +118,7 @@ public class CreativeOptions extends JDialog implements ActionListener {
         Container contentPane = getContentPane();
         contentPane.add(optionPanel, BorderLayout.CENTER);
         contentPane.add(controlPanel, BorderLayout.PAGE_END);
-        
+
         pack();
         setLocationRelativeTo(location);
 
