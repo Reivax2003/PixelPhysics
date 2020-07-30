@@ -30,6 +30,7 @@ public class Person implements Serializable{
     private Blueprint house = null;
     private boolean showInv = false;
     private boolean dragged = false;
+    private String curActivity = "doing nothing";
 
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
@@ -178,11 +179,16 @@ public class Person implements Serializable{
     public void update(Grid grid){
         if (craft(grid)){
             this.changeResource("energy", this.getResource("energy")-10);
+            curActivity = "crafting";  //move inside craft and describe what it's crafting
         } else if (gather(grid)){
             this.changeResource("energy", this.getResource("energy")-5);
         } else if (eatFood()){
+            curActivity = "eating";
         } else if (move(grid)){
             this.changeResource("energy", this.getResource("energy")-1);
+            curActivity = "wandering";
+        } else{
+            curActivity = "doing nothing";
         }
 
         rootX = (foot1X+foot2X)/2;
@@ -239,6 +245,7 @@ public class Person implements Serializable{
                     maxGather--;
                     this.changeResource(lookingFor, this.getResource(lookingFor)+grid.getPixel(rootAndX, rootAndY).getProperty(lookingFor));
                     grid.setPixel(rootAndX, rootAndY, new Air());
+                    curActivity = "gathering "+lookingFor;
                     hasGathered = true;
                 }
             }
@@ -364,5 +371,8 @@ public class Person implements Serializable{
     }
     public boolean getDragged(){
         return dragged;
+    }
+    public String getCurActivity(){
+        return curActivity;
     }
 }
