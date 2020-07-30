@@ -1,5 +1,6 @@
 package sandbox;
 
+import sandbox.people.Person;
 import sandbox.pixels.Air;
 import sandbox.pixels.Pixel;
 
@@ -9,6 +10,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
 
     private final Renderer panel;
     private final Grid grid;
+    private final PeopleManager peopleManager;
     private MenuBar menuBar;
 
     private int lastMouseX = -1;
@@ -17,10 +19,13 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
     private int lastGridOffsetX = 0;
     private int lastGridOffsetY = 0;
 
-    public MouseHandler(Renderer panel, Grid grid, MenuBar menuBar) {
+    private int selectedPerson = -1;
+
+    public MouseHandler(Renderer panel, Grid grid, MenuBar menuBar, PeopleManager peopleManager){
         this.panel = panel;
         this.grid = grid;
         this.menuBar = menuBar;
+        this.peopleManager = peopleManager;
     }
 
     @Override
@@ -98,8 +103,13 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
             if (!controlHeld) {
                 switch (button) {
                     case MouseEvent.BUTTON1 -> {
-                        Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                        grid.energy = grid.drawPixel(squareX, squareY, pixel, grid.energy);
+                        int person = getPerson(squareX, squareY);
+                        if(person!=-1){
+                            selectedPerson = person;
+                        }else{
+                            Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
+                            grid.energy = grid.drawPixel(squareX, squareY, pixel, grid.energy);
+                        }
                     }
                     case MouseEvent.BUTTON2 -> {
                         panel.slimeGoalX = squareX;
@@ -112,8 +122,12 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
             if (!controlHeld) {
                 switch (button) {
                     case MouseEvent.BUTTON1 -> {
-                        Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
-                        grid.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel, grid.energy);
+                        if(selectedPerson != -1){
+                            peopleManager.getPerson(selectedPerson).setRoot(squareX, squareY);;
+                        }else{
+                            Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
+                            grid.energy = grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel, grid.energy);
+                        }
                     }
                     case MouseEvent.BUTTON2 -> {
                         panel.slimeGoalX = squareX;
@@ -158,13 +172,14 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         lastMouseX = lastMouseY = -1;
         lastGridOffsetX = lastGridOffsetY = 0;
+        selectedPerson = -1;
     }
 
     @Override
@@ -189,5 +204,18 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
         }
         panel.setGridStartOffsetX(gridOffsetX);
         panel.repaint();
+    }
+
+    private int getPerson(int x, int y){
+        //loop through each person and see if its head was clicked
+        for (int i = 0; i < peopleManager.getPopulation(); i++) {
+            Person person = peopleManager.getPerson(i);
+            int offX = x - person.getRoot()[0];
+            int offY = y - person.getRoot()[1];
+            if((offX*offX)+(offY*offY) < person.getR()*person.getR()){
+                return i;
+            }
+        }
+        return -1;
     }
 }
