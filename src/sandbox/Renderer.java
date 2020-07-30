@@ -96,6 +96,52 @@ public class Renderer extends JPanel {
         g.setColor(Color.yellow);
         g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, Math.min(grid.energy, grid.MAX_ENERGY) * pixelsPerSquare / 10, pixelsPerSquare / 2);
 
+        //rendering people
+        g.setColor(Color.gray.darker());
+        for (int i = 0; i < peopleManager.getPopulation(); i++) {
+            Person person = peopleManager.getPerson(i);
+            //render center
+            if (person.getRoot()[0] >= gridStartOffsetX && person.getRoot()[0] < gridStartOffsetX+renderWidth && person.getRoot()[1] >= gridStartOffsetY && person.getRoot()[1] < gridStartOffsetY+renderHeight) {
+                g.fillRect((person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+            }
+            //render head
+            for (int x = (int) -person.getR(); x < person.getR(); x++){
+                for (int y = (int) -person.getR(); y < person.getR(); y++){
+                    if ((x*x)+(y*y) < person.getR()*person.getR() && x + person.getRoot()[0] >= gridStartOffsetX && x + person.getRoot()[0] < gridStartOffsetX + renderWidth && y + person.getRoot()[1] > gridStartOffsetY && y + person.getRoot()[1] <= gridStartOffsetY + renderHeight){
+                        g.fillRect(((x+person.getRoot()[0]) - gridStartOffsetX) * pixelsPerSquare + xOffset, (int) ((y+person.getRoot()[1]-person.getR()+1) - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+                    }
+                }
+            }
+
+            double xChange = person.getRoot()[0]-person.getFoot1()[0];
+            double yChange = person.getRoot()[1]-person.getFoot1()[1];
+
+            //first leg
+            double x = (double) person.getFoot1()[0];
+            for (int y = person.getFoot1()[1]; y > person.getRoot()[1]; y--) {
+                if (yChange != 0 && xChange != 0){
+                    x -= (xChange/yChange);
+                }
+                if (x > gridStartOffsetX && x < gridStartOffsetX + renderWidth && y >= gridStartOffsetY && y < gridStartOffsetY + renderHeight) {
+                    g.fillRect(((int) x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+                }
+            }
+
+            //second leg
+            x = person.getFoot2()[0];
+            g.setColor(Color.gray);
+            xChange = person.getRoot()[0]-person.getFoot2()[0];
+            yChange = person.getRoot()[1]-person.getFoot2()[1];
+            for (int y = person.getFoot2()[1]; y > person.getRoot()[1]; y--) {
+                if (yChange != 0 && xChange != 0){
+                    x -= (xChange/yChange);
+                }
+                if (x > gridStartOffsetX && x < gridStartOffsetX + renderWidth && y >= gridStartOffsetY && y < gridStartOffsetY + renderHeight) {
+                    g.fillRect(((int)x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+                }
+            }
+        }
+        
         g.setColor(new Color(255, 255, 255, 127));
         // render horizontal scrollbar
         if (grid.getWidth() > renderWidth) {
@@ -115,48 +161,6 @@ public class Renderer extends JPanel {
             // height necessary to cover fraction of the screen
             double height = (renderHeight * pixelsPerSquare) * heightFraction;
             g.fillRect(xOffset, (int) (yOffset + (gridStartOffsetY * heightFraction) * pixelsPerSquare), pixelsPerSquare, (int) height);
-        }
-
-        //rendering people
-        g.setColor(Color.gray.darker());
-        for (int i = 0; i < peopleManager.getPopulation(); i++) {
-            Person person = peopleManager.getPerson(i);
-            if (person.getRoot()[0] < gridStartOffsetX+renderWidth && person.getRoot()[0] > gridStartOffsetX) {
-                g.fillRect((person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
-            }
-            for (int x = (int) -person.getR(); x < person.getR(); x++){
-                for (int y = (int) -person.getR(); y < person.getR(); y++){
-                    if ((x*x)+(y*y) < person.getR()*person.getR()){
-                        g.fillRect(((x+person.getRoot()[0]) - gridStartOffsetX) * pixelsPerSquare + xOffset, (int) ((y+person.getRoot()[1]-person.getR()+1) - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
-                    }
-                }
-            }
-
-            double xChange = person.getRoot()[0]-person.getFoot1()[0];
-            double yChange = person.getRoot()[1]-person.getFoot1()[1];
-
-            double x = (double) person.getFoot1()[0];
-            for (int y = person.getFoot1()[1]; y > person.getRoot()[1]; y--) {
-                if (yChange != 0 && xChange != 0){
-                    x -= (xChange/yChange);
-                }
-                if (x < xOffset + renderWidth && person.getRoot()[0] > gridStartOffsetX) {
-                    g.fillRect(((int) x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
-                }
-            }
-
-            x = person.getFoot2()[0];
-            g.setColor(Color.gray);
-            xChange = person.getRoot()[0]-person.getFoot2()[0];
-            yChange = person.getRoot()[1]-person.getFoot2()[1];
-            for (int y = person.getFoot2()[1]; y > person.getRoot()[1]; y--) {
-                if (yChange != 0 && xChange != 0){
-                    x -= (xChange/yChange);
-                }
-                if (x < xOffset + renderWidth && person.getRoot()[0] > gridStartOffsetX) {
-                    g.fillRect(((int)x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
-                }
-            }
         }
     }
 
