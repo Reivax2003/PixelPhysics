@@ -1,6 +1,6 @@
 package sandbox.pixels;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Ice extends Pixel {
 
