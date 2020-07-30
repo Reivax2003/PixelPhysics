@@ -19,6 +19,8 @@ public class Person {
     private final double headR = 2;
     private final double legLen = 2*Math.sqrt(13);
     private int direction = -1; //-1 left 1 right
+    private Blueprint[] houses = new Blueprint[]{new WoodShack()};
+    private Blueprint house = null;
 
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
@@ -156,7 +158,7 @@ public class Person {
         }
     }
     public void update(Grid grid){
-        if (craft()){
+        if (craft(grid)){
             this.changeResource("energy", this.getResource("energy")-10);
         } else if (gather(grid)){
             this.changeResource("energy", this.getResource("energy")-5);
@@ -200,11 +202,8 @@ public class Person {
         if (this.getResource("nutrients") < 100){
             lookingFor = "nutrients";
         }
-        else if (this.getResource("wood") < 20){
+        else if (house == null){
             lookingFor = "wood";
-        }
-        else if (this.getResource("stone") < 20){
-            lookingFor = "stone";
         }
 
         int maxGather = 1;
@@ -224,8 +223,13 @@ public class Person {
         }
         return hasGathered;
     }
-    public boolean craft(){
-        if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2){
+    public boolean craft(Grid grid){
+        if (house == null && this.getResource("wood") >= 40){
+            System.out.println(houses[0].getStructure());
+            house = houses[0];
+            house.build(grid, foot1X, foot1Y);
+        }
+        else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2){
             this.changeResource("tool", 2);
             return true;
         }
