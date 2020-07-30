@@ -46,7 +46,7 @@ public class CreativeOptions extends JDialog implements ActionListener {
         optionPanel.add(Box.createHorizontalGlue(), c);
 
         JLabel label = new JLabel("New Creative"); //Title
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
         c.gridx = 1;
         c.gridy = 0;
         optionPanel.add(label,c);
@@ -76,10 +76,11 @@ public class CreativeOptions extends JDialog implements ActionListener {
         optionPanel.add(subPanel,c);
 
         subPanel = new JPanel(); //Toggleable options
-        subPanel.setLayout(new FlowLayout());
         infiniteEnergy = new JCheckBox("Infinite Energy");
+        infiniteEnergy.setAlignmentX(Component.CENTER_ALIGNMENT);
         infiniteEnergy.addActionListener(this);
         subPanel.add(infiniteEnergy);
+        subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.PAGE_AXIS));
         c.gridx = 1;
         c.gridy = 1;
         optionPanel.add(subPanel,c);
@@ -102,7 +103,7 @@ public class CreativeOptions extends JDialog implements ActionListener {
 
         create = new JButton("Create");
         create.addActionListener(this);
-        getRootPane().setDefaultButton(create);
+
 
         cancel = new JButton("Cancel");
         cancel.addActionListener(this);
@@ -111,8 +112,11 @@ public class CreativeOptions extends JDialog implements ActionListener {
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.LINE_AXIS));
         controlPanel.add(Box.createHorizontalGlue());
         controlPanel.add(create);
-        controlPanel.add(Box.createRigidArea(new Dimension(0, 0)));
+        controlPanel.add(Box.createHorizontalGlue());
+        //controlPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         controlPanel.add(cancel);
+        controlPanel.add(Box.createHorizontalGlue());
+
 
 
         Container contentPane = getContentPane();
