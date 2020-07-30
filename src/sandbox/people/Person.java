@@ -25,6 +25,7 @@ public class Person {
     private Blueprint[] houses = new Blueprint[]{new WoodShack()};
     private Blueprint house = null;
     private boolean showInv = false;
+    private boolean dragged = false;
 
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
@@ -132,7 +133,10 @@ public class Person {
         }
     }
     public boolean move(Grid grid) {
-        if (!isStanding(grid)) {
+        if(dragged){
+            return false;
+        }
+        else if (!isStanding(grid)) {
             foot1Y += 1;
             foot2Y += 1;
             foot1Xgoal = -1;
@@ -349,5 +353,11 @@ public class Person {
     }
     public boolean getShowInv(){
         return showInv;
+    }
+    public void setDragged(boolean dragged){
+        this.dragged = dragged;
+    }
+    public boolean getDragged(){
+        return dragged;
     }
 }
