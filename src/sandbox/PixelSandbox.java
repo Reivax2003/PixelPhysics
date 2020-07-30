@@ -55,7 +55,7 @@ public class PixelSandbox {
         grid.fillGrid(new Air());
 
         //generate some simple terrain
-        grid.worldGen(456);
+        grid.worldGen(35978);
         //seed 35978 gives error
     }
 
@@ -90,7 +90,7 @@ public class PixelSandbox {
 
         //handles user inputs
         keyHandler = new KeyHandler(pauseManager);
-        mouseHandler = new MouseHandler(renderer, grid, menuBar);
+        mouseHandler = new MouseHandler(renderer, grid, menuBar, peopleManager);
 
         //add listeners for user inputs
         renderer.addMouseMotionListener(mouseHandler);
