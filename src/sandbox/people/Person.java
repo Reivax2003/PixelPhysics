@@ -246,6 +246,7 @@ public class Person {
             System.out.println(houses[0].getStructure());
             house = houses[0];
             house.build(grid, foot1X, foot1Y+1);
+            this.setResource("wood", this.getResource("wood")-40);
         }
         else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2){
             this.changeResource("tool", 2);
