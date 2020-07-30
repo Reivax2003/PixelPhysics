@@ -1,7 +1,5 @@
 package sandbox;
 
-import sandbox.pixels.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
