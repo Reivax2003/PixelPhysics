@@ -19,9 +19,19 @@ public class PixelSandbox {
 
     private PixelSandbox(String[] args) {
         initializeGrid();
-        if (args.length > 0) {
+        if (args.length == 1) {
           File file = new File(args[0]);
           grid.loadGrid(file);
+        }
+        else if (args.length == 2) { //Process seed and max energy
+          if (args[0] != null) {grid.worldGen(Long.parseLong(args[0])); }
+          if (args[1] != null) {
+              if (Integer.parseInt(args[1]) == -1) {
+                  grid.setInfEnergy();
+              } else {
+                  //grid.setMaxEnergy(); not currently implemented
+              }
+          }
         }
 
         initializeComponents();
@@ -30,7 +40,7 @@ public class PixelSandbox {
     }
 
     public static void main(String[] args) {
-        new PixelSandbox(args);
+        new PixelSandbox(args); // Len 1 == File, Len 2 == Seed and Max/Infinite Energy
     }
 
     private void initializeGrid() {
