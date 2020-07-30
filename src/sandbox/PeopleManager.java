@@ -1,7 +1,6 @@
 package sandbox;
 
-import sandbox.people.Person;
-
+import sandbox.people.*;
 import java.util.ArrayList;
 
 public class PeopleManager {
@@ -10,6 +9,9 @@ public class PeopleManager {
 
     public PeopleManager(Grid grid){
         this.grid = grid;
+
+        //test
+        people.add(new Person(50, 25));
     }
 
     public void updatePeople(){

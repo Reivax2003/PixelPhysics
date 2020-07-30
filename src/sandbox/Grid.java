@@ -1,10 +1,14 @@
 package sandbox;
 
-import sandbox.pixels.*;
-
-import java.awt.*;
-import java.io.*;
+import java.awt.Color;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
+
+import sandbox.pixels.*;
 
 public class Grid {
     private final Pixel[][] grid;
@@ -81,7 +85,7 @@ public class Grid {
                 this.grid[x][y].setState("conducting", 1);
                 energy -= cost;
             }
-            else if(cost <= energy && !this.grid[x][y].getType().equals(pixel.getType())){
+            else if(!this.grid[x][y].getType().equals(pixel.getType())){
                 this.grid[x][y] = pixel;
                 energy -= cost;
             }
@@ -104,7 +108,6 @@ public class Grid {
             if(pixel.getType().equals("electricity") && this.grid[x][y].hasProperty("conductive")) {
                 this.grid[x][y].setState("conducting", 1);
                 energy -= cost;
-                continue;
             }
             else if(!this.grid[x][y].getType().equals(pixel.getType())){
                 Pixel p = pixel.duplicate();
@@ -221,8 +224,8 @@ public class Grid {
         }
     }
     public void genLake() {
-        double center = (r.nextDouble() * this.getWidth() / 1.2) + (this.getWidth() * (11 / 12));
-        double width = (r.nextDouble() * (this.getWidth() / 2));
+        double center = (r.nextDouble() * this.getWidth() / 1.2);
+        double width = (r.nextDouble() * (this.getWidth() / 2.0));
         double startHeight = 0;
 
         for (int i = this.getHeight() - 1; i >= 0; i--) {
@@ -235,7 +238,7 @@ public class Grid {
 
         for (int x = 0; x < this.getWidth(); x++) {
             for (int y = this.getHeight() - 1; y >= 0; y--) {
-                if (x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight()) {
+                if (x < this.getWidth() && y < this.getHeight()) {
                     double isLake = startHeight + Math.sqrt(Math.pow(width / 2, 2) - Math.pow(x - center, 2)) / ((width / 2) / depth);
                     if (y < isLake && y > startHeight) {
                         this.setPixel(x, y, new WetSand());
@@ -251,7 +254,7 @@ public class Grid {
         depth -= 1;
         for (int x = 0; x < this.getWidth(); x++) {
             for (int y = this.getHeight() - 1; y >= 0; y--) {
-                if (x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight()) {
+                if (x < this.getWidth() && y < this.getHeight()) {
                     boolean isLake = y < startHeight + Math.sqrt(Math.pow(width / 2, 2) - Math.pow(x - center, 2)) / ((width / 2) / depth);
                     if (isLake && y > startHeight) {
                         this.setPixel(x, y, new Water());

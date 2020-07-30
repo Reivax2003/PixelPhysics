@@ -1,7 +1,7 @@
 package sandbox;
 
-import sandbox.people.Person;
 import sandbox.pixels.Pixel;
+import sandbox.people.Person;
 
 import javax.swing.*;
 import java.awt.*;

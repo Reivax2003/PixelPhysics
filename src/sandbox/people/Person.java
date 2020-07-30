@@ -1,9 +1,9 @@
 package sandbox.people;
 
-import sandbox.Grid;
-import sandbox.pixels.Air;
-
+import java.awt.*;
 import java.util.HashMap;
+import sandbox.*;
+import sandbox.pixels.*;
 
 public class Person {
     //all positions are in units of grid
