@@ -107,6 +107,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
                         if(person!=-1){
                             selectedPerson = person;
                             peopleManager.getPerson(person).setShowInv(!peopleManager.getPerson(person).getShowInv());
+                            peopleManager.getPerson(person).setDragged(true);
                             System.out.println("person"+person+" happiness: "+peopleManager.getPerson(person).getHappiness());
                         }else{
                             Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
@@ -183,6 +184,9 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
     public void mouseReleased(MouseEvent e) {
         lastMouseX = lastMouseY = -1;
         lastGridOffsetX = lastGridOffsetY = 0;
+        if(selectedPerson!=-1){
+            peopleManager.getPerson(selectedPerson).setDragged(false);
+        }
         selectedPerson = -1;
     }
 
