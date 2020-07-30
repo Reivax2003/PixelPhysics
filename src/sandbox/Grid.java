@@ -19,8 +19,9 @@ public class Grid {
     private File loadFrom = null;
     private boolean loaded = false;
 
-    public final int MAX_ENERGY = 1000;
-    public int energy = MAX_ENERGY;
+    private final int MAX_ENERGY = 1000; //Max energy for display purposes and Default
+    private int curMaxEnergy = MAX_ENERGY;
+    private int energy = MAX_ENERGY;
     private boolean infiniteEnergy;
 
     private int viewMode = 0;
@@ -77,30 +78,30 @@ public class Grid {
         grid[x2][y2] = position1;
     }
 
-    public int drawPixel(int x, int y, Pixel pixel, int energy){
+    public void drawPixel(int x, int y, Pixel pixel){
         int cost = pixel.getPropOrDefault("cost", 1);
-        energy = (infiniteEnergy) ? MAX_ENERGY:energy;
+        energy = (infiniteEnergy) ? 100000000:energy; // If Inf set to a very high number
         if(cost <= energy){
             if(pixel.getType().equals("electricity") && this.grid[x][y].hasProperty("conductive")) {
                 this.grid[x][y].setState("conducting", 1);
                 energy -= cost;
             }
-            else if(cost <= energy && !this.grid[x][y].getType().equals(pixel.getType())){
+            else if(!this.grid[x][y].getType().equals(pixel.getType())){
                 this.grid[x][y] = pixel;
                 energy -= cost;
             }
         }
-        return (infiniteEnergy) ? MAX_ENERGY:energy;
+        energy = (infiniteEnergy) ? MAX_ENERGY:energy; // If Inf keep at max display energy
     }
 
     //draws a line of pixels on the grid
-    public int drawLine(int x1, int y1, int x2, int y2, Pixel pixel, int energy) {
+    public void drawLine(int x1, int y1, int x2, int y2, Pixel pixel) {
         double dirX = x2 - x1, dirY = y2 - y1;
         double length = Math.sqrt(dirX * dirX + dirY * dirY);
         dirX /= length;
         dirY /= length;
         int cost = pixel.getPropOrDefault("cost", 1);
-        energy = (infiniteEnergy) ? MAX_ENERGY:energy;
+        energy = (infiniteEnergy) ? 100000000:energy; // If Inf set to a very high number
 
         for (double i = 0; i < length && cost <= energy; i++) {
             int x = (int) (x1 + dirX * i);
@@ -108,7 +109,6 @@ public class Grid {
             if(pixel.getType().equals("electricity") && this.grid[x][y].hasProperty("conductive")) {
                 this.grid[x][y].setState("conducting", 1);
                 energy -= cost;
-                continue;
             }
             else if(!this.grid[x][y].getType().equals(pixel.getType())){
                 Pixel p = pixel.duplicate();
@@ -116,7 +116,7 @@ public class Grid {
                 energy -= cost;
             }
         }
-        return (infiniteEnergy) ? MAX_ENERGY:energy;
+        energy = (infiniteEnergy) ? MAX_ENERGY:energy; // If Inf keep at max display energy
     }
 
     // Fills the grid with a pixel type
@@ -131,7 +131,7 @@ public class Grid {
 
     public void clearGrid() { // This specific pair is used enough to have its own method
         fillGrid(new Air());
-        energy = MAX_ENERGY;
+        energy = curMaxEnergy;
         needsRedraw = true;
     }
 
@@ -148,6 +148,7 @@ public class Grid {
                 }
             }
             out.writeInt(energy);  //save grid's energy
+            out.writeInt((infiniteEnergy)? -1:curMaxEnergy); // Saves max energy or infinite (as -1)
             out.close();
         } catch (Exception e){
             System.out.println("An error occured while saving grid.");
@@ -164,6 +165,10 @@ public class Grid {
                 }
             }
             energy = in.readInt();  //energy
+            curMaxEnergy = in.readInt(); // Max energy
+            if (curMaxEnergy == -1) { // If written value is -1 set infinite energy
+                setInfEnergy();
+            }
             in.close();
             loadFrom = file;
             loaded = true;
@@ -225,8 +230,8 @@ public class Grid {
         }
     }
     public void genLake() {
-        double center = (r.nextDouble() * this.getWidth() / 1.2) + (this.getWidth() * (11 / 12));
-        double width = (r.nextDouble() * (this.getWidth() / 2));
+        double center = (r.nextDouble() * this.getWidth() / 1.2);
+        double width = (r.nextDouble() * (this.getWidth() / 2.0));
         double startHeight = 0;
 
         for (int i = this.getHeight() - 1; i >= 0; i--) {
@@ -239,7 +244,7 @@ public class Grid {
 
         for (int x = 0; x < this.getWidth(); x++) {
             for (int y = this.getHeight() - 1; y >= 0; y--) {
-                if (x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight()) {
+                if (x < this.getWidth() && y < this.getHeight()) {
                     double isLake = startHeight + Math.sqrt(Math.pow(width / 2, 2) - Math.pow(x - center, 2)) / ((width / 2) / depth);
                     if (y < isLake && y > startHeight) {
                         this.setPixel(x, y, new WetSand());
@@ -255,7 +260,7 @@ public class Grid {
         depth -= 1;
         for (int x = 0; x < this.getWidth(); x++) {
             for (int y = this.getHeight() - 1; y >= 0; y--) {
-                if (x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight()) {
+                if (x < this.getWidth() && y < this.getHeight()) {
                     boolean isLake = y < startHeight + Math.sqrt(Math.pow(width / 2, 2) - Math.pow(x - center, 2)) / ((width / 2) / depth);
                     if (isLake && y > startHeight) {
                         this.setPixel(x, y, new Water());
@@ -284,8 +289,9 @@ public class Grid {
         double slopeL = lengthL/height;
         double slopeR = lengthR/height;
 
-        for (int y = 0; y < height; y++) {
+        for (int y = 0; y < height && y < this.getHeight(); y++) {
             for (int x = (int)(center-lengthL); x < center+lengthR; x++) {
+                if(x >= 0 && x < this.getWidth())
                 this.setPixel(x, this.getHeight()-y-1, type.duplicate());
             }
             lengthL-=slopeL*r.nextDouble()*((double)y/height*4);
@@ -333,6 +339,45 @@ public class Grid {
     public void setInfEnergy() {
         infiniteEnergy = true;
         energy = MAX_ENERGY;
+        curMaxEnergy = MAX_ENERGY;
         needsRedraw = true;
+    }
+
+    public boolean changeEnergy(int energyChange) { // Return success of change
+        if(infiniteEnergy) { // Always successful if infinite
+          energy = MAX_ENERGY;
+          return true;
+        }
+        if((energy + energyChange) < 0){ // Checks if goes below 0, does not change
+            return false;
+        }
+        if((energy += energyChange) > curMaxEnergy){ // Does energy change here
+            energy = curMaxEnergy; // Prevents going over max energy
+        }
+        return true;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+    public void setEnergy(int energy) {
+        if(energy > curMaxEnergy || infiniteEnergy) {
+            this.energy = curMaxEnergy
+        }
+        else {
+            this.energy = energy;
+        }
+    }
+
+    public int getMaxEnergy() {
+        return curMaxEnergy;
+    }
+
+    public int getDisplayMaxEnergy() {
+        return (curMaxEnergy > MAX_ENERGY)?  MAX_ENERGY : curMaxEnergy; // If curMax is greater than the display/default value send that instead
+    }
+
+    public void setMaxEnergy(int newMax) {
+        curMaxEnergy = newMax;
     }
 }

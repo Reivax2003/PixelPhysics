@@ -94,7 +94,7 @@ public class Renderer extends JPanel {
 
         //energy bar
         g.setColor(Color.yellow);
-        g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, Math.min(grid.energy, grid.MAX_ENERGY) * pixelsPerSquare / 10, pixelsPerSquare / 2);
+        g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, Math.min(grid.getEnergy(), grid.getDisplayMaxEnergy()) * pixelsPerSquare / 10, pixelsPerSquare / 2);
 
         //rendering people
         g.setColor(Color.gray.darker());
@@ -141,7 +141,7 @@ public class Renderer extends JPanel {
                 }
             }
         }
-        
+
         g.setColor(new Color(255, 255, 255, 127));
         // render horizontal scrollbar
         if (grid.getWidth() > renderWidth) {
