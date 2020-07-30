@@ -86,8 +86,10 @@ public class Renderer extends JPanel {
         }
 
         if (slimeExists) {
-            g.setColor(Color.red);
-            g.drawRect((slimeGoalX - gridStartOffsetX) * pixelsPerSquare + xOffset, (slimeGoalY - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+            if(slimeGoalX < gridStartOffsetX+renderWidth && slimeGoalX >= gridStartOffsetX && slimeGoalY < gridStartOffsetY + renderHeight && slimeGoalY >= gridStartOffsetY) {
+                g.setColor(Color.red);
+                g.drawRect((slimeGoalX - gridStartOffsetX) * pixelsPerSquare + xOffset, (slimeGoalY - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+            }
         }
 
         //energy bar
@@ -119,7 +121,7 @@ public class Renderer extends JPanel {
         g.setColor(Color.gray.darker());
         for (int i = 0; i < peopleManager.getPopulation(); i++) {
             Person person = peopleManager.getPerson(i);
-            if (person.getRoot()[0] < xOffset+renderWidth && person.getRoot()[0] > gridStartOffsetX) {
+            if (person.getRoot()[0] < gridStartOffsetX+renderWidth && person.getRoot()[0] > gridStartOffsetX) {
                 g.fillRect((person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
             }
             for (int x = (int) -person.getR(); x < person.getR(); x++){
