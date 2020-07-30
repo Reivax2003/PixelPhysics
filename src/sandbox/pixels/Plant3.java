@@ -22,7 +22,8 @@ public class Plant3 extends Pixel {
                 .setProperty("power", 100)       //chance to keep growing
                 .setProperty("loss", 5)
                 .setProperty("heatConduct", 75)
-                .setProperty("cost", 50);
+                .setProperty("cost", 50)
+                .setProperty("nutrients", 50);
     }
 
 }
