@@ -61,6 +61,7 @@ public class GameLogic extends TimerTask {
         //increase and check max energy
         grid.changeEnergy(energyGainRate);
         // System.out.println("next frame "+frameNum++);
+        // System.out.println(peopleManager.getAverageHappiness());
 
         //Start left to right
         boolean reverse = false;

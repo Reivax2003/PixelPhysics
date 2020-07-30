@@ -2,6 +2,9 @@ package sandbox.people;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Map.Entry;
+
 import sandbox.*;
 import sandbox.pixels.*;
 
@@ -21,6 +24,7 @@ public class Person {
     private int direction = -1; //-1 left 1 right
     private Blueprint[] houses = new Blueprint[]{new WoodShack()};
     private Blueprint house = null;
+    private boolean showInv = false;
 
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
@@ -305,6 +309,9 @@ public class Person {
     public int getResource(String resource){
         return inventory.get(resource);
     }
+    public Set<Entry<String, Integer>> getResources(){
+        return inventory.entrySet();
+    }   
     private Person setResource(String resource, int amount){
         inventory.put(resource, amount);
 
@@ -316,6 +323,9 @@ public class Person {
     }
     public int getDesire(String resource){
         return desiredResources.get(resource);
+    }
+    public int getDesireOrDefault(String resource, int other){
+        return desiredResources.getOrDefault(resource, other);
     }
     private Person setDesire(String resource, int amount){
         desiredResources.put(resource, amount);
@@ -333,5 +343,11 @@ public class Person {
             count++;
         }
         return happiness / count;  //may retun NaN if no desires
+    }
+    public void setShowInv(boolean showInv){
+        this.showInv = showInv;
+    }
+    public boolean getShowInv(){
+        return showInv;
     }
 }
