@@ -12,6 +12,7 @@ public class Ash extends Pixel {
                 .setProperty("support", 1)
                 .setProperty("solubility", 50)
                 .setProperty("duration", 300)
+                .setProperty("heatConduct", 70)
                 .setProperty("cost", 1);
     }
 }

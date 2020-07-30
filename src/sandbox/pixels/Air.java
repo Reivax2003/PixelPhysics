@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.HashMap;
 
 public class Air extends Pixel {
+
     public Air() {
         super("air", new Color(127, 200, 227));
 

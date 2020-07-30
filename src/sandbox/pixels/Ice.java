@@ -13,6 +13,7 @@ public class Ice extends Pixel {
                 .setProperty("density", 40)
                 .setProperty("temperature",0)
                 .setProperty("heating", -1)
+                .setProperty("heatConduct", 95)
                 .setProperty("cost", 5);
     }
     
