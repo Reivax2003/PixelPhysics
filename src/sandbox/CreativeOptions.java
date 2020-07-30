@@ -172,6 +172,27 @@ public class CreativeOptions extends JDialog implements ActionListener {
         } else if (source == cancel) {
             setVisible(false);
         } else if (source == create) {
+
+            String tSeed = seedField.getText(); //Get values on create
+            try {
+                Integer.parseInt(tSeed);
+                seed = tSeed;
+            } catch (NumberFormatException e) {
+                seed = null;
+            }
+            if(infiniteEnergy.isSelected()) {
+                energy = "-1";
+            } else {
+                String tEnergy = energyField.getText();
+                try {
+                    int e = Integer.parseInt(tEnergy);
+                    if(e < 0) { Integer.parseInt("A");} //Throws exception to trigger catch
+                    energy = tEnergy;
+                } catch (NumberFormatException e) {
+                    energy = null;
+                }
+            }
+
             confirm = "y";
             setVisible(false);
         }
