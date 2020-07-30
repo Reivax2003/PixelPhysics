@@ -144,7 +144,7 @@ public class MainMenu extends JPanel implements ActionListener {
     }
 
     private String[] loadChoice() {
-      Object choiceObj = JOptionPane.showInputDialog(null,"Choose save slot:","Load Saved Sandbox",JOptionPane.PLAIN_MESSAGE,null,saveSlots,saveSlots[10]);
+      Object choiceObj = JOptionPane.showInputDialog(frame,"Choose save slot:","Load Saved Sandbox",JOptionPane.PLAIN_MESSAGE,null,saveSlots,saveSlots[10]);
       if (choiceObj == null) { // Cancelled or closed
           return null; // Returns null if no choice
       }

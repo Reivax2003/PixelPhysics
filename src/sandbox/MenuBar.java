@@ -284,7 +284,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        JOptionPane.showMessageDialog(null, messageLabel, "Sandbox Info", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(this), messageLabel, "Sandbox Info", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void populateMenu(JMenu menu, Pixel[] list, int indexMod) {
