@@ -17,7 +17,7 @@ public class Person {
     private final double maxStep = 4;
     private final double maxStepHeight = 3;
     private final double headR = 2;
-    private final double legLen = 2*Math.sqrt(13);
+    private final double legLen;
     private int direction = -1; //-1 left 1 right
     private Blueprint[] houses = new Blueprint[]{new WoodShack()};
     private Blueprint house = null;
@@ -33,6 +33,7 @@ public class Person {
         foot1Y = y + 2;
         foot2X = x + 1;
         foot2Y = y + 2;
+        legLen = Math.sqrt(Math.pow(maxStep, 2)+Math.pow(maxStepHeight, 2));
         this
                 .setResource("nutrients", 25)
                 .setResource("stone", 0)
@@ -175,33 +176,22 @@ public class Person {
 
         rootX = (foot1X+foot2X)/2;
         rootY = (foot1Y+foot2Y)/2-5;
-        /*double feetCenterX = (foot1X+foot2X)/2;
-        double feetCenterY = (foot1Y+foot2Y)/2;
 
-        double spread = Math.sqrt(Math.pow(feetCenterY, 2)+Math.pow(feetCenterX, 2));
-        double angle = Math.acos((spread/2)/legLen);
-        System.out.println(angle);
+        moveHead();
+    }
+    private void moveHead(){
+        rootX = (foot1X+foot2X)/2;
+        rootY = foot1Y - legLen;
 
-        double displacement = legLen*Math.sin(angle);
-
-        double slope1 = 0;
-        if (foot1X != foot2X)
-            slope1 = (foot1Y-foot2Y)/(foot1X-foot2X);
-
-        double slope2 = -1/slope1;
-
-        double deltaY = -(1/slope2)+Math.sqrt(Math.pow(1/slope2, 2) + 4*Math.pow(displacement, 2));
-
-        if (deltaY > 0){
-            deltaY = -(1/slope2)+Math.sqrt(Math.pow(1/slope2, 2) - 4*Math.pow(displacement, 2));
+        if (foot1Y - rootY > legLen || foot2Y - rootY > legLen) {
+            double l2 = Math.sqrt(Math.pow(foot2X - foot1X, 2) + Math.pow(foot2Y - foot1Y, 2));
+            double theta1 = Math.acos((l2 / 2) / legLen);
+            double theta2 = Math.atan((foot2Y - foot1Y) / (foot2X - foot1X));
+            double deltaX = legLen * Math.cos(theta1 + theta2);
+            double deltaY = legLen * Math.sin(theta1 + theta2);
+            rootX = foot1X - deltaX;
+            rootY = foot1Y - deltaY;
         }
-
-        deltaY /= 2;
-
-        double deltaX = deltaY/slope2;
-
-        rootX = feetCenterX+deltaX;
-        rootY = feetCenterY+deltaY;*/
     }
     public boolean gather(Grid grid){
         String lookingFor = "";
@@ -235,7 +225,6 @@ public class Person {
     }
     public boolean craft(Grid grid){
         if (house == null && this.getResource("wood") >= 40){
-            System.out.println(houses[0].getStructure());
             house = houses[0];
             house.build(grid, foot1X, foot1Y+1);
         }
