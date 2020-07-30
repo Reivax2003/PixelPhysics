@@ -284,8 +284,9 @@ public class Grid {
         double slopeL = lengthL/height;
         double slopeR = lengthR/height;
 
-        for (int y = 0; y < height; y++) {
+        for (int y = 0; y < height && y < this.getHeight(); y++) {
             for (int x = (int)(center-lengthL); x < center+lengthR; x++) {
+                if(x >= 0 && x < this.getWidth())
                 this.setPixel(x, this.getHeight()-y-1, type.duplicate());
             }
             lengthL-=slopeL*r.nextDouble()*((double)y/height*4);
