@@ -43,7 +43,8 @@ Left Click to Place
 Right Click to Delete
 Space to Pause
 Right Arrow to Advance Time (While Paused)
-Scroll to move left/right in world
+Scroll to Move Left and Right
+Control Click to Pan
 Change Material in Menus
 
 Trello: https://trello.com/b/vTjLOnEO/pixel-physics
