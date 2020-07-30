@@ -29,7 +29,8 @@ public class PixelSandbox {
               if (Integer.parseInt(args[1]) == -1) {
                   grid.setInfEnergy();
               } else {
-                  //grid.setMaxEnergy(); not currently implemented
+                  grid.setMaxEnergy(Integer.parseInt(args[1]));
+                  grid.setEnergy(Integer.parseInt(args[1]));
               }
           }
         }
@@ -40,7 +41,9 @@ public class PixelSandbox {
     }
 
     public static void main(String[] args) {
-        new PixelSandbox(args); // Len 1 == File, Len 2 == Seed and Max/Infinite Energy
+        // Input requirements
+        // Len 1 == File, Len 2 == Seed and Max/Infinite Energy (-1 for inf, 0 or greater otherwise) (null for default on either)
+        new PixelSandbox(args);
     }
 
     private void initializeGrid() {

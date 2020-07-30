@@ -19,8 +19,9 @@ public class Grid {
     private File loadFrom = null;
     private boolean loaded = false;
 
-    public final int MAX_ENERGY = 1000;
-    public int energy = MAX_ENERGY;
+    private final int MAX_ENERGY = 1000; //Max energy for display purposes and Default
+    private int curMaxEnergy = MAX_ENERGY;
+    private int energy = MAX_ENERGY;
     private boolean infiniteEnergy;
 
     private int viewMode = 0;
@@ -77,9 +78,9 @@ public class Grid {
         grid[x2][y2] = position1;
     }
 
-    public int drawPixel(int x, int y, Pixel pixel, int energy){
+    public void drawPixel(int x, int y, Pixel pixel){
         int cost = pixel.getPropOrDefault("cost", 1);
-        energy = (infiniteEnergy) ? MAX_ENERGY:energy;
+        energy = (infiniteEnergy) ? 100000000:energy; // If Inf set to a very high number
         if(cost <= energy){
             if(pixel.getType().equals("electricity") && this.grid[x][y].hasProperty("conductive")) {
                 this.grid[x][y].setState("conducting", 1);
@@ -90,17 +91,17 @@ public class Grid {
                 energy -= cost;
             }
         }
-        return (infiniteEnergy) ? MAX_ENERGY:energy;
+        energy = (infiniteEnergy) ? MAX_ENERGY:energy; // If Inf keep at max display energy
     }
 
     //draws a line of pixels on the grid
-    public int drawLine(int x1, int y1, int x2, int y2, Pixel pixel, int energy) {
+    public void drawLine(int x1, int y1, int x2, int y2, Pixel pixel) {
         double dirX = x2 - x1, dirY = y2 - y1;
         double length = Math.sqrt(dirX * dirX + dirY * dirY);
         dirX /= length;
         dirY /= length;
         int cost = pixel.getPropOrDefault("cost", 1);
-        energy = (infiniteEnergy) ? MAX_ENERGY:energy;
+        energy = (infiniteEnergy) ? 100000000:energy; // If Inf set to a very high number
 
         for (double i = 0; i < length && cost <= energy; i++) {
             int x = (int) (x1 + dirX * i);
@@ -115,7 +116,7 @@ public class Grid {
                 energy -= cost;
             }
         }
-        return (infiniteEnergy) ? MAX_ENERGY:energy;
+        energy = (infiniteEnergy) ? MAX_ENERGY:energy; // If Inf keep at max display energy
     }
 
     // Fills the grid with a pixel type
@@ -130,7 +131,7 @@ public class Grid {
 
     public void clearGrid() { // This specific pair is used enough to have its own method
         fillGrid(new Air());
-        energy = MAX_ENERGY;
+        energy = curMaxEnergy;
         needsRedraw = true;
     }
 
@@ -333,6 +334,40 @@ public class Grid {
     public void setInfEnergy() {
         infiniteEnergy = true;
         energy = MAX_ENERGY;
+        curMaxEnergy = MAX_ENERGY;
         needsRedraw = true;
+    }
+
+    public boolean changeEnergy(int energyChange) { // Return success of change
+        if(infiniteEnergy) { // Always successful if infinite
+          energy = MAX_ENERGY;
+          return true;
+        }
+        if((energy + energyChange) < 0){ // Checks if goes below 0, does not change
+            return false;
+        }
+        if((energy += energyChange) > curMaxEnergy){ // Does energy change here
+            energy = curMaxEnergy; // Prevents going over max energy
+        }
+        return true;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public int getMaxEnergy() {
+        return curMaxEnergy;
+    }
+    
+    public int getDisplayMaxEnergy() {
+        return (curMaxEnergy > MAX_ENERGY)?  MAX_ENERGY : curMaxEnergy; // If curMax is greater than the display/default value send that instead
+    }
+
+    public void setMaxEnergy(int newMax) {
+        curMaxEnergy = newMax;
     }
 }
