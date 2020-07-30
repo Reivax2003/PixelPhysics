@@ -362,7 +362,7 @@ public class Grid {
     }
     public void setEnergy(int energy) {
         if(energy > curMaxEnergy || infiniteEnergy) {
-            this.energy = curMaxEnergy
+            this.energy = curMaxEnergy;
         }
         else {
             this.energy = energy;
