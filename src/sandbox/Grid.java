@@ -148,6 +148,7 @@ public class Grid {
                 }
             }
             out.writeInt(energy);  //save grid's energy
+            out.writeInt((infiniteEnergy)? -1:curMaxEnergy); // Saves max energy or infinite (as -1)
             out.close();
         } catch (Exception e){
             System.out.println("An error occured while saving grid.");
@@ -164,6 +165,10 @@ public class Grid {
                 }
             }
             energy = in.readInt();  //energy
+            curMaxEnergy = in.readInt(); // Max energy
+            if (curMaxEnergy == -1) { // If written value is -1 set infinite energy
+                setInfEnergy();
+            }
             in.close();
             loadFrom = file;
             loaded = true;
@@ -356,13 +361,18 @@ public class Grid {
         return energy;
     }
     public void setEnergy(int energy) {
-        this.energy = energy;
+        if(energy > curMaxEnergy || infiniteEnergy) {
+            this.energy = curMaxEnergy;
+        }
+        else {
+            this.energy = energy;
+        }
     }
 
     public int getMaxEnergy() {
         return curMaxEnergy;
     }
-    
+
     public int getDisplayMaxEnergy() {
         return (curMaxEnergy > MAX_ENERGY)?  MAX_ENERGY : curMaxEnergy; // If curMax is greater than the display/default value send that instead
     }
