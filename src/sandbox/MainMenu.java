@@ -133,12 +133,14 @@ public class MainMenu extends JPanel implements ActionListener {
             case "campaign":
                 return; // Placeholder for when it is implemented
             case "creative":
-                args = new String[] {}; // Sets default arguments, does nothing
+                args = creativeDialog();
+                if (args.length == 0) {return;} // Cancelled
+                if (args[0] == null && args[1] == null) {args = new String[] {};} // No args if no inputs
                 break;
         }
-
-        PixelSandbox.main(args); // Most ways out of the menu will eventually require loading a sandbox
         frame.dispose(); // Closes menu
+        PixelSandbox.main(args); // Most ways out of the menu will eventually require loading a sandbox
+
     }
 
     private String[] loadChoice() {
@@ -162,6 +164,19 @@ public class MainMenu extends JPanel implements ActionListener {
               return null; // Returns null if no choice
           }
       }
+
+    }
+
+    private String[] creativeDialog() {
+
+        CreativeOptions optionDialog = new CreativeOptions(frame, this);
+        String[] options = optionDialog.getOptions();
+
+        if(options[2] != "y") {
+          return new String[] {};
+        }
+
+        return new String[] {options[0],options[1]};
 
     }
 }
