@@ -22,6 +22,7 @@ public class Person {
 
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
+    HashMap<String, Integer> desiredResources = new HashMap<>();
 
     public Person(int x, int y) {
         rootX = (double) x;
@@ -36,6 +37,11 @@ public class Person {
                 .setResource("wood", 0)
                 .setResource("tool", 0)
                 .setResource("energy", 100);
+        this
+                .setDesire("nutrients", 100)
+                .setDesire("energy", 100)
+                .setDesire("wood", 20)
+                .setDesire("stone", 20);
     }
 
     //valid pixel cannot have fluidity property nor temp above 80
@@ -303,5 +309,25 @@ public class Person {
     }
     private int getResourceOrDefault(String resource, int other){
         return inventory.getOrDefault(resource, other);
+    }
+    public int getDesire(String resource){
+        return desiredResources.get(resource);
+    }
+    private Person setDesire(String resource, int amount){
+        desiredResources.put(resource, amount);
+
+        //for chaining method calls
+        return this;
+    }
+    public double getHappiness(){
+        double happiness = 0;
+        int count = 0;
+        for (String resource : desiredResources.keySet()) {
+            //happiness = square root(have / desired)
+            //this allows for a bit of extra happiness if there is surplus
+            happiness += Math.sqrt(Math.max(inventory.get(resource) / (double)desiredResources.get(resource), 0));
+            count++;
+        }
+        return happiness / count;  //may retun NaN if no desires
     }
 }

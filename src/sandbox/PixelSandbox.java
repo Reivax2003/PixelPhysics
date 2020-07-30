@@ -55,8 +55,7 @@ public class PixelSandbox {
         grid.fillGrid(new Air());
 
         //generate some simple terrain
-        grid.worldGen(35978);
-        //seed 35978 gives error
+        grid.worldGen((long) (Math.floor(Math.random() * 100000) + 1));
     }
 
     private void initializeFrame() {
