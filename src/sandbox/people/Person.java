@@ -250,6 +250,7 @@ public class Person implements Serializable{
             System.out.println(houses[0].getStructure());
             house = houses[0];
             house.build(grid, foot1X, foot1Y+1);
+            this.setResource("wood", this.getResource("wood")-40);
         }
         else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2){
             this.changeResource("tool", 2);
@@ -278,10 +279,10 @@ public class Person implements Serializable{
         return (rootY-foot2Y)/(rootX-foot2X);
     }
     public boolean isStanding(Grid grid){
-        if (foot1Y + 1 == grid.getHeight() || grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("density", 100) > 20){
+        if (foot1Y + 1 == grid.getHeight() || (foot1X >= 0 && foot1X < grid.getWidth() && grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("density", 100) > 20)){
             return true;
         }
-        if (foot2Y + 1 == grid.getHeight() || grid.getPixel(foot2X, foot2Y + 1).getPropOrDefault("density", 100) > 20){
+        if (foot2Y + 1 == grid.getHeight() || foot2X >= 0 && foot2X < grid.getWidth() && grid.getPixel(foot2X, foot2Y + 1).getPropOrDefault("density", 100) > 20){
             return true;
         }
         return false;
