@@ -1,7 +1,5 @@
 package sandbox;
 
-import sandbox.pixels.*;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

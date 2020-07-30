@@ -1,7 +1,6 @@
 package sandbox.pixels;
 
 import java.awt.*;
-import java.util.Random;
 
 public class AlienPlant extends Pixel {
 

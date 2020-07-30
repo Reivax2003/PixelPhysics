@@ -1,7 +1,6 @@
 package sandbox;
 
 import sandbox.pixels.*;
-import sandbox.people.*;
 
 import java.awt.*;
 import java.util.ArrayList;
