@@ -19,7 +19,8 @@ public class Blueprint {
         this.y = y;
         for(int xmod = 0; xmod < structure[0].length; xmod++){
             for(int ymod = 0; ymod < structure.length; ymod++){
-                grid.setPixel(x+xmod, y-ymod, structure[(structure.length-1)-ymod][xmod]);
+                if (!structure[(structure.length-1)-ymod][xmod].hasProperty("overwritable"))
+                    grid.setPixel(x+xmod, y-ymod, structure[(structure.length-1)-ymod][xmod]);
             }
         }
     }
