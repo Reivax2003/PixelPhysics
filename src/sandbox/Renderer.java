@@ -153,7 +153,7 @@ public class Renderer extends JPanel {
                 g.setColor(new Color(255,255,255));
                 int j = 0;
                 for (Entry<String,Integer> entry : invItems) {
-                    g.drawString(String.format("%s: %d/%d", entry.getKey(), entry.getValue(), person.getDesireOrDefault(entry.getKey(), 0)), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset,  (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() -  size * 2 + j) * pixelsPerSquare + yOffset);
+                    g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset,  (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() -  size * 2 + j) * pixelsPerSquare + yOffset);
                     j += 2;
                 }
             }
