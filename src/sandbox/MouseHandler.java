@@ -106,6 +106,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
                         int person = getPerson(squareX, squareY);
                         if(person!=-1){
                             selectedPerson = person;
+                            System.out.println("person"+person+" happiness: "+peopleManager.getPerson(person).getHappiness());
                         }else{
                             Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                             grid.energy = grid.drawPixel(squareX, squareY, pixel, grid.energy);
