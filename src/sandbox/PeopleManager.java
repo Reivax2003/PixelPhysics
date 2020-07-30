@@ -1,7 +1,6 @@
 package sandbox;
 
 import sandbox.people.*;
-import sandbox.pixels.*;
 import java.util.ArrayList;
 
 public class PeopleManager {
@@ -27,4 +26,13 @@ public class PeopleManager {
         return people.get(index);
     }
 
+    public double getAverageHappiness(){
+        double happiness = 0;
+        int count = 0;
+        for (Person person : people) {
+            happiness += person.getHappiness();
+            count++;
+        }
+        return happiness/count;  //may return NaN if no people, or if people have no desires
+    }
 }

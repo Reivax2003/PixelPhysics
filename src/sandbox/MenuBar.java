@@ -279,12 +279,15 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 break;
         }
 
-        message = message + "Left Click to Place.<br>" + "Right Click to Delete.<br>"  + "Space to Pause.<br>" + "Right Arrow to Advance Time.<small> (While Paused)</small><br>" + "Change Material in Menus.<br>" + "Version 1.0";
+        message = message + "<br>Left Click to Place.<br>" + "Right Click to Delete.<br>"  +
+                            "Space to Pause.<br>" + "Right Arrow to Advance Time.<small> (While Paused)</small><br>" +
+                            "Scroll to Move Left and Right<br>" + "Control Click to Pan<br>" +
+                            "Change Material in Menus.<br><br>" + "Version 1.0";
         JLabel messageLabel = (new JLabel(message));
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        JOptionPane.showMessageDialog(null, messageLabel, "Sandbox Info", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(this), messageLabel, "Sandbox Info", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void populateMenu(JMenu menu, Pixel[] list, int indexMod) {

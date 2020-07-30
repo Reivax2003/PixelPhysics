@@ -24,6 +24,7 @@ public class Person {
 
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
+    HashMap<String, Integer> desiredResources = new HashMap<>();
 
     public Person(int x, int y) {
         rootX = (double) x;
@@ -38,6 +39,11 @@ public class Person {
                 .setResource("wood", 0)
                 .setResource("tool", 0)
                 .setResource("energy", 100);
+        this
+                .setDesire("nutrients", 100)
+                .setDesire("energy", 100)
+                .setDesire("wood", 20)
+                .setDesire("stone", 20);
     }
 
     //valid pixel cannot have fluidity property nor temp above 80
@@ -211,12 +217,16 @@ public class Person {
 
         boolean hasGathered = false;
         int lookDist = 7;
+        int rootAndX = 0;
+        int rootAndY = 0;
         for (int x = -lookDist; x < lookDist; x++){
+            rootAndX = x + this.getRoot()[0];
             for (int y = -lookDist; y < lookDist; y++){
-                if (x >= 0 && x < grid.getWidth() && y >= 0 && y < grid.getHeight() && grid.getPixel(this.getRoot()[0]+x, this.getRoot()[1]+y).getPropOrDefault(lookingFor, 0) > 0 && maxGather > 0){
+                rootAndY = y + this.getRoot()[1];
+                if (rootAndX >= 0 && rootAndX < grid.getWidth() && rootAndY>= 0 && rootAndY < grid.getHeight() && grid.getPixel(rootAndX, rootAndY).getPropOrDefault(lookingFor, 0) > 0 && maxGather > 0){
                     maxGather--;
-                    this.changeResource(lookingFor, this.getResource(lookingFor)+grid.getPixel(this.getRoot()[0]+x, this.getRoot()[1]+y).getProperty(lookingFor));
-                    grid.setPixel(this.getRoot()[0]+x, this.getRoot()[1]+y, new Air());
+                    this.changeResource(lookingFor, this.getResource(lookingFor)+grid.getPixel(rootAndX, rootAndY).getProperty(lookingFor));
+                    grid.setPixel(rootAndX, rootAndY, new Air());
                     hasGathered = true;
                 }
             }
@@ -276,6 +286,19 @@ public class Person {
     public double getR(){
         return headR;
     }
+    public void setRoot(double x, double y){
+        //translate all values
+        foot1X -= rootX;
+        foot1X += x;
+        foot1Y -= rootY;
+        foot1Y += y;
+        foot2X -= rootX;
+        foot2X += x;
+        foot2Y -= rootY;
+        foot2Y += y;
+        rootX = x;
+        rootY = y;
+    }
     public void changeResource(String resource, int amount){
         inventory.replace(resource, amount);
     }
@@ -290,5 +313,25 @@ public class Person {
     }
     private int getResourceOrDefault(String resource, int other){
         return inventory.getOrDefault(resource, other);
+    }
+    public int getDesire(String resource){
+        return desiredResources.get(resource);
+    }
+    private Person setDesire(String resource, int amount){
+        desiredResources.put(resource, amount);
+
+        //for chaining method calls
+        return this;
+    }
+    public double getHappiness(){
+        double happiness = 0;
+        int count = 0;
+        for (String resource : desiredResources.keySet()) {
+            //happiness = square root(have / desired)
+            //this allows for a bit of extra happiness if there is surplus
+            happiness += Math.sqrt(Math.max(inventory.get(resource) / (double)desiredResources.get(resource), 0));
+            count++;
+        }
+        return happiness / count;  //may retun NaN if no desires
     }
 }
