@@ -122,19 +122,22 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
         } else {  //draw line if dragging over screen
             if (!controlHeld) {
                 switch (button) {
-                    case MouseEvent.BUTTON1 -> {
-                        if(selectedPerson != -1){
-                            peopleManager.getPerson(selectedPerson).setRoot(squareX, squareY);;
-                        }else{
+                    case MouseEvent.BUTTON1:
+                        if (selectedPerson != -1) {
+                            peopleManager.getPerson(selectedPerson).setRoot(squareX, squareY);
+                            ;
+                        } else {
                             Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                             grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
                         }
-                    }
-                    case MouseEvent.BUTTON2 -> {
+                        break;
+                    case MouseEvent.BUTTON2:
                         panel.slimeGoalX = squareX;
                         panel.slimeGoalY = squareY;
-                    }
-                    case MouseEvent.BUTTON3 -> grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air());
+                        break;
+                    case MouseEvent.BUTTON3:
+                        grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, new Air());
+                        break;
                 }
             } else {
                 int newGridOffsetX = (panel.getGridStartOffsetX() + lastMouseX - squareX - lastGridOffsetX + gridOffsetX);
