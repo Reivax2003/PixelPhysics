@@ -184,6 +184,12 @@ public class Renderer extends JPanel {
             double height = (renderHeight * pixelsPerSquare) * heightFraction;
             g.fillRect(xOffset, (int) (yOffset + (gridStartOffsetY * heightFraction) * pixelsPerSquare), pixelsPerSquare, (int) height);
         }
+
+        g.setColor(new Color(100, 100, 100, 200));
+        if (paused) { // Render Pause sign
+            g.fillRect(xOffset + (renderWidth * pixelsPerSquare) / 16, yOffset + (renderHeight * pixelsPerSquare) / 16, pixelsPerSquare, renderHeight * pixelsPerSquare / 16);
+            g.fillRect(xOffset + (renderWidth * pixelsPerSquare) / 16 + 2 * pixelsPerSquare, yOffset + (renderHeight * pixelsPerSquare) / 16, pixelsPerSquare, renderHeight * pixelsPerSquare / 16);
+        }
     }
 
     public void setGridStartOffsetX(int offset) {
