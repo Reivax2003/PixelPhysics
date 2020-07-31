@@ -26,6 +26,8 @@ public class Grid {
     private int energy = MAX_ENERGY;
     private boolean infiniteEnergy;
 
+    public boolean campaign = false;
+
     private ArrayList<Person> people = new ArrayList<Person>();
 
     private int viewMode = 0;
@@ -141,7 +143,11 @@ public class Grid {
         needsRedraw = true;
     }
 
-    public void saveGrid(File file){
+    public void saveGrid(File file) {
+        saveGrid(file, false);
+    }
+
+    public void saveGrid(File file, boolean toCampaign){
         saving = true;
         File directory = file.getParentFile();
         if(!directory.exists()){
@@ -161,6 +167,8 @@ public class Grid {
             for (Person each : people){
                 out.writeObject(each);
             }
+
+            out.writeBoolean((toCampaign)? true : campaign);
 
             out.close();
         } catch (Exception e){
@@ -191,6 +199,8 @@ public class Grid {
             for (int p = 0; p < numPeople; p++) {
                 people.add((Person)in.readObject());
             }
+
+            campaign = in.readBoolean();
 
             in.close();
             loadFrom = file;

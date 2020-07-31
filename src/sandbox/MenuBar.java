@@ -10,7 +10,7 @@ import java.io.File;
 public class MenuBar extends JMenuBar implements ActionListener {
 
     private final Grid grid;
-    public boolean infiniteEnergy = false;
+    private boolean campaign;
 
     public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
             new WetSand(),
@@ -81,6 +81,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     public MenuBar(Grid grid) {
         this.grid = grid;
+        this.campaign = grid.campaign;
 
         JMenu solidsMenu = new JMenu("Solid");
         JMenu liquidsMenu = new JMenu("Liquid");
@@ -168,10 +169,12 @@ public class MenuBar extends JMenuBar implements ActionListener {
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
 
-        menuItem = new JMenuItem("Clear"); //Clears grid as air only
-        menuItem.setActionCommand("clear");
-        menuItem.addActionListener(this);
-        controlMenu.add(menuItem);
+        if (!campaign) {
+            menuItem = new JMenuItem("Clear"); //Clears grid as air only
+            menuItem.setActionCommand("clear");
+            menuItem.addActionListener(this);
+            controlMenu.add(menuItem);
+        }
 
         JMenu saveMenu = new JMenu("Save");
         for (int i = 0; i < 10; i++) {  //add 10 save slots
@@ -182,6 +185,15 @@ public class MenuBar extends JMenuBar implements ActionListener {
         }
         controlMenu.add(saveMenu);
 
+        JMenu camSaveMenu = new JMenu("CampaignSave"); // Comment out on release, for creating campaigns only
+        for (int i = 1; i < 10; i++) {  //add 10 save slots
+            menuItem = new JMenuItem("slot " + i);
+            menuItem.setActionCommand("camp" + i);
+            menuItem.addActionListener(this);
+            camSaveMenu.add(menuItem);
+        }
+        controlMenu.add(camSaveMenu);
+
         saveMenu = new JMenu("Load");
         for (int i = 0; i < 10; i++) {  //add 10 save slots
             menuItem = new JMenuItem("slot " + i);
@@ -191,12 +203,14 @@ public class MenuBar extends JMenuBar implements ActionListener {
         }
         controlMenu.add(saveMenu);
 
-        menuItem = new JMenuItem("Energy");
-        menuItem.setActionCommand("energy");
-        menuItem.addActionListener(this);
-        controlMenu.add(menuItem);
+        if (!campaign) {
+            menuItem = new JMenuItem("Energy");
+            menuItem.setActionCommand("energy");
+            menuItem.addActionListener(this);
+            controlMenu.add(menuItem);
+        }
 
-        menuItem = new JMenuItem("Info");
+        menuItem = new JMenuItem("Info"); // Modify this for campaign (Goals?)
         menuItem.setActionCommand("info");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
@@ -228,6 +242,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
             if (action.startsWith("save")) { //Save and load special case
                 grid.saveGrid(new File("save/slot"+action.substring(4)+".lvl"));
+            }else if (action.startsWith("camp")) { //Save as campaign
+                grid.saveGrid(new File("campaign/level"+action.substring(4)+".lvl"), true); //Saves as a campaign file
             }else if (action.startsWith("load")) {
                 grid.loadGrid(new File("save/slot"+action.substring(4)+".lvl"));
             }else if (action.startsWith("qsave")) { //Save and quit
