@@ -5,7 +5,7 @@ import sandbox.people.Person;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -100,6 +100,7 @@ public class Renderer extends JPanel {
         g.fillRect(xOffset, yOffset - pixelsPerSquare / 2, Math.min(grid.getEnergy(), grid.getDisplayMaxEnergy()) * pixelsPerSquare / 10, pixelsPerSquare / 2);
 
         //rendering people
+        HashMap<String, Integer> needed = new HashMap<>();
         g.setColor(Color.gray.darker());
         g.setFont(g.getFont().deriveFont(1.5f * pixelsPerSquare));
         for (int i = 0; i < peopleManager.getPopulation(); i++) {
@@ -158,14 +159,29 @@ public class Renderer extends JPanel {
                 //items
                 int j = 0;
                 for (Entry<String,Integer> entry : invItems) {
-                    g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset,  (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 + j) * pixelsPerSquare + yOffset);
+                    g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 + j) * pixelsPerSquare + yOffset);
                     j += 2;
                 }
             }
+            //needed items
+            Set<Entry<String, Integer>> invItems = person.getDesires();
+                for (Entry<String,Integer> entry : invItems) {
+                    needed.put(entry.getKey(), needed.getOrDefault(entry.getKey(), 0) + Math.max(entry.getValue() - person.getResource(entry.getKey()),0));
+                }
         }
         //render population stats
         g.setColor(Color.black);
-        g.drawString(Math.round(peopleManager.getAverageHappiness()*100)+"% happiness", xOffset, yOffset + pixelsPerSquare);
+        //average happiness
+        g.drawString(Math.round(peopleManager.getAverageHappiness()*100)+"% happiness", xOffset, pixelsPerSquare + yOffset);
+        //needed resources
+        g.drawString("needed resources:", xOffset, 3 * pixelsPerSquare + yOffset);
+        needed.remove("energy");  //don't display energy
+        needed.values().remove(0);  //don't display needs that are satisfied
+        int k = 5;
+        for (Entry<String,Integer> entry : needed.entrySet()) {
+            g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xOffset, k * pixelsPerSquare + yOffset);
+            k += 2;
+        }
 
         g.setColor(new Color(255, 255, 255, 127));
         // render horizontal scrollbar

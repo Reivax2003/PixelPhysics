@@ -26,6 +26,14 @@ public class MainMenu extends JPanel implements ActionListener {
 
     private Object[] campaignLevels = {
       "level 1",
+      "level 2",
+      "level 3",
+      "level 4",
+      "level 5",
+      "level 6",
+      "level 7",
+      "level 8",
+      "level 9",
     };
 
     private JFrame frame = new JFrame();
