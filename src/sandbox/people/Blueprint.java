@@ -1,10 +1,14 @@
 package sandbox.people;
 
 import java.awt.*;
+import java.io.Serializable;
 import sandbox.*;
 import sandbox.pixels.*;
 
-public class Blueprint {
+public class Blueprint implements Serializable{
+
+    private static final long serialVersionUID = 01334;
+
     private Pixel[][] structure;
     private int x;
     private int y;
@@ -19,7 +23,7 @@ public class Blueprint {
         this.y = y;
         for(int xmod = 0; xmod < structure[0].length; xmod++){
             for(int ymod = 0; ymod < structure.length; ymod++){
-                if (!structure[(structure.length-1)-ymod][xmod].hasProperty("overwritable"))
+                if (x+xmod>=0 && x+xmod<grid.getWidth() && y-ymod>=0 && y-ymod<grid.getHeight() && !structure[(structure.length-1)-ymod][xmod].hasProperty("overwritable"))
                     grid.setPixel(x+xmod, y-ymod, structure[(structure.length-1)-ymod][xmod]);
             }
         }

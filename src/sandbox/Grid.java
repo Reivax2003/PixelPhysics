@@ -7,8 +7,10 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
+import java.util.ArrayList;
 
 import sandbox.pixels.*;
+import sandbox.people.*;
 
 public class Grid {
     private final Pixel[][] grid;
@@ -23,6 +25,8 @@ public class Grid {
     private int curMaxEnergy = MAX_ENERGY;
     private int energy = MAX_ENERGY;
     private boolean infiniteEnergy;
+
+    private ArrayList<Person> people = new ArrayList<Person>();
 
     private int viewMode = 0;
     public boolean needsRedraw;
@@ -132,6 +136,7 @@ public class Grid {
     public void clearGrid() { // This specific pair is used enough to have its own method
         fillGrid(new Air());
         energy = curMaxEnergy;
+        people.clear();
         needsRedraw = true;
     }
 
@@ -149,13 +154,21 @@ public class Grid {
             }
             out.writeInt(energy);  //save grid's energy
             out.writeInt((infiniteEnergy)? -1:curMaxEnergy); // Saves max energy or infinite (as -1)
+
+            out.writeInt(people.size()); //Number of people for loader
+            for (Person each : people){
+                out.writeObject(each);
+            }
+
             out.close();
         } catch (Exception e){
             System.out.println("An error occured while saving grid.");
+            e.printStackTrace();
         }
     }
 
     public void loadGrid(File file){
+        people.clear();
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
             //iterate through each pixel
             for (int x = 0; x < getWidth(); x++) {
@@ -169,6 +182,13 @@ public class Grid {
             if (curMaxEnergy == -1) { // If written value is -1 set infinite energy
                 setInfEnergy();
             }
+
+            int numPeople = in.readInt(); // Number of people to read
+            //Needs changing if person types with differing methods are made probably by getting each type in sequence
+            for (int p = 0; p < numPeople; p++) {
+                people.add((Person)in.readObject());
+            }
+
             in.close();
             loadFrom = file;
             loaded = true;
@@ -180,7 +200,7 @@ public class Grid {
     public void worldGen(long seed){
         this.seed = seed;
         r = new Random(seed);
-        clearGrid(); // Assumes world gen replaces old world if any
+        clearGrid(); // Assumes world gen replaces old world if any and clears people
         r.nextDouble();
         if(r.nextDouble() < 0.5){
             //earth-like terrain
@@ -200,6 +220,9 @@ public class Grid {
             genPlant(new AlienPlant(true), new Soil(), new Stone(), 0.03);
         }
         loaded = false;
+
+        // Test person
+        people.add(new Person(50, 25));
     }
     public void genLand(Pixel land, Pixel cover, int maxHeight, int minHeight){
         int plus = 15;
@@ -379,5 +402,9 @@ public class Grid {
 
     public void setMaxEnergy(int newMax) {
         curMaxEnergy = newMax;
+    }
+
+    public ArrayList<Person> getPeople() {
+        return people;
     }
 }

@@ -149,11 +149,16 @@ public class Renderer extends JPanel {
                 Set<Entry<String, Integer>> invItems = person.getResources();
                 int size = invItems.size();
                 g.setColor(new Color(100,100,100,150));
-                g.fillRoundRect(((int)person.getRoot()[0] - gridStartOffsetX - 1) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 - 2) * pixelsPerSquare + yOffset, 15 * pixelsPerSquare, ( size * 2 + 2 ) * pixelsPerSquare, 5, 5);
+                g.fillRoundRect(((int)person.getRoot()[0] - gridStartOffsetX - 1) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 - 4) * pixelsPerSquare + yOffset, 15 * pixelsPerSquare, ( size * 2 + 4 ) * pixelsPerSquare, 5, 5);
                 g.setColor(new Color(255,255,255));
+                g.setFont(g.getFont().deriveFont(1.5f * pixelsPerSquare));
+
+                //current task
+                g.drawString(person.getCurActivity(), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset,  (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() -  size * 2 - 2) * pixelsPerSquare + yOffset);
+                //items
                 int j = 0;
                 for (Entry<String,Integer> entry : invItems) {
-                    g.drawString(String.format("%s: %d/%d", entry.getKey(), entry.getValue(), person.getDesireOrDefault(entry.getKey(), 0)), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset,  (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() -  size * 2 + j) * pixelsPerSquare + yOffset);
+                    g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset,  (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 + j) * pixelsPerSquare + yOffset);
                     j += 2;
                 }
             }
