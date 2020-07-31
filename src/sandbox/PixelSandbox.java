@@ -25,7 +25,12 @@ public class PixelSandbox {
           grid.loadGrid(file);
         }
         else if (args.length == 3) { //Process seed and max energy
-          if (args[0] != null && !args[0].equals("rand")) {grid.worldGen(Long.parseLong(args[0]), args[2]); }
+          if (args[0] != null && !args[0].equals("rand")) {
+              grid.worldGen(Long.parseLong(args[0]), args[2]);
+          }
+          else if (args[0] == null){
+              grid.worldGen((long) (Math.floor(Math.random() * 100000) + 1), args[2]);
+          }
           if (args[1] != null) {
               if (Integer.parseInt(args[1]) == -1) {
                   grid.setInfEnergy();
