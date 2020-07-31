@@ -21,7 +21,11 @@ public class MainMenu extends JPanel implements ActionListener {
       "slot 7",
       "slot 8",
       "slot 9",
-      "Load from file",
+      "load from file",
+    };
+
+    private Object[] campaignLevels = {
+      "level 1",
     };
 
     private JFrame frame = new JFrame();
@@ -131,7 +135,11 @@ public class MainMenu extends JPanel implements ActionListener {
                 }
                 break;
             case "campaign":
-                return; // Placeholder for when it is implemented
+                args = campaignChoice();
+                if (args == null) {
+                    return; // Return if no file is chosen
+                }
+                break;
             case "creative":
                 args = creativeDialog();
                 if (args.length == 0) {return;} // Cancelled
@@ -152,7 +160,7 @@ public class MainMenu extends JPanel implements ActionListener {
       String choice = (String) choiceObj;
 
       try {
-          Integer.parseInt(choice.substring(5)); // Tests wether save slot is chosen
+          Integer.parseInt(choice.substring(5)); // Tests whether save slot is chosen
           return new String[] {"save/slot"+choice.substring(5)+".lvl"}; // Returns chosen file
       }
       catch (NumberFormatException e) {
@@ -165,6 +173,16 @@ public class MainMenu extends JPanel implements ActionListener {
           }
       }
 
+    }
+
+    private String[] campaignChoice() {
+      Object choiceObj = JOptionPane.showInputDialog(frame,"Choose level:","Start Campaign Level",JOptionPane.PLAIN_MESSAGE,null,campaignLevels,campaignLevels[0]);
+      if (choiceObj == null) { // Cancelled or closed
+          return null; // Returns null if no choice
+      }
+
+      String choice = (String) choiceObj;
+      return new String[] {"campaign/level"+choice.substring(6)+".lvl"}; // Returns chosen level
     }
 
     private String[] creativeDialog() {
