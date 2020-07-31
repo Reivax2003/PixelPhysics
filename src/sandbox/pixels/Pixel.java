@@ -3,6 +3,7 @@ package sandbox.pixels;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.HashMap;
+import sandbox.people.Blueprint;
 
 public class Pixel implements Serializable {
 
@@ -17,6 +18,7 @@ public class Pixel implements Serializable {
     HashMap<String, Integer> properties = new HashMap<>();
     HashMap<String, Integer> state = new HashMap<>();
     public Pixel other = null;
+    private Blueprint building = null;
 
     public Pixel(String type, Color color) {
         this.type = type;
@@ -107,5 +109,12 @@ public class Pixel implements Serializable {
     }
     public void setOther(Pixel pixel){
         other = pixel;
+    }
+
+    public Blueprint getBuilding() {
+        return building;
+    }
+    public void setBuilding(Blueprint building){
+        this.building = building;
     }
 }
