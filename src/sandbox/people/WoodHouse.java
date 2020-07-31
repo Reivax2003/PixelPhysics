@@ -81,6 +81,7 @@ public class WoodHouse extends Blueprint {
                 {l, g, g, g, r, g, g, r, s, w, w, w, w, w, g, g, g, g, g, r, g, r},
                 {r, r, r, r, r, r, r, r, s, w, w, w, w, w, r, r, r, r, r, r, r, r}
         };
+        comfort = 10;
 
         super.setStructure(structure);
     }
