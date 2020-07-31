@@ -16,6 +16,7 @@ public class PixelSandbox {
     private GameLogic gameLogic;
     private PauseManager pauseManager;
     private PeopleManager peopleManager;
+    private GoalManager goalManager;
 
     private PixelSandbox(String[] args) {
         initializeGrid();
@@ -84,7 +85,8 @@ public class PixelSandbox {
     private void initializeLogic() {
 
         //game mechanics
-        gameLogic = new GameLogic(grid, renderer, peopleManager);
+        goalManager = new GoalManager(grid, peopleManager);
+        gameLogic = new GameLogic(grid, renderer, peopleManager, goalManager);
         pauseManager = new PauseManager(gameLogic);
 
         //handles user inputs

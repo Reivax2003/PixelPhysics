@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import sandbox.pixels.*;
 import sandbox.people.*;
+import sandbox.goals.*;
 
 public class Grid {
     private final Pixel[][] grid;
@@ -27,6 +28,7 @@ public class Grid {
     private boolean infiniteEnergy;
 
     public boolean campaign = false;
+    private ArrayList<Goal> goals = new ArrayList<Goal>();
 
     private ArrayList<Person> people = new ArrayList<Person>();
 
@@ -236,6 +238,8 @@ public class Grid {
 
         // Test person
         people.add(new Person(50, 25));
+        // Test goal
+        goals.add(new MaxHouse(new WoodAFrame()));
     }
     public void genLand(Pixel land, Pixel cover, int maxHeight, int minHeight){
         int plus = 15;
@@ -419,5 +423,9 @@ public class Grid {
 
     public ArrayList<Person> getPeople() {
         return people;
+    }
+
+    public ArrayList<Goal> getGoals() {
+        return goals;
     }
 }

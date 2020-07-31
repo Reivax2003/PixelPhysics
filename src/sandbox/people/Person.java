@@ -348,7 +348,7 @@ public class Person implements Serializable{
     public Set<Entry<String, Integer>> getDesires(){
         return desiredResources.entrySet();
     }
-   public int getDesireOrDefault(String resource, int other){
+    public int getDesireOrDefault(String resource, int other){
         return desiredResources.getOrDefault(resource, other);
     }
     private Person setDesire(String resource, int amount){
@@ -384,5 +384,9 @@ public class Person implements Serializable{
     }
     public String getCurActivity(){
         return curActivity;
+    }
+
+    public Blueprint getHouse(){
+        return house;
     }
 }
