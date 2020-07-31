@@ -18,6 +18,7 @@ public class GameLogic extends TimerTask {
     private final Grid grid;
     private final Renderer panel;
     private final PeopleManager peopleManager;
+    private final GoalManager goalManager;
     Reactions reactions = new Reactions();
     private boolean isPaused = false;
     private int steps = 0;
@@ -27,10 +28,11 @@ public class GameLogic extends TimerTask {
     int slimeSupports = 0;
     // int frameNum = 0;
 
-    public GameLogic(Grid grid, Renderer panel, PeopleManager peopleManager) {
+    public GameLogic(Grid grid, Renderer panel, PeopleManager peopleManager, GoalManager goalManager) {
         this.grid = grid;
         this.panel = panel;
         this.peopleManager = peopleManager;
+        this.goalManager = goalManager;
 
         panel.slimeGoalX = (int) (Math.random() * grid.getWidth());
         panel.slimeGoalY = (int) (Math.random() * grid.getHeight());
@@ -54,9 +56,11 @@ public class GameLogic extends TimerTask {
                 panel.repaint();
                 grid.needsRedraw = false;
             }
-            
+
             return;
         }
+
+        //System.out.println(goalManager.validate());
 
         //increase and check max energy
         grid.changeEnergy(energyGainRate);
