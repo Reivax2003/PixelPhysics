@@ -201,7 +201,7 @@ public class Person implements Serializable{
         rootX = (foot1X+foot2X)/2;
         rootY = foot1Y - legLen;
 
-        if (foot1Y - rootY > legLen || foot2Y - rootY > legLen) {
+        /*if (foot1Y - rootY > legLen || foot2Y - rootY > legLen) {
             double l2 = Math.sqrt(Math.pow(foot2X - foot1X, 2) + Math.pow(foot2Y - foot1Y, 2));
             double theta1 = Math.acos((l2 / 2) / legLen);
             double theta2 = Math.atan((foot2Y - foot1Y) / (foot2X - foot1X));
@@ -209,7 +209,7 @@ public class Person implements Serializable{
             double deltaY = legLen * Math.sin(theta1 + theta2);
             rootX = foot1X - deltaX;
             rootY = foot1Y - deltaY;
-        }
+        }*/
     }
     public boolean gather(Grid grid){
         String lookingFor = "";
