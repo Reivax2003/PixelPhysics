@@ -19,6 +19,7 @@ public class Grid {
     private Random r;
 
     private Long seed = null;
+    private String type = "Random";
     private File loadFrom = null;
     private boolean loaded = false;
 
@@ -212,12 +213,16 @@ public class Grid {
             System.out.println("An error occured while loading grid.");
         }
     }
-    public void worldGen(long seed){
+    public void worldGen(long seed, String worldType){
         this.seed = seed;
         r = new Random(seed);
         clearGrid(); // Assumes world gen replaces old world if any and clears people
         r.nextDouble();
-        if(r.nextDouble() < 0.5){
+        double world = r.nextDouble();
+        type = worldType;
+        if (worldType == "Earth") {world = 0;}
+        else if (worldType == "Alien") {world = 1;}
+        if(world < 0.5){
             //earth-like terrain
             genLand(new Soil(), new Grass(), this.getHeight()/5, 1);
             genLake();
@@ -354,7 +359,7 @@ public class Grid {
         }
         else {
             if (seed != null) { // If a seed does exist use that
-                worldGen(seed);
+                worldGen(seed, type);
             }
             else { // Else reset grid
                 clearGrid();

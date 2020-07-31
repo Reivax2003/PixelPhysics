@@ -17,9 +17,11 @@ public class CreativeOptions extends JDialog implements ActionListener {
     private JTextField seedField;
     private JTextField energyField;
     private JCheckBox infiniteEnergy;
+    private JComboBox<String> worldType;
 
     String seed = null;
     String energy = null;
+    String world = null;
     String confirm = "n";
 
     private JButton create;
@@ -64,6 +66,18 @@ public class CreativeOptions extends JDialog implements ActionListener {
         optionPanel.add(subPanel,c);
 
         subPanel = new JPanel();
+        JLabel wLabel = new JLabel("Select World Type");
+        wLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subPanel.add(wLabel);
+        String[] options = new String[]{"Random", "Earth", "Alien"};
+        worldType = new JComboBox<>(options);
+        subPanel.add(worldType);
+        subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.PAGE_AXIS));
+        c.gridx = 0;
+        c.gridy = 2;
+        optionPanel.add(subPanel, c);
+
+        subPanel = new JPanel();
         JLabel eLabel = new JLabel("Max Energy");
         eLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         subPanel.add(eLabel);
@@ -92,7 +106,7 @@ public class CreativeOptions extends JDialog implements ActionListener {
 
         setVisible(true);
 
-        return new String[] {seed,energy,confirm};
+        return new String[] {seed, energy, world, confirm};
     }
 
     public CreativeOptions(Component frameUp, Component location) {
@@ -174,6 +188,7 @@ public class CreativeOptions extends JDialog implements ActionListener {
         } else if (source == create) {
 
             String tSeed = seedField.getText(); //Get values on create
+            world = (String) worldType.getSelectedItem();
             try {
                 Integer.parseInt(tSeed);
                 seed = tSeed;

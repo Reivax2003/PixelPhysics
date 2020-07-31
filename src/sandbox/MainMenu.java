@@ -151,7 +151,7 @@ public class MainMenu extends JPanel implements ActionListener {
             case "creative":
                 args = creativeDialog();
                 if (args.length == 0) {return;} // Cancelled
-                if (args[0] == null && args[1] == null) {args = new String[] {};} // No args if no inputs
+                if (args[0] == null && args[1] == null && args[2] == "Random") {args = new String[] {};} // No args if no inputs
                 break;
         }
         frame.dispose(); // Closes menu
@@ -198,11 +198,11 @@ public class MainMenu extends JPanel implements ActionListener {
         CreativeOptions optionDialog = new CreativeOptions(frame, this);
         String[] options = optionDialog.getOptions();
 
-        if(options[2] != "y") {
+        if(options[3] != "y") {
           return new String[] {};
         }
 
-        return new String[] {options[0],options[1]};
+        return new String[] {options[0],options[1], options[2]};
 
     }
 }
