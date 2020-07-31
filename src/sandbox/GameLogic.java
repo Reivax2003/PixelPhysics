@@ -49,12 +49,12 @@ public class GameLogic extends TimerTask {
     @Override
     public void run() {
         panel.hOffset += 0.075f;
-        if (isPaused && !(steps > 0)) {
+        if ((isPaused && !(steps > 0)) || grid.saving) { // Paused or saving
             if(grid.needsRedraw){  //check if visual update needed
                 panel.repaint();
                 grid.needsRedraw = false;
             }
-
+            
             return;
         }
 
