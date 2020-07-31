@@ -339,7 +339,10 @@ public class Person implements Serializable{
     public int getDesire(String resource){
         return desiredResources.get(resource);
     }
-    public int getDesireOrDefault(String resource, int other){
+    public Set<Entry<String, Integer>> getDesires(){
+        return desiredResources.entrySet();
+    }
+   public int getDesireOrDefault(String resource, int other){
         return desiredResources.getOrDefault(resource, other);
     }
     private Person setDesire(String resource, int amount){
