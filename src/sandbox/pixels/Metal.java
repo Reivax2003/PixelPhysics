@@ -7,7 +7,8 @@ public class Metal extends Pixel {
         super("metal", Color.lightGray);
 
         this.setProperty("conductive", 100)
-        .setProperty("heatConduct", 100)
-        .setProperty("cost", 10);
+            .setProperty("walkable", 1)
+            .setProperty("heatConduct", 100)
+            .setProperty("cost", 10);
     }
 }
