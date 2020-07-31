@@ -14,6 +14,7 @@ public class FusePowder extends Pixel {
                 .setProperty("support", 1)
                 .setProperty("gravity", 1)
                 .setProperty("density", 10)
+                .setProperty("walkable", 1)
                 .setProperty("heatConduct", 70)
                 .setProperty("cost", 3);
     }
