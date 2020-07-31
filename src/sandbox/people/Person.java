@@ -26,7 +26,7 @@ public class Person implements Serializable{
     private final double headR = 2;
     private final double legLen;
     private int direction = -1; //-1 left 1 right
-    private Blueprint[] houses = new Blueprint[]{new WoodShack()};
+    private Blueprint[] houses = new Blueprint[]{new WoodShack(), new WoodHouse()};
     private Blueprint house = null;
     private boolean showInv = false;
     private boolean dragged = false;
@@ -216,8 +216,11 @@ public class Person implements Serializable{
         if (this.getResource("nutrients") < 100){
             lookingFor = "nutrients";
         }
-        else if (house == null){
+        else if (this.getResource("wood") < 40){
             lookingFor = "wood";
+        }
+        else if (this.getResource("stone") < 30){
+            lookingFor = "stone";
         }
 
         int maxGather = 1;
@@ -231,7 +234,7 @@ public class Person implements Serializable{
             rootAndX = x + this.getRoot()[0];
             for (int y = -lookDist; y < lookDist; y++){
                 rootAndY = y + this.getRoot()[1];
-                if (rootAndX >= 0 && rootAndX < grid.getWidth() && rootAndY>= 0 && rootAndY < grid.getHeight() && grid.getPixel(rootAndX, rootAndY).getPropOrDefault(lookingFor, 0) > 0 && maxGather > 0){
+                if (rootAndX >= 0 && rootAndX < grid.getWidth() && rootAndY>= 0 && rootAndY < grid.getHeight() && grid.getPixel(rootAndX, rootAndY).getPropOrDefault(lookingFor, 0) > 0 && maxGather > 0 && grid.getPixel(rootAndX, rootAndY).getPropOrDefault("structure", 0) == 0){
                     maxGather--;
                     this.changeResource(lookingFor, this.getResource(lookingFor)+grid.getPixel(rootAndX, rootAndY).getProperty(lookingFor));
                     grid.setPixel(rootAndX, rootAndY, new Air());
@@ -247,6 +250,13 @@ public class Person implements Serializable{
             house = houses[0];
             house.build(grid, foot1X, foot1Y+1);
             this.setResource("wood", this.getResource("wood")-40);
+        }
+        else if (house == houses[0] && this.getResource("wood") >= 40 && this.getResource("stone") >= 30){
+            house.destroy(grid);
+            houses[1].build(grid, house.getX(), house.getY());
+            house = houses[1];
+            this.setResource("wood", this.getResource("wood")-40);
+            this.setResource("stone", this.getResource("stone")-30);
         }
         else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2){
             this.changeResource("tool", 2);
