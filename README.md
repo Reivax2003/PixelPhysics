@@ -3,28 +3,28 @@
 Our goal is to make a realtime physics game built around pixels, each pixel is one unit of a substance and there are different substances that behave differently and can interact with each other. Some substances create other ones, like fire creates smoke, and some substances can combine into ones with different properties, like water + sand = wet sand.
 
 List of substances:  
-Acid
-Ash
-Charcoal
-Duplicate
-Electricity
-Fire (burns flammables, produces smoke),
-Fuse and Fuse Powder
-Gasoline
-Ghost
-Ice
-Lava (burns flammables and melts through stone/metal),
-Metal (conducts electricity),  
-Plants (Flower, Alien and Vine(?Name?)),
-Sand (falls downwards or diagonally),
-Slime
-Smoke (rises),
-Soil (acts like sand, but heavier),
-Steam
-Stone (does nothing),
-Water (falls down, diagonally, or moves left/right),  
-Wet sand (created with sand+water, can stack at a higher angle than sand),    
-Wood (can burn),  
+Acid, 
+Ash, 
+Charcoal, 
+Duplicate, 
+Electricity, 
+Fire (burns flammables, produces smoke), 
+Fuse and Fuse Powder, 
+Gasoline, 
+Ghost (acts like a solid block or like air, toggled with electricity), 
+Ice, 
+Lava (burns flammables and melts through stone/metal), 
+Metal (conducts electricity),   
+Plants (Flower, Alien and Vine(?Name?)), 
+Sand (falls downwards or diagonally), 
+Slime, 
+Smoke (rises), 
+Soil (acts like sand, but heavier), 
+Steam, 
+Stone (does nothing), 
+Water (falls down, diagonally, or moves left/right), 
+Wet sand (created with sand+water, can stack at a higher angle than sand), 
+Wood (can burn),   
 
 
 
@@ -39,12 +39,12 @@ In the creative mode, there are no limitations on energy or materials, and the g
 
 
 Controls:
-Left Click to Place
-Right Click to Delete
-Space to Pause
-Right Arrow to Advance Time (While Paused)
-Scroll to Move Left and Right
-Control Click to Pan
-Change Material in Menus
+Left Click to Place, 
+Right Click to Delete, 
+Space to Pause, 
+Right Arrow to Advance Time (While Paused), 
+Scroll to Move Left and Right, 
+Control Click to Pan, 
+Change Material in Menus, 
 
 Trello: https://trello.com/b/vTjLOnEO/pixel-physics
