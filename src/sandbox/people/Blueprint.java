@@ -12,6 +12,7 @@ public class Blueprint implements Serializable{
     private Pixel[][] structure;
     private int x;
     private int y;
+    protected int comfort = 0; //comfort (0-100)
 
     public Blueprint(){ }
     public void setStructure(Pixel[][] structure){
