@@ -4,11 +4,15 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.io.Serializable;
 
 import sandbox.*;
 import sandbox.pixels.*;
 
-public class Person {
+public class Person implements Serializable{
+
+    private static final long serialVersionUID = 9999321236742L;
+
     //all positions are in units of grid
 
     private double rootX, rootY;
@@ -25,6 +29,8 @@ public class Person {
     private Blueprint[] houses = new Blueprint[]{new WoodShack()};
     private Blueprint house = null;
     private boolean showInv = false;
+    private boolean dragged = false;
+    private String curActivity = "doing nothing";
 
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
@@ -133,7 +139,10 @@ public class Person {
         }
     }
     public boolean move(Grid grid) {
-        if (!isStanding(grid)) {
+        if(dragged){
+            return false;
+        }
+        else if (!isStanding(grid)) {
             foot1Y += 1;
             foot2Y += 1;
             foot1Xgoal = -1;
@@ -171,11 +180,16 @@ public class Person {
     public void update(Grid grid){
         if (craft(grid)){
             this.changeResource("energy", this.getResource("energy")-10);
+            curActivity = "crafting";  //move inside craft and describe what it's crafting
         } else if (gather(grid)){
             this.changeResource("energy", this.getResource("energy")-5);
         } else if (eatFood()){
+            curActivity = "eating";
         } else if (move(grid)){
             this.changeResource("energy", this.getResource("energy")-1);
+            curActivity = "wandering";
+        } else{
+            curActivity = "doing nothing";
         }
 
         rootX = (foot1X+foot2X)/2;
@@ -221,6 +235,7 @@ public class Person {
                     maxGather--;
                     this.changeResource(lookingFor, this.getResource(lookingFor)+grid.getPixel(rootAndX, rootAndY).getProperty(lookingFor));
                     grid.setPixel(rootAndX, rootAndY, new Air());
+                    curActivity = "gathering "+lookingFor;
                     hasGathered = true;
                 }
             }
@@ -231,6 +246,7 @@ public class Person {
         if (house == null && this.getResource("wood") >= 40){
             house = houses[0];
             house.build(grid, foot1X, foot1Y+1);
+            this.setResource("wood", this.getResource("wood")-40);
         }
         else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2){
             this.changeResource("tool", 2);
@@ -259,10 +275,10 @@ public class Person {
         return (rootY-foot2Y)/(rootX-foot2X);
     }
     public boolean isStanding(Grid grid){
-        if (foot1Y + 1 == grid.getHeight() || grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("density", 100) > 20){
+        if (foot1Y + 1 == grid.getHeight() || (foot1X >= 0 && foot1X < grid.getWidth() && grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("density", 100) > 20)){
             return true;
         }
-        if (foot2Y + 1 == grid.getHeight() || grid.getPixel(foot2X, foot2Y + 1).getPropOrDefault("density", 100) > 20){
+        if (foot2Y + 1 == grid.getHeight() || foot2X >= 0 && foot2X < grid.getWidth() && grid.getPixel(foot2X, foot2Y + 1).getPropOrDefault("density", 100) > 20){
             return true;
         }
         return false;
@@ -300,7 +316,7 @@ public class Person {
     }
     public Set<Entry<String, Integer>> getResources(){
         return inventory.entrySet();
-    }   
+    }
     private Person setResource(String resource, int amount){
         inventory.put(resource, amount);
 
@@ -338,5 +354,14 @@ public class Person {
     }
     public boolean getShowInv(){
         return showInv;
+    }
+    public void setDragged(boolean dragged){
+        this.dragged = dragged;
+    }
+    public boolean getDragged(){
+        return dragged;
+    }
+    public String getCurActivity(){
+        return curActivity;
     }
 }
