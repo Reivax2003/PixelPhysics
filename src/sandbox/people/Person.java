@@ -88,7 +88,7 @@ public class Person implements Serializable{
         }
 
         for (int i = 0; i < maxStep+difference; i++){
-            if (x+direction >= 0 && x+direction < grid.getWidth() && grid.getPixel(x+direction, y).getPropOrDefault(("density"), 100) < 20){//DON'T FORGET TO ADD OTHER CONDITIONS LATER
+            if (x+direction >= 0 && x+direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x+direction, y).getPropOrDefault(("density"), 100) < 20){//DON'T FORGET TO ADD OTHER CONDITIONS LATER
                 x += direction;
                 blocked = true;
                 for (int v = 1; v <= maxStepHeight; v++) {
@@ -103,7 +103,7 @@ public class Person implements Serializable{
             else if (x+direction >= 0 && x+direction < grid.getWidth()){
                 blocked = true;
                 for (int v = 1; v <= maxStepHeight; v++){
-                    if (x+direction >= 0 && x+direction < grid.getWidth() && grid.getPixel(x+direction, y-v).getPropOrDefault(("density"), 100) < 20){
+                    if (x+direction >= 0 && x+direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x+direction, y-v).getPropOrDefault(("density"), 100) < 20){
                         blocked = false;
                         x += direction;
                         y -= v;
@@ -286,7 +286,7 @@ public class Person implements Serializable{
         return (rootY-foot2Y)/(rootX-foot2X);
     }
     public boolean isStanding(Grid grid){
-        if (foot1Y + 1 == grid.getHeight() || (foot1X >= 0 && foot1X < grid.getWidth() && grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("density", 100) > 20)){
+        if (foot1Y + 1 >= grid.getHeight() || (foot1X >= 0 && foot1X < grid.getWidth() && grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("density", 100) > 20)){
             return true;
         }
         if (foot2Y + 1 == grid.getHeight() || foot2X >= 0 && foot2X < grid.getWidth() && grid.getPixel(foot2X, foot2Y + 1).getPropOrDefault("density", 100) > 20){
