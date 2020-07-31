@@ -38,4 +38,14 @@ public class Blueprint implements Serializable{
     public Pixel[][] getStructure(){
         return structure;
     }
+    public void destroy(Grid grid){
+        this.x = x;
+        this.y = y;
+        for(int xmod = 0; xmod < structure[0].length; xmod++){
+            for(int ymod = 0; ymod < structure.length; ymod++){
+                if (x+xmod>=0 && x+xmod<grid.getWidth() && y-ymod>=0 && y-ymod<grid.getHeight() && structure[(structure.length-1)-ymod][xmod].getType() == grid.getPixel(x+xmod, y-ymod).getType())
+                    grid.setPixel(x+xmod, y-ymod, new Air());
+            }
+        }
+    }
 }
