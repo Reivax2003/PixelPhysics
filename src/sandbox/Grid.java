@@ -30,6 +30,7 @@ public class Grid {
 
     private int viewMode = 0;
     public boolean needsRedraw;
+    public boolean saving = false;
 
     public Grid(int width, int height) {
         grid = new Pixel[width][height];
@@ -141,6 +142,7 @@ public class Grid {
     }
 
     public void saveGrid(File file){
+        saving = true;
         File directory = file.getParentFile();
         if(!directory.exists()){
             directory.mkdirs();
@@ -165,6 +167,7 @@ public class Grid {
             System.out.println("An error occured while saving grid.");
             e.printStackTrace();
         }
+        saving = false;
     }
 
     public void loadGrid(File file){

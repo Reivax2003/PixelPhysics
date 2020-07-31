@@ -108,7 +108,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
                             selectedPerson = person;
                             peopleManager.getPerson(person).setShowInv(!peopleManager.getPerson(person).getShowInv());
                             peopleManager.getPerson(person).setDragged(true);
-                            System.out.println("person"+person+" happiness: "+peopleManager.getPerson(person).getHappiness());
+                            // System.out.println("person"+person+" happiness: "+peopleManager.getPerson(person).getHappiness());
                         }else{
                             Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                             grid.drawPixel(squareX, squareY, pixel);
