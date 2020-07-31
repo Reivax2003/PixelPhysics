@@ -14,15 +14,9 @@ public class WoodShack extends Blueprint {
 
     public WoodShack(){
         Pixel a = new Air();
-        a.addProperty("structure", 1);
-        a.changeProperty("density", -100000);
         Pixel w = new Wood();
-        w.addProperty("structure", 1);
-        w.changeProperty("density", -100000);
         Pixel r = new Wood();
-        r.addProperty("structure", 1);
         r.setColor(new Color(138, 99, 54));
-        r.changeProperty("density", -100000);
 
         structure = new Pixel[][]{
                 {a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, r, w, r, w, w},
