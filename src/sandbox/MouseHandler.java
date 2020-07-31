@@ -1,6 +1,7 @@
 package sandbox;
 
 import sandbox.people.Person;
+import sandbox.people.Blueprint;
 import sandbox.pixels.Air;
 import sandbox.pixels.Pixel;
 
@@ -20,6 +21,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
     private int lastGridOffsetY = 0;
 
     private int selectedPerson = -1;
+    private Blueprint selectedbuilding = null;
 
     public MouseHandler(Renderer panel, Grid grid, MenuBar menuBar, PeopleManager peopleManager){
         this.panel = panel;
@@ -109,7 +111,16 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
                             peopleManager.getPerson(person).setShowInv(!peopleManager.getPerson(person).getShowInv());
                             peopleManager.getPerson(person).setDragged(true);
                             // System.out.println("person"+person+" happiness: "+peopleManager.getPerson(person).getHappiness());
-                        }else{
+                        }else if (grid.getPixel(squareX, squareY).getBuilding() != null && selectedbuilding == null){
+                            selectedbuilding = grid.getPixel(squareX, squareY).getBuilding();
+                        }else if (selectedbuilding != null){
+                            if (grid.getPixel(squareX, squareY).getBuilding() == null){
+                                selectedbuilding.destroy(grid);
+                                selectedbuilding.build(grid, squareX, squareY);
+                                selectedbuilding = null;
+                            }
+                        }
+                        else{
                             Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                             grid.drawPixel(squareX, squareY, pixel);
                         }
