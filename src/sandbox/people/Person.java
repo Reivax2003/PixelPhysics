@@ -53,8 +53,8 @@ public class Person implements Serializable{
         this
                 .setDesire("nutrients", 100)
                 .setDesire("energy", 100)
-                .setDesire("wood", 20)
-                .setDesire("stone", 20);
+                .setDesire("wood", 50)
+                .setDesire("stone", 50);
     }
 
     //valid pixel cannot have fluidity property nor temp above 80
@@ -357,6 +357,8 @@ public class Person implements Serializable{
             happiness += Math.sqrt(Math.max(inventory.get(resource) / (double)desiredResources.get(resource), 0));
             count++;
         }
+        happiness += Math.sqrt(Math.max((house==null?0:house.comfort) / 100d, 0));
+        count++;
         return happiness / count;  //may retun NaN if no desires
     }
     public void setShowInv(boolean showInv){

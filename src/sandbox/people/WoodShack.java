@@ -8,7 +8,7 @@ public class WoodShack extends Blueprint {
 
     private static final long serialVersionUID = 3141592;
 
-    private Pixel[][] structure;
+    private Pixel[][] structure;  //not sure why there are 2 sets of these variables
     private int x;
     private int y;
 
@@ -40,6 +40,7 @@ public class WoodShack extends Blueprint {
                 {a, a, a, a, w, w, a, a, a, a, a, a, a, a, a, a, w, w, a, a, a, a},
                 {a, a, a, a, w, w, a, a, a, a, a, a, a, a, a, a, w, w, a, a, a, a}
         };
+        this.comfort = 100;
 
         super.setStructure(structure);
     }
