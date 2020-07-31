@@ -46,5 +46,7 @@ Right Arrow to Advance Time (While Paused),
 Scroll to Move Left and Right, 
 Control Click to Pan, 
 Change Material in Menus, 
+Click on people to see their inventory/stats, 
+Click on structures then click somewhere else to move them
 
 Trello: https://trello.com/b/vTjLOnEO/pixel-physics
