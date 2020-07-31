@@ -373,7 +373,7 @@ public class Grid {
         }
         else {
             if (seed != null) { // Return seed
-                  return new String[] {"2",String.valueOf(seed)};
+                  return new String[] {"2",String.valueOf(seed) + " (Type " + type +")"};
             }
             else { // Return code signaling it started clear
                 return new String[] {"0",""};
