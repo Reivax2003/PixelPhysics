@@ -26,7 +26,7 @@ public class Person implements Serializable{
     private final double headR = 2;
     private final double legLen;
     private int direction = -1; //-1 left 1 right
-    private Blueprint[] houses = new Blueprint[]{new WoodShack(), new WoodHouse()};
+    private Blueprint[] houses = new Blueprint[]{new WoodShack(), new WoodAFrame(), new WoodHouse()};
     private Blueprint house = null;
     private boolean showInv = false;
     private boolean dragged = false;
@@ -246,15 +246,21 @@ public class Person implements Serializable{
         return hasGathered;
     }
     public boolean craft(Grid grid){
-        if (house == null && this.getResource("wood") >= 40){
+        if (house == null && this.getResource("wood") >= 20){
             house = houses[0];
             house.build(grid, foot1X, foot1Y+1);
-            this.setResource("wood", this.getResource("wood")-40);
+            this.setResource("wood", this.getResource("wood")-20);
         }
-        else if (house == houses[0] && this.getResource("wood") >= 40 && this.getResource("stone") >= 30){
+        else if (house == houses[0] && this.getResource("wood") >= 40){
             house.destroy(grid);
             houses[1].build(grid, house.getX(), house.getY());
             house = houses[1];
+            this.setResource("wood", this.getResource("wood")-40);
+        }
+        else if (house == houses[1] && this.getResource("wood") >= 40 && this.getResource("stone") >= 30){
+            house.destroy(grid);
+            houses[2].build(grid, house.getX(), house.getY());
+            house = houses[2];
             this.setResource("wood", this.getResource("wood")-40);
             this.setResource("stone", this.getResource("stone")-30);
         }
