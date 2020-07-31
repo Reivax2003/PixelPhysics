@@ -297,14 +297,14 @@ public class Person implements Serializable{
     }
     public void setRoot(double x, double y){
         //translate all values
-        foot1X -= rootX;
-        foot1X += x;
-        foot1Y -= rootY;
-        foot1Y += y;
-        foot2X -= rootX;
-        foot2X += x;
-        foot2Y -= rootY;
-        foot2Y += y;
+        foot1X += x - rootX;
+        foot1Y += y - rootY;
+        foot2X += x - rootX;
+        foot2Y += y - rootY;
+        foot1Xgoal = -1;
+        foot1Ygoal = -1;
+        foot2Xgoal = -1;
+        foot2Ygoal = -1;
         rootX = x;
         rootY = y;
     }
