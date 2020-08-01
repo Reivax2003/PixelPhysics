@@ -13,6 +13,7 @@ public class WoodShack extends Blueprint {
     private int y;
 
     public WoodShack(){
+        name = "Wood Shack";
         Pixel a = new Air();
         Pixel w = new Wood();
         Pixel r = new Wood();

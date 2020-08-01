@@ -13,6 +13,7 @@ public class Blueprint implements Serializable{
     private int x;
     private int y;
     protected int comfort = 0; //comfort (0-100)
+    protected String name;
 
     public Blueprint(){ }
     public void setStructure(Pixel[][] structure){
@@ -53,5 +54,9 @@ public class Blueprint implements Serializable{
                     grid.setPixel(x+xmod, y-ymod, new Air());
             }
         }
+    }
+
+    public String getName() {
+        return name;
     }
 }

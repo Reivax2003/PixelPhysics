@@ -257,6 +257,11 @@ public class MenuBar extends JMenuBar implements ActionListener {
             case 2: // Generated from seed
                 message = message + " generated from seed " + info[1] + ".<br>";
                 break;
+            case 3:
+                message = "<html><center>Mission: " + info[1] + "<br>";
+                for (int i = 2; i < info.length; i++) {
+                    message = message + info[i] + "<br>";
+                }
         }
 
         message = message + "<br>Left Click to Place.<br>" + "Right Click to Delete.<br>"  +
