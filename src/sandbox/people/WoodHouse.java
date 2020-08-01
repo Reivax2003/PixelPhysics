@@ -13,6 +13,7 @@ public class WoodHouse extends Blueprint {
     private int y;
 
     public WoodHouse(){
+        name = "Wood House";
         Pixel a = new Air();
 
         Pixel h = new Wood(); //highlight for wood

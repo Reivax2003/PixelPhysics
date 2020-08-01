@@ -11,6 +11,7 @@ public class WoodAFrame extends Blueprint {
     private int y;
 
     public WoodAFrame(){
+        name = "Wood A-Frame";
         Pixel a = new Air();
 
         Pixel h = new Wood(); //highlight for wood

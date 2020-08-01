@@ -30,6 +30,7 @@ public class Grid {
 
     public boolean campaign = false;
     private ArrayList<Goal> goals = new ArrayList<Goal>();
+    private String levelName = "Placeholder";
 
     private ArrayList<Person> people = new ArrayList<Person>();
 
@@ -143,6 +144,7 @@ public class Grid {
         fillGrid(new Air());
         energy = curMaxEnergy;
         people.clear();
+        goals.clear();
         needsRedraw = true;
     }
 
@@ -183,6 +185,7 @@ public class Grid {
 
     public void loadGrid(File file){
         people.clear();
+        goals.clear();
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
             //iterate through each pixel
             for (int x = 0; x < getWidth(); x++) {
@@ -368,16 +371,27 @@ public class Grid {
     }
 
     public String[] getInfo() {
-        if (loaded) { // Return filepath
-            return new String[] {"1",loadFrom.getPath()};
+        if (!campaign) { // If a creative world
+            if (loaded) { // Return filepath
+                return new String[] {"1",loadFrom.getPath()};
+            }
+            else {
+                if (seed != null) { // Return seed
+                      return new String[] {"2",String.valueOf(seed) + " (Type " + type +")"};
+                }
+                else { // Return code signaling it started clear
+                    return new String[] {"0",""};
+                }
+            }
         }
-        else {
-            if (seed != null) { // Return seed
-                  return new String[] {"2",String.valueOf(seed) + " (Type " + type +")"};
+        else { // Return level info
+            String[] levelInfo = new String[goals.size() + 2];
+            levelInfo[0] = "3"; //Code for mission
+            levelInfo[1] = levelName;
+            for(int i = 0; i < goals.size(); i ++) {
+                levelInfo[i+2] = goals.get(i).getInfo();
             }
-            else { // Return code signaling it started clear
-                return new String[] {"0",""};
-            }
+            return levelInfo;
         }
     }
 

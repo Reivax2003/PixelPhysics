@@ -7,6 +7,7 @@ public class AverageHappiness implements Goal { // Whether the average happiness
 
 
     private double happinessGoal;
+    private boolean valid = false;
 
 
     public AverageHappiness(double happinessGoal) {
@@ -17,10 +18,15 @@ public class AverageHappiness implements Goal { // Whether the average happiness
 
         if (peopleManager.getPopulation() > 0) { //If there are people
             if (peopleManager.getAverageHappiness() >= happinessGoal) {
+                valid = true;
                 return true;
             }
         }
-
+        valid = false;
         return false;
+    }
+
+    public String getInfo() {
+        return "The average happiness must be " + happinessGoal + " or better: " + ((valid) ? "Complete" : "Incomplete");
     }
 }
