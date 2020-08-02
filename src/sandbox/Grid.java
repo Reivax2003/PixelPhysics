@@ -180,7 +180,10 @@ public class Grid {
                 for (Goal each : goals){
                     out.writeObject(each);
                 }
+
+                out.writeObject(levelName);
             }
+
 
             out.close();
         } catch (Exception e){
@@ -220,6 +223,8 @@ public class Grid {
                 for (int p = 0; p < numPeople; p++) {
                     goals.add((Goal)in.readObject());
                 }
+
+                levelName = in.writeObject();
             }
 
             in.close();
