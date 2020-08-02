@@ -5,6 +5,8 @@ import sandbox.people.*;
 
 public class MaxHouse implements Goal { // Whether the best house the people is at a set level or better
 
+    private static final long serialVersionUID = 8087987;
+    
     private Class goalHouse;
     private Class[] houseOrder = new Class[]{WoodShack.class, WoodAFrame.class, WoodHouse.class};
     private int houseIndex;

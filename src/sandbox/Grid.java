@@ -173,7 +173,14 @@ public class Grid {
                 out.writeObject(each);
             }
 
-            out.writeBoolean((toCampaign)? true : campaign);
+            out.writeBoolean((toCampaign)? true : campaign); //Whether a campaign file
+
+            if((toCampaign)? true : campaign) {
+                out.writeInt(goals.size()); //Number of goals for loader
+                for (Goal each : goals){
+                    out.writeObject(each);
+                }
+            }
 
             out.close();
         } catch (Exception e){
@@ -208,12 +215,20 @@ public class Grid {
 
             campaign = in.readBoolean();
 
+            if(campaign) {
+                int numGoals = in.readInt(); // Number of goals to read
+                for (int p = 0; p < numPeople; p++) {
+                    goals.add((Goal)in.readObject());
+                }
+            }
+
             in.close();
             loadFrom = file;
             loaded = true;
             needsRedraw = true;
         } catch (Exception e){
             System.out.println("An error occured while loading grid.");
+            e.printStackTrace();
         }
     }
     public void worldGen(long seed, String worldType){
