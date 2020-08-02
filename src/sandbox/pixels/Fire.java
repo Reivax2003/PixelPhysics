@@ -13,6 +13,7 @@ public class Fire extends Pixel {
                 .setProperty("temperature", 175)
                 .setProperty("heating", 4)
                 .setProperty("maxgap", 5)
+                .setProperty("walkable", -1)
                 .setProperty("heatConduct", 100)
                 .setProperty("cost", 3);
     }
