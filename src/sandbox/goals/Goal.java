@@ -1,8 +1,9 @@
 package sandbox.goals;
 
 import sandbox.*;
+import java.io.Serializable;
 
-public interface Goal {
+public interface Goal extends Serializable {
 
     public boolean validate(Grid grid, PeopleManager peopleManager); // Returns wether objective is complete
 

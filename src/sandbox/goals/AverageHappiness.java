@@ -5,6 +5,7 @@ import sandbox.people.*;
 
 public class AverageHappiness implements Goal { // Whether the average happiness of the people is above a set level
 
+    private static final long serialVersionUID = 12323232;
 
     private double happinessGoal;
     private boolean valid = false;

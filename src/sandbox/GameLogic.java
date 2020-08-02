@@ -60,7 +60,8 @@ public class GameLogic extends TimerTask {
             return;
         }
 
-        //System.out.println(goalManager.validate());
+        //System.out.println(
+        goalManager.validate();//);
 
         //increase and check max energy
         grid.changeEnergy(energyGainRate);
