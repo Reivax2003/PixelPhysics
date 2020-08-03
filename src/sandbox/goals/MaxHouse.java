@@ -5,7 +5,7 @@ import sandbox.people.*;
 
 public class MaxHouse extends MaxGoal { // Whether the best house of the people is at a set level or better
 
-    private static final long serialVersionUID = 8087987;
+    private static final long serialVersionUID = 80887;
 
     private TestHouse testHouse;
     private String houseName;
