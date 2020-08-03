@@ -247,10 +247,11 @@ public class Grid {
         else if (worldType == "Alien") {world = 1;}
         if(world < 0.5){
             //earth-like terrain
-            genLand(new Soil(), new Grass(), this.getHeight()/5, 1);
+            genLand(new Soil(), new Grass(), this.getHeight()*3/10, this.getHeight()/5);
             genLake();
             genPlant(new Plant(), new Soil(), new Water(), 0.3);
             genPlant(new Plant3(), new Soil(), new Water(), 0.03);
+            genPatches(new Stone(), new Soil(), 100, 30000);
         }
         else{
             //alien planet
@@ -261,12 +262,13 @@ public class Grid {
             genLand(land, cover, this.getHeight()/4, 1);
             genMountain(land, r.nextInt(10) + this.getHeight()*3/4, r.nextInt(20)+10, r.nextInt(20)+10);
             genPlant(new AlienPlant(true), new Soil(), new Stone(), 0.03);
+            genPatches(new Metal(), land, 40, 70000);
         }
         loaded = false;
 
         // Test person
         people.add(new Person(50, 25, new String[]{"gatherer","wood"}));
-        people.add(new Person(50, 25, new String[]{"crafter","tool"}));
+        people.add(new Person(60, 15, new String[]{"crafter","tool"}));
         // Test goal
         goals.add(new MaxHouse(new WoodAFrame()));
     }
@@ -365,6 +367,36 @@ public class Grid {
             }
             lengthL-=slopeL*r.nextDouble()*((double)y/height*4);
             lengthR-=slopeR*r.nextDouble()*((double)y/height*4);
+        }
+    }
+    public void genPatches(Pixel type, Pixel override, int spawnSteps, int spreadSteps){
+        int x,y;
+
+        //place starting spots
+        for (int i = 0; i < spawnSteps; i++) {
+            x = (int)(Math.random()*grid.length);
+            y = (int)(Math.random()*grid[0].length);
+            if(grid[x][y].getType().equals(override.getType()))
+                grid[x][y] = type.duplicate();
+        }
+        //spread pixels
+        for (int i = 0; i < spreadSteps; i++) {
+            x = (int)(Math.random()*grid.length);
+            y = (int)(Math.random()*grid[0].length);
+            if(grid[x][y].getType().equals(type.getType())){
+                if(x>0 && grid[x-1][y].getType().equals(override.getType())){
+                    grid[x-1][y] = type.duplicate();
+                }
+                if(x<grid.length-1 && grid[x+1][y].getType().equals(override.getType())){
+                    grid[x+1][y] = type.duplicate();
+                }
+                if(y>0 && grid[x][y-1].getType().equals(override.getType())){
+                    grid[x][y-1] = type.duplicate();
+                }
+                if(y<grid[0].length-1 && grid[x][y+1].getType().equals(override.getType())){
+                    grid[x][y+1] = type.duplicate();
+                }
+            }
         }
     }
 
