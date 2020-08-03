@@ -172,14 +172,14 @@ public class Renderer extends JPanel {
         //render population stats
         g.setColor(Color.black);
         //average happiness
-        g.drawString(Math.round(peopleManager.getAverageHappiness()*100)+"% happiness", xOffset, pixelsPerSquare + yOffset);
+        g.drawString(Math.round(peopleManager.getAverageHappiness()*100)+"% happiness", xOffset, (int) (pixelsPerSquare * 1.5 + yOffset));
         //needed resources
-        g.drawString("needed resources:", xOffset, 3 * pixelsPerSquare + yOffset);
+        g.drawString("needed resources:", xOffset, (int) (3.5 * pixelsPerSquare + yOffset));
         needed.remove("energy");  //don't display energy
         needed.values().remove(0);  //don't display needs that are satisfied
         int k = 5;
         for (Entry<String,Integer> entry : needed.entrySet()) {
-            g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xOffset, k * pixelsPerSquare + yOffset);
+            g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xOffset, (int) ((k + 0.5) * pixelsPerSquare + yOffset));
             k += 2;
         }
 
@@ -204,10 +204,11 @@ public class Renderer extends JPanel {
             g.fillRect(xOffset, (int) (yOffset + (gridStartOffsetY * heightFraction) * pixelsPerSquare), pixelsPerSquare, (int) height);
         }
 
-        g.setColor(new Color(100, 100, 100, 200));
-        if (paused) { // Render Pause sign
-            g.fillRect(xOffset + (renderWidth / 16) * pixelsPerSquare , yOffset + (renderHeight / 16) * pixelsPerSquare, pixelsPerSquare, (renderHeight / 16) * pixelsPerSquare);
-            g.fillRect(xOffset + (renderWidth / 16) * pixelsPerSquare + 2 * pixelsPerSquare, yOffset + (renderHeight / 16) * pixelsPerSquare, pixelsPerSquare, (renderHeight / 16) * pixelsPerSquare);
+        g.setColor(new Color(255, 255, 255, 200));
+        if (paused) {
+            // render pause symbol
+            g.fillRect(xOffset + pixelsPerSquare * renderWidth - pixelsPerSquare * 2, yOffset + pixelsPerSquare * renderHeight - pixelsPerSquare * 4, pixelsPerSquare, pixelsPerSquare * 3);
+            g.fillRect(xOffset + pixelsPerSquare * renderWidth - pixelsPerSquare * 4, yOffset + pixelsPerSquare * renderHeight - pixelsPerSquare * 4, pixelsPerSquare, pixelsPerSquare * 3);
         }
     }
 
