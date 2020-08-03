@@ -3,7 +3,7 @@ package sandbox.goals;
 import sandbox.*;
 import sandbox.people.*;
 
-abstract class AllGoal implements Goal { // Whether all houses  of the people are at a set level or better
+abstract class AllGoal implements Goal { // Whether all of the people fit a requirement
 
     protected boolean valid = false;
 
@@ -21,6 +21,6 @@ abstract class AllGoal implements Goal { // Whether all houses  of the people ar
         return valid; // If all people do not pass or there are no people
     }
 
-    protected abstract boolean idividualTest(Person person);
+    protected abstract boolean idividualTest(Person person); // Test determined by goal function
 
 }
