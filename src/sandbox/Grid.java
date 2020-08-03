@@ -468,4 +468,8 @@ public class Grid {
     public ArrayList<Goal> getGoals() {
         return goals;
     }
+
+    public void setName(String name) {
+        levelName = name;
+    }
 }
