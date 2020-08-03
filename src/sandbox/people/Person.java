@@ -53,8 +53,8 @@ public class Person implements Serializable{
                 .setResource("energy", 100)
                 .setDesire("nutrients", 100)
                 .setDesire("energy", 100)
-                .setDesire("wood", 50)
-                .setDesire("stone", 50);
+                .setDesire("wood", 20)
+                .setDesire("stone", 0);
 
         this.job = job;
         if(desiredResources.containsKey(job)){
@@ -263,12 +263,14 @@ public class Person implements Serializable{
             house = houses[0];
             house.build(grid, foot1X, foot1Y+1);
             this.setResource("wood", this.getResource("wood")-20);
+            this.setDesireCheckJob("wood", 40);
         }
         else if (house == houses[0] && this.getResource("wood") >= 40){
             house.destroy(grid);
             houses[1].build(grid, house.getX(), house.getY());
             house = houses[1];
             this.setResource("wood", this.getResource("wood")-40);
+            this.setDesireCheckJob("wood", 40).setDesireCheckJob("stone", 30);
         }
         else if (house == houses[1] && this.getResource("wood") >= 40 && this.getResource("stone") >= 30){
             house.destroy(grid);
@@ -276,6 +278,7 @@ public class Person implements Serializable{
             house = houses[2];
             this.setResource("wood", this.getResource("wood")-40);
             this.setResource("stone", this.getResource("stone")-30);
+            this.setDesireCheckJob("wood", 0).setDesireCheckJob("stone", 0);
         }
         else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2){
             this.changeResource("tool", 2);
@@ -370,14 +373,24 @@ public class Person implements Serializable{
         //for chaining method calls
         return this;
     }
+    private Person setDesireCheckJob(String resource, int amount){
+        //this sets the desire only if it's not the current job
+        if(!job.equals(resource))
+            desiredResources.put(resource, amount);
+
+        return this;
+    }
     public double getHappiness(){
         double happiness = 0;
         int count = 0;
         for (String resource : desiredResources.keySet()) {
-            //happiness = square root(have / desired)
-            //this allows for a bit of extra happiness if there is surplus
-            happiness += Math.sqrt(Math.max(inventory.get(resource) / (double)desiredResources.get(resource), 0));
-            count++;
+
+            if(desiredResources.get(resource) != 0){  //avoid dividing by 0
+                //happiness = square root(have / desired)
+                //this allows for a bit of extra happiness if there is surplus
+                happiness += Math.sqrt(Math.max(inventory.get(resource) / (double)desiredResources.get(resource), 0));
+                count++;
+            }
         }
         happiness += Math.sqrt(Math.max((house==null?0:house.comfort) / 100d, 0));
         count++;
@@ -401,5 +414,20 @@ public class Person implements Serializable{
 
     public Blueprint getHouse(){
         return house;
+    }
+
+    public void ShareResources(Person other){
+        double distX = rootX - other.getRoot()[0];
+        double distY = rootY - other.getRoot()[1];
+        //distance between the two people
+        if(distX*distX+distY*distY<maxStep*maxStep) {
+            int surplus = getResource(job) - getDesire(job)/2;  //extra resources collected from the job
+            int needed = other.getDesire(job) - other.getResource(job);
+            if(needed > 0 && surplus > 0){
+                int shared = Math.min(surplus, needed);
+                changeResource(job, getResource(job)-shared);
+                other.changeResource(job, other.getResource(job)+shared);
+            }
+        }
     }
 }
