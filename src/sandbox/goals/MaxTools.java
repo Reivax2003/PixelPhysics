@@ -5,7 +5,7 @@ import sandbox.people.*;
 
 public class MaxTools extends MaxGoal { // Whether one tool level is above or at a set level
 
-    private static final long serialVersionUID = 9919239;
+    private static final long serialVersionUID = 99139;
 
     private int toolLevelGoal;
 
