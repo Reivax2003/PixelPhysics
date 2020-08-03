@@ -19,6 +19,23 @@ public class WoodShack extends Blueprint {
         Pixel r = new Wood();
         r.setColor(new Color(138, 99, 54));
 
+        /*
+                         rwrww
+                  wwwwwwwrrww
+         rwrwwwwwwwwwwwww wr
+        wwrwwwwwww        ww
+          rr             ww
+           ww            ww
+           ww            ww
+           ww            ww
+           ww           ww
+           ww           ww
+            ww          ww
+            ww          ww
+            ww          ww
+            ww          ww
+         */
+
         structure = new Pixel[][]{
                 {a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, r, w, r, w, w},
                 {a, a, a, a, a, a, a, a, a, a, w, w, w, w, w, w, w, r, r, w, w, a},
