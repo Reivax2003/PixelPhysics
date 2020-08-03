@@ -16,6 +16,7 @@ public class Person implements Serializable {
 
     private double rootX, rootY;
     private int foot1X, foot1Y, foot2X, foot2Y;
+    private double knee1X, knee1Y, knee2X, knee2Y;
     private int foot1Xgoal = -1;
     private int foot1Ygoal = -1;
     private int foot2Xgoal = -1;
@@ -24,6 +25,7 @@ public class Person implements Serializable {
     private final double maxStepHeight = 3;
     private final double headRadius = 2;
     private final double legLen;
+    private final double height = 5;
     private int direction = -1; //-1 left 1 right
     private Blueprint[] houses = new Blueprint[]{new WoodShack(), new WoodAFrame(), new WoodHouse()};
     private Blueprint house = null;
@@ -43,7 +45,7 @@ public class Person implements Serializable {
         foot1Y = y + 2;
         foot2X = x + 1;
         foot2Y = y + 2;
-        legLen = Math.sqrt(Math.pow(maxStep, 2) + Math.pow(maxStepHeight, 2));
+        legLen = Math.sqrt(Math.pow(height, 2)+Math.pow(maxStep/2, 2));
         this
                 .setResource("nutrients", 25)
                 .setResource("stone", 0)
@@ -212,20 +214,40 @@ public class Person implements Serializable {
 
         moveHead();
     }
+    private void moveHead(){
+        rootX = (foot1X+foot2X)/2;
+        rootY = foot1Y - height;
 
-    private void moveHead() {
-        rootX = (foot1X + foot2X) / 2;
-        rootY = foot1Y - legLen;
+        //if (foot1Y - rootY > legLen || foot2Y - rootY > legLen) {
+        double l2 = Math.sqrt(Math.pow(rootX - foot1X, 2) + Math.pow(rootY - foot1Y, 2))/2;
+        double l3 = Math.sqrt(Math.pow(legLen/2, 2)-Math.pow(l2, 2));
+        double c = Math.sqrt(Math.pow(rootX - foot1X, 2) + Math.pow(foot1Y - rootY, 2));
+        double deltaX = (l3/c)*(foot1Y - rootY);
+        double deltaY = (l3/c)*(rootX - foot1X);
+        if (direction == -1) {
+            knee1X = (rootX + foot1X) / 2 - deltaX;
+            knee1Y = (rootY + foot1Y) / 2 - deltaY;
+        }
+        else{
+            knee1X = (rootX + foot1X) / 2 + deltaX;
+            knee1Y = (rootY + foot1Y) / 2 + deltaY;
+        }
 
-        /*if (foot1Y - rootY > legLen || foot2Y - rootY > legLen) {
-            double l2 = Math.sqrt(Math.pow(foot2X - foot1X, 2) + Math.pow(foot2Y - foot1Y, 2));
-            double theta1 = Math.acos((l2 / 2) / legLen);
-            double theta2 = Math.atan((foot2Y - foot1Y) / (foot2X - foot1X));
-            double deltaX = legLen * Math.cos(theta1 + theta2);
-            double deltaY = legLen * Math.sin(theta1 + theta2);
-            rootX = foot1X - deltaX;
-            rootY = foot1Y - deltaY;
-        }*/
+        l2 = Math.sqrt(Math.pow(rootX - foot2X, 2) + Math.pow(rootY - foot2Y, 2))/2;
+        l3 = Math.sqrt(Math.pow(legLen/2, 2)-Math.pow(l2, 2));
+        if (legLen/2 > l2) {
+            c = Math.sqrt(Math.pow(rootX - foot2X, 2) + Math.pow(foot2Y - rootY, 2));
+            deltaX = (l3 / c) * (foot2Y - rootY);
+            deltaY = (l3 / c) * (rootX - foot2X);
+        }
+        if (direction == -1) {
+            knee2X = (rootX + foot2X) / 2 - deltaX;
+            knee2Y = (rootY + foot2Y) / 2 - deltaY;
+        }
+        else {
+            knee2X = (rootX + foot2X) / 2 + deltaX;
+            knee2Y = (rootY + foot2Y) / 2 + deltaY;
+        }
     }
 
     public boolean gather(Grid grid) {
@@ -332,8 +354,13 @@ public class Person implements Serializable {
     public int[] getRoot() {
         return (new int[]{(int) rootX, (int) rootY});
     }
-
-    public double getHeadRadius() {
+    public int[] getKnee1(){
+        return (new int[]{(int) knee1X, (int) knee1Y});
+    }
+    public int[] getKnee2(){
+        return (new int[]{(int) knee2X, (int) knee2Y});
+    }
+    public double getHeadRadius(){
         return headRadius;
     }
 
