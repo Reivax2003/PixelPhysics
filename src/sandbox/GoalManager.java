@@ -23,7 +23,7 @@ public class GoalManager {
     public boolean validate() {
       boolean valid = true;
       for (Goal each : goals){
-          valid = valid && each.validate(grid, peopleManager);
+          valid = each.validate(grid, peopleManager) && valid  ;
       }
       return valid;
     }
