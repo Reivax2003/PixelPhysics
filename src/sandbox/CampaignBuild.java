@@ -1,11 +1,11 @@
 package sandbox;
 
-import sandbox.goals.AllHouse;
 import sandbox.goals.Goal;
-import sandbox.goals.MaxHouse;
+import sandbox.goals.*;
 import sandbox.people.Person;
 import sandbox.people.WoodAFrame;
 import sandbox.people.WoodShack;
+import sandbox.people.WoodHouse;
 
 import java.io.File;
 import java.util.ArrayList;
