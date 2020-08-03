@@ -179,9 +179,13 @@ public class Renderer extends JPanel {
         
         needed.values().removeAll(Collections.singleton(0));  //don't display needs that are satisfied
         int k = 5;
-        for (Entry<String,Integer> entry : needed.entrySet()) {
-            g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xOffset, (int) ((k + 0.5) * pixelsPerSquare + yOffset));
-            k += 2;
+        if(needed.isEmpty()){
+            g.drawString("none", xOffset, (int) ((k + 0.5) * pixelsPerSquare + yOffset));
+        }else{
+            for (Entry<String,Integer> entry : needed.entrySet()) {
+                g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xOffset, (int) ((k + 0.5) * pixelsPerSquare + yOffset));
+                k += 2;
+            }
         }
 
         g.setColor(new Color(255, 255, 255, 127));
