@@ -37,6 +37,28 @@ public class WoodHouse extends Blueprint {
         Pixel r = new Stone(); //dark gray
         r.setColor(new Color(107, 107, 107));
 
+        /*
+                  hh
+                 hwww
+                hwssww
+               hwsbdsww
+              hwspbdpsww
+             hwsdpbdpbsww
+            hwsbdpbdpbdsww
+           hwspbdpbdpbdpsww
+          hwsdpbdpsspbdpbsww
+         hwsbdpbdswwwbdpbdsww
+        hwspbdpbswwwwwdpbdpsww
+        hwspbdpbswwwwwdpbdpssw
+          spbdpbswwwwwdpbdps
+          spbllbswwwwwdlbdll
+         llplggrswwwwwlgllggr
+        lggrgggrswwwgwggggrggr
+        lgggrggrswwwwwggggrggr
+        lgggrggrswwwwwgggggrgr
+        rrrrrrrrswwwwwrrrrrrrr
+         */
+
         structure = new Pixel[][]{
                 {a, a, a, a, a, a, a, a, a, a, h, h, a, a, a, a ,a, a, a, a, a, a},
                 {a, a, a, a, a, a, a, a, a, h, w, w, w, a, a, a, a, a, a, a, a, a},
@@ -58,7 +80,7 @@ public class WoodHouse extends Blueprint {
                 {l, g, g, g, r, g, g, r, s, w, w, w, w, w, g, g, g, g, g, r, g, r},
                 {r, r, r, r, r, r, r, r, s, w, w, w, w, w, r, r, r, r, r, r, r, r}
         };
-        comfort = 10;
+        comfort = 200;
 
         super.setStructure(structure);
     }

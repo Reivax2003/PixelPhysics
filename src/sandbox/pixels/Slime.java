@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Slime extends Pixel {
 
+    private static final long serialVersionUID = 1684144844789689019L;
+
     public Slime() {
         super("slime", Color.green.darker());
 

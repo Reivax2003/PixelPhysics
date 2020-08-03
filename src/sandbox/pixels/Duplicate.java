@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Duplicate extends Pixel {
 
+    private static final long serialVersionUID = 8067846866305636835L;
+
     public Duplicate() {
         super("duplicate", new Color(130, 50, 38));
 

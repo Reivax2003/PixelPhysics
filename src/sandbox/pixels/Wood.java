@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Wood extends Pixel {
 
+    private static final long serialVersionUID = 5526897421319909658L;
+
     public Wood() {
         super("wood", new Color(113, 62, 5));
         this

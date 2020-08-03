@@ -5,6 +5,7 @@ import sandbox.people.Person;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -110,8 +111,8 @@ public class Renderer extends JPanel {
                 g.fillRect((person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
             }
 
-            double xChange = person.getRoot()[0]-person.getFoot1()[0];
-            double yChange = person.getRoot()[1]-person.getFoot1()[1];
+            double xChange = person.getRoot()[0] - person.getFoot1()[0];
+            double yChange = person.getRoot()[1] - person.getFoot1()[1];
 
             g.setColor(Color.gray.darker());
             drawLineOnGrid(person.getRoot()[0], person.getRoot()[1], person.getKnee1()[0], person.getKnee1()[1], g, xOffset, yOffset, gridStartOffsetX, gridStartOffsetY, renderWidth, renderHeight, pixelsPerSquare);
@@ -130,41 +131,56 @@ public class Renderer extends JPanel {
                     }
                 }
             }
-
             //inventory
-            if(person.getShowInv()){
-                Set<Entry<String, Integer>> invItems = person.getResources();
-                int size = invItems.size();
-                g.setColor(new Color(100,100,100,150));
-                g.fillRoundRect(((int)person.getRoot()[0] - gridStartOffsetX - 1) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 - 4) * pixelsPerSquare + yOffset, 15 * pixelsPerSquare, ( size * 2 + 4 ) * pixelsPerSquare, 5, 5);
-                g.setColor(new Color(255,255,255));
-               
-                //current task
-                g.drawString(person.getCurActivity(), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset,  (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() -  size * 2 - 2) * pixelsPerSquare + yOffset);
-                //items
-                int j = 0;
-                for (Entry<String,Integer> entry : invItems) {
-                    g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 + j) * pixelsPerSquare + yOffset);
-                    j += 2;
+            if(person.getShowInventory()) {
+                int xPosition = person.getRoot()[0] - gridStartOffsetX;
+                int yPosition = person.getRoot()[1] - gridStartOffsetY;
+
+                // if person is out of bounds, don't draw their inventory
+                if (xPosition < renderWidth && xPosition > 0 && yPosition < renderHeight && yPosition > person.getResources().size() * 2 + 5) {
+
+                    Set<Entry<String, Integer>> inventoryItems = person.getResources();
+                    int size = inventoryItems.size();
+
+                    int endPointX = xPosition + 15;
+
+                    // push against right side
+                    if (endPointX > renderWidth) {
+                        xPosition -= endPointX - renderWidth - 1;
+                    }
+
+                    g.setColor(new Color(100, 100, 100, 150));
+                    g.fillRoundRect((xPosition - 1) * pixelsPerSquare + xOffset, (yPosition - (int) person.getHeadRadius() - size * 2 - 4) * pixelsPerSquare + yOffset, 15 * pixelsPerSquare, (size * 2 + 4) * pixelsPerSquare, 5, 5);
+                    g.setColor(new Color(255, 255, 255));
+
+                    //current task
+                    g.drawString(person.getCurrentActivity(), xPosition * pixelsPerSquare + xOffset, (yPosition - (int) person.getHeadRadius() - size * 2 - 2) * pixelsPerSquare + yOffset);
+                    //items
+                    int j = 0;
+                    for (Entry<String, Integer> entry : inventoryItems) {
+                        g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xPosition * pixelsPerSquare + xOffset, (yPosition - (int) person.getHeadRadius() - size * 2 + j) * pixelsPerSquare + yOffset);
+                        j += 2;
+                    }
                 }
             }
             //needed items
             Set<Entry<String, Integer>> invItems = person.getDesires();
-                for (Entry<String,Integer> entry : invItems) {
-                    needed.put(entry.getKey(), needed.getOrDefault(entry.getKey(), 0) + Math.max(entry.getValue() - person.getResource(entry.getKey()),0));
-                }
+            for (Entry<String, Integer> entry : invItems) {
+                needed.put(entry.getKey(), needed.getOrDefault(entry.getKey(), 0) + Math.max(entry.getValue() - person.getResource(entry.getKey()), 0));
+            }
         }
         //render population stats
         g.setColor(Color.black);
         //average happiness
-        g.drawString(Math.round(peopleManager.getAverageHappiness()*100)+"% happiness", xOffset, pixelsPerSquare + yOffset);
+        g.drawString(Math.round(peopleManager.getAverageHappiness()*100)+"% happiness", xOffset, (int) (pixelsPerSquare * 1.5 + yOffset));
         //needed resources
-        g.drawString("needed resources:", xOffset, 3 * pixelsPerSquare + yOffset);
+        g.drawString("needed resources:", xOffset, (int) (3.5 * pixelsPerSquare + yOffset));
         needed.remove("energy");  //don't display energy
-        needed.values().remove(0);  //don't display needs that are satisfied
+        
+        needed.values().removeAll(Collections.singleton(0));  //don't display needs that are satisfied
         int k = 5;
         for (Entry<String,Integer> entry : needed.entrySet()) {
-            g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xOffset, k * pixelsPerSquare + yOffset);
+            g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xOffset, (int) ((k + 0.5) * pixelsPerSquare + yOffset));
             k += 2;
         }
 
@@ -189,10 +205,11 @@ public class Renderer extends JPanel {
             g.fillRect(xOffset, (int) (yOffset + (gridStartOffsetY * heightFraction) * pixelsPerSquare), pixelsPerSquare, (int) height);
         }
 
-        g.setColor(new Color(100, 100, 100, 200));
-        if (paused) { // Render Pause sign
-            g.fillRect(xOffset + (renderWidth / 16) * pixelsPerSquare , yOffset + (renderHeight / 16) * pixelsPerSquare, pixelsPerSquare, (renderHeight / 16) * pixelsPerSquare);
-            g.fillRect(xOffset + (renderWidth / 16) * pixelsPerSquare + 2 * pixelsPerSquare, yOffset + (renderHeight / 16) * pixelsPerSquare, pixelsPerSquare, (renderHeight / 16) * pixelsPerSquare);
+        g.setColor(new Color(255, 255, 255, 200));
+        if (paused) {
+            // render pause symbol
+            g.fillRect(xOffset + pixelsPerSquare * renderWidth - pixelsPerSquare * 2, yOffset + pixelsPerSquare * renderHeight - pixelsPerSquare * 4, pixelsPerSquare, pixelsPerSquare * 3);
+            g.fillRect(xOffset + pixelsPerSquare * renderWidth - pixelsPerSquare * 4, yOffset + pixelsPerSquare * renderHeight - pixelsPerSquare * 4, pixelsPerSquare, pixelsPerSquare * 3);
         }
     }
     public void drawLineOnGrid(int x1, int y1, int x2, int y2, Graphics g, int xOffset, int yOffset, int gridStartOffsetX, int gridStartOffsetY, int renderWidth, int renderHeight, int pixelsPerSquare){

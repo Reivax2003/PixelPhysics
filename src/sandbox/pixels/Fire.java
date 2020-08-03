@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Fire extends Pixel {
 
+    private static final long serialVersionUID = -4657793912839935690L;
+
     public Fire() {
         super("fire", new Color(1.0f, 0.9f, 0.0f));
         this
