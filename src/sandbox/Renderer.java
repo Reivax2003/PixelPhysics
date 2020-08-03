@@ -177,11 +177,11 @@ public class Renderer extends JPanel {
                         j += 2;
                     }
                 }
-                //needed items
-                Set<Entry<String, Integer>> invItems = person.getDesires();
-                for (Entry<String, Integer> entry : invItems) {
-                    needed.put(entry.getKey(), needed.getOrDefault(entry.getKey(), 0) + Math.max(entry.getValue() - person.getResource(entry.getKey()), 0));
-                }
+            }
+            //needed items
+            Set<Entry<String, Integer>> invItems = person.getDesires();
+            for (Entry<String, Integer> entry : invItems) {
+                needed.put(entry.getKey(), needed.getOrDefault(entry.getKey(), 0) + Math.max(entry.getValue() - person.getResource(entry.getKey()), 0));
             }
         }
         //render population stats
