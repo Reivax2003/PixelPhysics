@@ -108,7 +108,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
                         int person = getPerson(squareX, squareY);
                         if(person!=-1){
                             selectedPerson = person;
-                            peopleManager.getPerson(person).setShowInv(!peopleManager.getPerson(person).getShowInv());
+                            peopleManager.getPerson(person).setShowInventory(!peopleManager.getPerson(person).getShowInventory());
                             peopleManager.getPerson(person).setDragged(true);
                             // System.out.println("person"+person+" happiness: "+peopleManager.getPerson(person).getHappiness());
                         }else if (grid.getPixel(squareX, squareY).getBuilding() != null && selectedbuilding == null){
@@ -231,7 +231,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
             Person person = peopleManager.getPerson(i);
             int offX = x - person.getRoot()[0];
             int offY = y - person.getRoot()[1];
-            if((offX*offX)+(offY*offY) < person.getR()*person.getR()){
+            if((offX*offX)+(offY*offY) < person.getHeadRadius()*person.getHeadRadius()){
                 return i;
             }
         }

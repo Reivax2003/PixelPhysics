@@ -1,15 +1,14 @@
 package sandbox.people;
 
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.Map.Entry;
+import sandbox.Grid;
+import sandbox.pixels.Air;
+
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
-import sandbox.*;
-import sandbox.pixels.*;
-
-public class Person implements Serializable{
+public class Person implements Serializable {
 
     private static final long serialVersionUID = 9999321236742L;
 
@@ -23,42 +22,47 @@ public class Person implements Serializable{
     private int foot2Ygoal = -1;
     private final double maxStep = 4;
     private final double maxStepHeight = 3;
-    private final double headR = 2;
+    private final double headRadius = 2;
     private final double legLen;
     private int direction = -1; //-1 left 1 right
     private Blueprint[] houses = new Blueprint[]{new WoodShack(), new WoodAFrame(), new WoodHouse()};
     private Blueprint house = null;
-    private boolean showInv = false;
+    private boolean showInventory = false;
     private boolean dragged = false;
-    private String curActivity = "doing nothing";
+    private String currentActivity = "doing nothing";
+    public String job = "";
 
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
     HashMap<String, Integer> desiredResources = new HashMap<>();
 
-    public Person(int x, int y) {
-        rootX = (double) x;
-        rootY = (double) y;
+    public Person(int x, int y, String job) {
+        rootX = x;
+        rootY = y;
         foot1X = x - 1;
         foot1Y = y + 2;
         foot2X = x + 1;
         foot2Y = y + 2;
-        legLen = Math.sqrt(Math.pow(maxStep, 2)+Math.pow(maxStepHeight, 2));
+        legLen = Math.sqrt(Math.pow(maxStep, 2) + Math.pow(maxStepHeight, 2));
         this
                 .setResource("nutrients", 25)
                 .setResource("stone", 0)
                 .setResource("wood", 0)
                 .setResource("tool", 0)
-                .setResource("energy", 100);
-        this
+                .setResource("energy", 100)
                 .setDesire("nutrients", 100)
                 .setDesire("energy", 100)
                 .setDesire("wood", 50)
                 .setDesire("stone", 50);
+
+        this.job = job;
+        if (desiredResources.containsKey(job)) {
+            setDesire(job, 200);
+        }
     }
 
     //valid pixel cannot have fluidity property nor temp above 80
-    public void takeNextStep(Grid grid){
+    public void takeNextStep(Grid grid) {
         boolean blocked = false;
 
         int x = -1;
@@ -70,34 +74,34 @@ public class Person implements Serializable{
             if (foot1X > foot2X) {
                 x = foot1X;
                 y = foot1Y;
-                difference = (foot1X-foot2X);
+                difference = (foot1X - foot2X);
             } else {
                 x = foot2X;
                 y = foot2Y;
-                difference = (foot2X-foot1X);
+                difference = (foot2X - foot1X);
             }
         } else {
             if (foot1X < foot2X) {
                 x = foot1X;
                 y = foot1Y;
-                difference = (foot2X-foot1X);
+                difference = (foot2X - foot1X);
             } else {
                 x = foot2X;
                 y = foot2Y;
-                difference = (foot1X-foot2X);
+                difference = (foot1X - foot2X);
             }
         }
 
-        for (int i = 0; i < maxStep+difference; i++){
+        for (int i = 0; i < maxStep + difference; i++) {
             //check if next pixel is background(0)
-            if (x+direction >= 0 && x+direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x+direction, y).getPropOrDefault(("walkable"), 0) == 0){//DON'T FORGET TO ADD OTHER CONDITIONS LATER
+            if (x + direction >= 0 && x + direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x + direction, y).getPropOrDefault(("walkable"), 0) == 0) {//DON'T FORGET TO ADD OTHER CONDITIONS LATER
                 x += direction;
                 blocked = true;
                 //scan downwards for a ground(1) pixel
                 for (int v = 1; v <= maxStepHeight; v++) {
                     if (y < grid.getHeight() - 1 && grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == 0) {
                         y += 1;
-                    } else if(y < grid.getHeight() - 1 && (grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == -1 || grid.getPixel(x, y + 1).getPropOrDefault(("temperature"), 50) > 90)) {
+                    } else if (y < grid.getHeight() - 1 && (grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == -1 || grid.getPixel(x, y + 1).getPropOrDefault(("temperature"), 50) > 90)) {
                         //too dangerous to walk here(-1 or temp too high)
                         break;
                     } else {
@@ -106,27 +110,26 @@ public class Person implements Serializable{
                 }
             }
             //next pixel is ground(1)
-            else if (x+direction >= 0 && x+direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x+direction, y).getPropOrDefault(("walkable"), 0) == 1){
+            else if (x + direction >= 0 && x + direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x + direction, y).getPropOrDefault(("walkable"), 0) == 1) {
                 blocked = true;
                 //scan upwards for a background(0) pixel         
-                for (int v = 1; v <= maxStepHeight; v++){
-                    if (x+direction >= 0 && x+direction < grid.getWidth() && y >= v && grid.getPixel(x+direction, y-v).getPropOrDefault(("walkable"), 0) == 0){
+                for (int v = 1; v <= maxStepHeight; v++) {
+                    if (x + direction >= 0 && x + direction < grid.getWidth() && y >= v && grid.getPixel(x + direction, y - v).getPropOrDefault(("walkable"), 0) == 0) {
                         blocked = false;
                         x += direction;
                         y -= v;
                         break;
-                    }else if(x+direction >= 0 && x+direction < grid.getWidth() && y >= v && (grid.getPixel(x+direction, y-v).getPropOrDefault(("walkable"), 0) == -1 || grid.getPixel(x, y-v).getPropOrDefault(("temperature"), 50) > 90)){
+                    } else if (x + direction >= 0 && x + direction < grid.getWidth() && y >= v && (grid.getPixel(x + direction, y - v).getPropOrDefault(("walkable"), 0) == -1 || grid.getPixel(x, y - v).getPropOrDefault(("temperature"), 50) > 90)) {
                         break;
                     }
                 }
-            }
-            else{
+            } else {
                 blocked = true;
             }
         }
         if (blocked)
             direction *= -1;
-        else{
+        else {
             if (direction == -1) {
                 if (foot1X > foot2X) {
                     foot1Xgoal = x;
@@ -146,11 +149,11 @@ public class Person implements Serializable{
             }
         }
     }
+
     public boolean move(Grid grid) {
-        if(dragged){
+        if (dragged) {
             return false;
-        }
-        else if (!isStanding(grid)) {
+        } else if (!isStanding(grid)) {
             foot1Y += 1;
             foot2Y += 1;
             foot1Xgoal = -1;
@@ -185,28 +188,30 @@ public class Person implements Serializable{
             return false;
         }
     }
-    public void update(Grid grid){
-        if (craft(grid)){
-            this.changeResource("energy", this.getResource("energy")-10);
-            curActivity = "crafting";  //move inside craft and describe what it's crafting
-        } else if (gather(grid)){
-            this.changeResource("energy", this.getResource("energy")-5);
-        } else if (eatFood()){
-            curActivity = "eating";
-        } else if (move(grid)){
-            this.changeResource("energy", this.getResource("energy")-1);
-            curActivity = "wandering";
-        } else{
-            curActivity = "doing nothing";
+
+    public void update(Grid grid) {
+        if (craft(grid)) {
+            this.changeResource("energy", this.getResource("energy") - 10);
+            currentActivity = "crafting";  //move inside craft and describe what it's crafting
+        } else if (gather(grid)) {
+            this.changeResource("energy", this.getResource("energy") - 5);
+        } else if (eatFood()) {
+            currentActivity = "eating";
+        } else if (move(grid)) {
+            this.changeResource("energy", this.getResource("energy") - 1);
+            currentActivity = "wandering";
+        } else {
+            currentActivity = "doing nothing";
         }
 
-        rootX = (foot1X+foot2X)/2;
-        rootY = (foot1Y+foot2Y)/2-5;
+        rootX = (foot1X + foot2X) / 2;
+        rootY = (foot1Y + foot2Y) / 2 - 5;
 
         moveHead();
     }
-    private void moveHead(){
-        rootX = (foot1X+foot2X)/2;
+
+    private void moveHead() {
+        rootX = (foot1X + foot2X) / 2;
         rootY = foot1Y - legLen;
 
         /*if (foot1Y - rootY > legLen || foot2Y - rootY > legLen) {
@@ -219,15 +224,14 @@ public class Person implements Serializable{
             rootY = foot1Y - deltaY;
         }*/
     }
-    public boolean gather(Grid grid){
+
+    public boolean gather(Grid grid) {
         String lookingFor = "";
-        if (this.getResource("nutrients") < 100){
+        if (this.getResource("nutrients") < getDesire("nutrients")) {
             lookingFor = "nutrients";
-        }
-        else if (this.getResource("wood") < 40){
+        } else if (this.getResource("wood") < getDesire("wood")) {
             lookingFor = "wood";
-        }
-        else if (this.getResource("stone") < 30){
+        } else if (this.getResource("stone") < getDesire("stone")) {
             lookingFor = "stone";
         }
 
@@ -238,88 +242,93 @@ public class Person implements Serializable{
         int lookDist = 7;
         int rootAndX = 0;
         int rootAndY = 0;
-        for (int x = -lookDist; x < lookDist; x++){
+        for (int x = -lookDist; x < lookDist; x++) {
             rootAndX = x + this.getRoot()[0];
-            for (int y = -lookDist; y < lookDist; y++){
+            for (int y = -lookDist; y < lookDist; y++) {
                 rootAndY = y + this.getRoot()[1];
-                if (rootAndX >= 0 && rootAndX < grid.getWidth() && rootAndY>= 0 && rootAndY < grid.getHeight() && grid.getPixel(rootAndX, rootAndY).getPropOrDefault(lookingFor, 0) > 0 && maxGather > 0 && grid.getPixel(rootAndX, rootAndY).getPropOrDefault("structure", 0) == 0){
+                if (rootAndX >= 0 && rootAndX < grid.getWidth() && rootAndY >= 0 && rootAndY < grid.getHeight() && grid.getPixel(rootAndX, rootAndY).getPropOrDefault(lookingFor, 0) > 0 && maxGather > 0 && grid.getPixel(rootAndX, rootAndY).getPropOrDefault("structure", 0) == 0) {
                     maxGather--;
-                    this.changeResource(lookingFor, this.getResource(lookingFor)+grid.getPixel(rootAndX, rootAndY).getProperty(lookingFor));
+                    this.changeResource(lookingFor, this.getResource(lookingFor) + grid.getPixel(rootAndX, rootAndY).getProperty(lookingFor));
                     grid.setPixel(rootAndX, rootAndY, new Air());
-                    curActivity = "gathering "+lookingFor;
+                    currentActivity = "gathering " + lookingFor;
                     hasGathered = true;
                 }
             }
         }
         return hasGathered;
     }
-    public boolean craft(Grid grid){
-        if (house == null && this.getResource("wood") >= 20){
+
+    public boolean craft(Grid grid) {
+        if (house == null && this.getResource("wood") >= 20) {
             house = houses[0];
-            house.build(grid, foot1X, foot1Y+1);
-            this.setResource("wood", this.getResource("wood")-20);
-        }
-        else if (house == houses[0] && this.getResource("wood") >= 40){
+            house.build(grid, foot1X, foot1Y + 1);
+            this.setResource("wood", this.getResource("wood") - 20);
+        } else if (house == houses[0] && this.getResource("wood") >= 40) {
             house.destroy(grid);
             houses[1].build(grid, house.getX(), house.getY());
             house = houses[1];
-            this.setResource("wood", this.getResource("wood")-40);
-        }
-        else if (house == houses[1] && this.getResource("wood") >= 40 && this.getResource("stone") >= 30){
+            this.setResource("wood", this.getResource("wood") - 40);
+        } else if (house == houses[1] && this.getResource("wood") >= 40 && this.getResource("stone") >= 30) {
             house.destroy(grid);
             houses[2].build(grid, house.getX(), house.getY());
             house = houses[2];
-            this.setResource("wood", this.getResource("wood")-40);
-            this.setResource("stone", this.getResource("stone")-30);
-        }
-        else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2){
+            this.setResource("wood", this.getResource("wood") - 40);
+            this.setResource("stone", this.getResource("stone") - 30);
+        } else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2) {
             this.changeResource("tool", 2);
             return true;
-        }
-        else if (this.getResource("wood") >= 20 && this.getResourceOrDefault("tool", 0) < 1){
+        } else if (this.getResource("wood") >= 20 && this.getResourceOrDefault("tool", 0) < 1) {
             this.changeResource("tool", 1);
             return true;
         }
         return false;
     }
-    public boolean eatFood(){
-        if (this.getResource("energy") < 100 && this.getResource("nutrients") > 0){
-            changeResource("energy", this.getResource("energy")+this.getResource("nutrients"));
+
+    public boolean eatFood() {
+        if (this.getResource("energy") < 100 && this.getResource("nutrients") > 0) {
+            changeResource("energy", this.getResource("energy") + this.getResource("nutrients"));
             changeResource("nutrients", 0);
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
-    public double getLeg1Slope(){
-        return (rootY-foot1Y)/(rootX-foot1X);
+
+    public double getLeg1Slope() {
+        return (rootY - foot1Y) / (rootX - foot1X);
     }
-    public double getLeg2Slope(){
-        return (rootY-foot2Y)/(rootX-foot2X);
+
+    public double getLeg2Slope() {
+        return (rootY - foot2Y) / (rootX - foot2X);
     }
-    public boolean isStanding(Grid grid){
-        if (foot1Y + 1 >= grid.getHeight() || (foot1X >= 0 && foot1X < grid.getWidth() && grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("walkable", 0) == 1)){
+
+    public boolean isStanding(Grid grid) {
+        if (foot1Y + 1 >= grid.getHeight() || (foot1X >= 0 && foot1X < grid.getWidth() && grid.getPixel(foot1X, foot1Y + 1).getPropOrDefault("walkable", 0) == 1)) {
             return true;
         }
-        if (foot2Y + 1 == grid.getHeight() || foot2X >= 0 && foot2X < grid.getWidth() && grid.getPixel(foot2X, foot2Y + 1).getPropOrDefault("walkable", 0) == 1){
+        if (foot2Y + 1 == grid.getHeight() || foot2X >= 0 && foot2X < grid.getWidth() && grid.getPixel(foot2X, foot2Y + 1).getPropOrDefault("walkable", 0) == 1) {
             return true;
         }
         return false;
     }
-    public int[] getFoot1(){
-        return (new int[]{(int) foot1X, (int) foot1Y});
+
+    public int[] getFoot1() {
+        return (new int[]{foot1X, foot1Y});
     }
-    public int[] getFoot2(){
-        return (new int[]{(int) foot2X, (int) foot2Y});
+
+    public int[] getFoot2() {
+        return (new int[]{foot2X, foot2Y});
     }
-    public int[] getRoot(){
+
+    public int[] getRoot() {
         return (new int[]{(int) rootX, (int) rootY});
     }
-    public double getR(){
-        return headR;
+
+    public double getHeadRadius() {
+        return headRadius;
     }
-    public void setRoot(double x, double y){
+
+    public void setRoot(double x, double y) {
         //translate all values
         foot1X += x - rootX;
         foot1Y += y - rootY;
@@ -332,69 +341,84 @@ public class Person implements Serializable{
         rootX = x;
         rootY = y;
     }
-    public void changeResource(String resource, int amount){
+
+    public void changeResource(String resource, int amount) {
         inventory.replace(resource, amount);
     }
-    public int getResource(String resource){
+
+    public int getResource(String resource) {
         return inventory.get(resource);
     }
-    public Set<Entry<String, Integer>> getResources(){
+
+    public Set<Entry<String, Integer>> getResources() {
         return inventory.entrySet();
     }
-    private Person setResource(String resource, int amount){
+
+    private Person setResource(String resource, int amount) {
         inventory.put(resource, amount);
 
         //for chaining method calls
         return this;
     }
-    private int getResourceOrDefault(String resource, int other){
+
+    private int getResourceOrDefault(String resource, int other) {
         return inventory.getOrDefault(resource, other);
     }
-    public int getDesire(String resource){
+
+    public int getDesire(String resource) {
         return desiredResources.get(resource);
     }
-    public Set<Entry<String, Integer>> getDesires(){
+
+    public Set<Entry<String, Integer>> getDesires() {
         return desiredResources.entrySet();
     }
-    public int getDesireOrDefault(String resource, int other){
+
+    public int getDesireOrDefault(String resource, int other) {
         return desiredResources.getOrDefault(resource, other);
     }
-    private Person setDesire(String resource, int amount){
+
+    private Person setDesire(String resource, int amount) {
         desiredResources.put(resource, amount);
 
         //for chaining method calls
         return this;
     }
-    public double getHappiness(){
+
+    public double getHappiness() {
         double happiness = 0;
         int count = 0;
         for (String resource : desiredResources.keySet()) {
             //happiness = square root(have / desired)
             //this allows for a bit of extra happiness if there is surplus
-            happiness += Math.sqrt(Math.max(inventory.get(resource) / (double)desiredResources.get(resource), 0));
+            happiness += Math.sqrt(Math.max(inventory.get(resource) / (double) desiredResources.get(resource), 0));
             count++;
         }
-        happiness += Math.sqrt(Math.max((house==null?0:house.comfort) / 100d, 0));
+        happiness += Math.sqrt(Math.max((house == null ? 0 : house.comfort) / 100d, 0));
         count++;
         return happiness / count;  //may retun NaN if no desires
     }
-    public void setShowInv(boolean showInv){
-        this.showInv = showInv;
-    }
-    public boolean getShowInv(){
-        return showInv;
-    }
-    public void setDragged(boolean dragged){
-        this.dragged = dragged;
-    }
-    public boolean getDragged(){
-        return dragged;
-    }
-    public String getCurActivity(){
-        return curActivity;
+
+    public void setShowInventory(boolean showInventory) {
+        this.showInventory = showInventory;
     }
 
-    public Blueprint getHouse(){
+    public boolean getShowInventory() {
+        return showInventory;
+    }
+
+    public void setDragged(boolean dragged) {
+        this.dragged = dragged;
+    }
+
+    public boolean getDragged() {
+        return dragged;
+    }
+
+    public String getCurrentActivity() {
+        return currentActivity;
+    }
+
+    public Blueprint getHouse() {
         return house;
     }
 }
