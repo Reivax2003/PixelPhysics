@@ -172,14 +172,14 @@ public class Renderer extends JPanel {
         //render population stats
         g.setColor(Color.black);
         //average happiness
-        g.drawString(Math.round(peopleManager.getAverageHappiness()*100)+"% happiness", xOffset, pixelsPerSquare + yOffset);
+        g.drawString(Math.round(peopleManager.getAverageHappiness()*100)+"% happiness", xOffset, (int) (pixelsPerSquare * 1.5 + yOffset));
         //needed resources
-        g.drawString("needed resources:", xOffset, 3 * pixelsPerSquare + yOffset);
+        g.drawString("needed resources:", xOffset, (int) (3.5 * pixelsPerSquare + yOffset));
         needed.remove("energy");  //don't display energy
         needed.values().remove(0);  //don't display needs that are satisfied
         int k = 5;
         for (Entry<String,Integer> entry : needed.entrySet()) {
-            g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xOffset, k * pixelsPerSquare + yOffset);
+            g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xOffset, (int) ((k + 0.5) * pixelsPerSquare + yOffset));
             k += 2;
         }
 
