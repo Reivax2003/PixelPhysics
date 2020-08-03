@@ -1,9 +1,10 @@
 package sandbox.pixels;
 
 import java.awt.*;
-import java.util.Random;
 
 public class AlienPlant extends Pixel {
+
+    private static final long serialVersionUID = -9132961537760523730L;
 
     public AlienPlant(Boolean falls) {
         super("alien plant", Color.cyan);
