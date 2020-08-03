@@ -7,7 +7,7 @@ public class Slime extends Pixel {
     private static final long serialVersionUID = 1684144844789689019L;
 
     public Slime() {
-        super("slime", Color.green.darker());
+        super("slime", Color.green.darker().darker());
 
         this
                 .setProperty("gravity", 1)
