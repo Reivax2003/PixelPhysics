@@ -35,7 +35,7 @@ public class WoodShack extends Blueprint {
                 {a, a, a, a, w, w, a, a, a, a, a, a, a, a, a, a, w, w, a, a, a, a},
                 {a, a, a, a, w, w, a, a, a, a, a, a, a, a, a, a, w, w, a, a, a, a}
         };
-        this.comfort = 100;
+        this.comfort = 10;
 
         super.setStructure(structure);
     }

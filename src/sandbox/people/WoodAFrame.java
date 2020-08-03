@@ -48,6 +48,8 @@ public class WoodAFrame extends Blueprint {
                 {h, s, d, d, d, d, d, d, d, w, w, w, w, d, d, d, d, d, d, d, s, w}
         };
 
+        comfort = 100;
+
         super.setStructure(structure);
     }
 }
