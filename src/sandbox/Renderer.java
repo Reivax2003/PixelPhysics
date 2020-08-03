@@ -124,10 +124,10 @@ public class Renderer extends JPanel {
 
             //render head
             g.setColor(Color.gray.darker());
-            for (int x = (int) -person.getR(); x < person.getR(); x++){
-                for (int y = (int) -person.getR(); y < person.getR(); y++){
-                    if ((x*x)+(y*y) < person.getR()*person.getR() && x + person.getRoot()[0] >= gridStartOffsetX && x + person.getRoot()[0] < gridStartOffsetX + renderWidth && y + person.getRoot()[1] > gridStartOffsetY && y + person.getRoot()[1] <= gridStartOffsetY + renderHeight){
-                        g.fillRect(((x+person.getRoot()[0]) - gridStartOffsetX) * pixelsPerSquare + xOffset, (int) ((y+person.getRoot()[1]-person.getR()+1) - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+            for (int x = (int) -person.getHeadRadius(); x < person.getHeadRadius(); x++){
+                for (int y = (int) -person.getHeadRadius(); y < person.getHeadRadius(); y++){
+                    if ((x*x)+(y*y) < person.getHeadRadius()*person.getHeadRadius() && x + person.getRoot()[0] >= gridStartOffsetX && x + person.getRoot()[0] < gridStartOffsetX + renderWidth && y + person.getRoot()[1] > gridStartOffsetY && y + person.getRoot()[1] <= gridStartOffsetY + renderHeight){
+                        g.fillRect(((x+person.getRoot()[0]) - gridStartOffsetX) * pixelsPerSquare + xOffset, (int) ((y+person.getRoot()[1]-person.getHeadRadius()+1) - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
                     }
                 }
             }
