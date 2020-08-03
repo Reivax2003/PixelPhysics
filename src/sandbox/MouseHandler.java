@@ -104,32 +104,33 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
         if (lastMouseX == -1) {
             if (!controlHeld) {
                 switch (button) {
-                    case MouseEvent.BUTTON1 -> {
+                    case MouseEvent.BUTTON1:
                         int person = getPerson(squareX, squareY);
-                        if(person!=-1){
+                        if (person != -1) {
                             selectedPerson = person;
-                            peopleManager.getPerson(person).setShowInv(!peopleManager.getPerson(person).getShowInv());
+                            peopleManager.getPerson(person).setShowInventory(!peopleManager.getPerson(person).getShowInventory());
                             peopleManager.getPerson(person).setDragged(true);
                             // System.out.println("person"+person+" happiness: "+peopleManager.getPerson(person).getHappiness());
-                        }else if (grid.getPixel(squareX, squareY).getBuilding() != null && selectedbuilding == null){
+                        } else if (grid.getPixel(squareX, squareY).getBuilding() != null && selectedbuilding == null) {
                             selectedbuilding = grid.getPixel(squareX, squareY).getBuilding();
-                        }else if (selectedbuilding != null){
-                            if (grid.getPixel(squareX, squareY).getBuilding() == null){
+                        } else if (selectedbuilding != null) {
+                            if (grid.getPixel(squareX, squareY).getBuilding() == null) {
                                 selectedbuilding.destroy(grid);
                                 selectedbuilding.build(grid, squareX, squareY);
                                 selectedbuilding = null;
                             }
-                        }
-                        else{
+                        } else {
                             Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                             grid.drawPixel(squareX, squareY, pixel);
                         }
-                    }
-                    case MouseEvent.BUTTON2 -> {
+                        break;
+                    case MouseEvent.BUTTON2:
                         panel.slimeGoalX = squareX;
                         panel.slimeGoalY = squareY;
-                    }
-                    case MouseEvent.BUTTON3 -> grid.drawPixel(squareX, squareY, new Air());
+                        break;
+                    case MouseEvent.BUTTON3:
+                        grid.drawPixel(squareX, squareY, new Air());
+                        break;
                 }
             }
         } else {  //draw line if dragging over screen
@@ -231,7 +232,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
             Person person = peopleManager.getPerson(i);
             int offX = x - person.getRoot()[0];
             int offY = y - person.getRoot()[1];
-            if((offX*offX)+(offY*offY) < person.getR()*person.getR()){
+            if((offX*offX)+(offY*offY) < person.getHeadRadius()*person.getHeadRadius()){
                 return i;
             }
         }
