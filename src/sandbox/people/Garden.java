@@ -14,9 +14,9 @@ public class Garden extends Blueprint {
         name = "Garden";
         Pixel a = new Air();
 
-        pixel s = new Soil();
+        Pixel s = new Soil();
 
-        pixel g = new Grass();
+        Pixel g = new Grass();
 
         Pixel b = new Wood(); //bright for plank
         b.setColor(new Color(176, 123, 70));
