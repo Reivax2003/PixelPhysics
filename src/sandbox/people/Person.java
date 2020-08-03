@@ -360,7 +360,7 @@ public class Person implements Serializable {
     public int[] getKnee2(){
         return (new int[]{(int) knee2X, (int) knee2Y});
     }
-    public double getR(){
+    public double getHeadRadius(){
         return headRadius;
     }
 
