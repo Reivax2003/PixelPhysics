@@ -3,7 +3,7 @@ package sandbox.goals;
 import sandbox.*;
 import sandbox.people.*;
 
-public class MaxHouse implements Goal { // Whether the best house of the people is at a set level or better
+public class AllHouse implements Goal { // Whether all houses  of the people are at a set level or better
 
     private static final long serialVersionUID = 8087987;
 
@@ -13,7 +13,7 @@ public class MaxHouse implements Goal { // Whether the best house of the people 
     private String houseName;
     private boolean valid = false;
 
-    public MaxHouse(Blueprint goalHouse) {
+    public AllHouse(Blueprint goalHouse) {
         this.goalHouse = goalHouse.getClass();
         this.houseName = goalHouse.getName();
         for (int i = houseOrder.length-1; i >= 0; i--) { //Gets index of house in house ranking list
@@ -24,25 +24,30 @@ public class MaxHouse implements Goal { // Whether the best house of the people 
     }
 
     public boolean validate(Grid grid, PeopleManager peopleManager) {
-
+        valid = false;
         if (peopleManager.getPopulation() > 0) { //If there are people
-            // people.Person testPerson;
+
             for (Person each : grid.getPeople()) {
-                if (each.getHouse() == null) {continue;} // If there is no house
+                valid = false;
+                if (each.getHouse() == null) {break;} // If there is no house, fails
                 Class testHouse = each.getHouse().getClass();
                 for (int i = houseOrder.length-1; i >= houseIndex; i--) { // Go backwards through house values
                     if (houseOrder[i].equals(testHouse)) { // If the house is at a higher or equal index to the goal, it passes
                         valid = true;
-                        return true;
+                        break;
                     }
                 }
+                if(!valid) {break;} // If this person did not pass
             }
         }
-        valid = false;
-        return false; // If not goal house or equal
+
+        if(valid) {
+            return true;
+        }
+        return false; // If all people do not pass or there are no people
     }
 
     public String getInfo() {
-        return "The best house must be a " + houseName + " or better: " + ((valid) ? "Complete" : "Incomplete");
+        return "All houses must be a " + houseName + " or better: " + ((valid) ? "Complete" : "Incomplete");
     }
 }
