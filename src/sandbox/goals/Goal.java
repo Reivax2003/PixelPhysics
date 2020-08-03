@@ -7,5 +7,5 @@ public interface Goal extends Serializable {
 
     public boolean validate(Grid grid, PeopleManager peopleManager); // Returns wether objective is complete
 
-    public String getInfo(); // Returns Info as single line
+    public String getInfo(); // Returns Info as single line in the form "Requirement: Complete/Incomplete"
 }
