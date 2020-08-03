@@ -3,6 +3,9 @@ package sandbox.pixels;
 import java.awt.Color;
 
 public class Ash extends Pixel {
+
+    private static final long serialVersionUID = 1645665200472792596L;
+
     public Ash() {
         super("ash", Color.gray);
 

@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Ghost extends Pixel {
 
+    private static final long serialVersionUID = -7264668578849644550L;
+
     public Ghost() {
         super("ghost", new Color(174, 206, 209));
         this

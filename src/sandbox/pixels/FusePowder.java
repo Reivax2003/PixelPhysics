@@ -3,6 +3,9 @@ package sandbox.pixels;
 import java.awt.*;
 
 public class FusePowder extends Pixel {
+
+    private static final long serialVersionUID = -994074947660529441L;
+
     public FusePowder() {
         super("fuse powder", new Color(119, 198, 109));
 

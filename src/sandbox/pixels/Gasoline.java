@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Gasoline extends Pixel {
 
+    private static final long serialVersionUID = 7258793349868256661L;
+
     public Gasoline() {
         super("gasoline", new Color(181, 168, 105));
         this
