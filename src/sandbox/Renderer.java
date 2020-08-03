@@ -123,7 +123,7 @@ public class Renderer extends JPanel {
             double yChange = person.getRoot()[1]-person.getFoot1()[1];
 
             //first leg
-            double x = (double) person.getFoot1()[0];
+            double x = person.getFoot1()[0];
             for (int y = person.getFoot1()[1]; y > person.getRoot()[1]; y--) {
                 if (yChange != 0 && xChange != 0){
                     x -= (xChange/yChange);
@@ -146,21 +146,20 @@ public class Renderer extends JPanel {
                     g.fillRect(((int)x - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
                 }
             }
-
             //inventory
             if(person.getShowInv()){
                 Set<Entry<String, Integer>> invItems = person.getResources();
                 int size = invItems.size();
                 g.setColor(new Color(100,100,100,150));
-                g.fillRoundRect(((int)person.getRoot()[0] - gridStartOffsetX - 1) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 - 4) * pixelsPerSquare + yOffset, 15 * pixelsPerSquare, ( size * 2 + 4 ) * pixelsPerSquare, 5, 5);
+                g.fillRoundRect((person.getRoot()[0] - gridStartOffsetX - 1) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 - 4) * pixelsPerSquare + yOffset, 15 * pixelsPerSquare, ( size * 2 + 4 ) * pixelsPerSquare, 5, 5);
                 g.setColor(new Color(255,255,255));
                
                 //current task
-                g.drawString(person.getCurActivity(), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset,  (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() -  size * 2 - 2) * pixelsPerSquare + yOffset);
+                g.drawString(person.getCurActivity(), (person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset,  (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() -  size * 2 - 2) * pixelsPerSquare + yOffset);
                 //items
                 int j = 0;
                 for (Entry<String,Integer> entry : invItems) {
-                    g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), ((int)person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 + j) * pixelsPerSquare + yOffset);
+                    g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), (person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY - (int)person.getR() - size * 2 + j) * pixelsPerSquare + yOffset);
                     j += 2;
                 }
             }
