@@ -17,6 +17,9 @@ public class PeopleManager {
     public void updatePeople(){
         for (Person each : people){
             each.update(grid);
+            for (Person other : people) {
+                each.ShareResources(other);
+            }
         }
     }
     public int getPopulation(){
