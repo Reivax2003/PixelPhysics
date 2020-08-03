@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Charcoal extends Pixel {
 
+    private static final long serialVersionUID = 8126228318857844044L;
+
     public Charcoal() {
         super("charcoal", Color.darkGray);
         this

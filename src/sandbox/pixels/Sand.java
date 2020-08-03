@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Sand extends Pixel {
 
+    private static final long serialVersionUID = -7505966760872985483L;
+
     public Sand() {
         super("sand", new Color(243, 195, 40));
 

@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Water extends Pixel {
 
+    private static final long serialVersionUID = -7960047763300134876L;
+
     public Water() {
         super("water", new Color(9, 117, 250));
         this

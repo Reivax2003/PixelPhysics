@@ -3,7 +3,9 @@ package sandbox.pixels;
 import java.awt.*;
 
 public class Lava extends Pixel {
-    
+
+    private static final long serialVersionUID = 6754540764146491412L;
+
     public Lava() {
         super("lava", Color.red);
         this                

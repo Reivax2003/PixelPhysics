@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Steam extends Pixel {
 
+    private static final long serialVersionUID = -2661004820913782587L;
+
     public Steam() {
         super("steam", new Color(172, 220, 211));
 

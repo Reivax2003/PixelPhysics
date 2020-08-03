@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class WetSand extends Pixel {
 
+    private static final long serialVersionUID = -1889287507882953248L;
+
     public WetSand() {
         super("wet sand", new Color(243, 195, 40).darker());
 
