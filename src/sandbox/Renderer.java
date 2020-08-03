@@ -204,10 +204,11 @@ public class Renderer extends JPanel {
             g.fillRect(xOffset, (int) (yOffset + (gridStartOffsetY * heightFraction) * pixelsPerSquare), pixelsPerSquare, (int) height);
         }
 
-        g.setColor(new Color(100, 100, 100, 200));
-        if (paused) { // Render Pause sign
-            g.fillRect(xOffset + (renderWidth / 16) * pixelsPerSquare , yOffset + (renderHeight / 16) * pixelsPerSquare, pixelsPerSquare, (renderHeight / 16) * pixelsPerSquare);
-            g.fillRect(xOffset + (renderWidth / 16) * pixelsPerSquare + 2 * pixelsPerSquare, yOffset + (renderHeight / 16) * pixelsPerSquare, pixelsPerSquare, (renderHeight / 16) * pixelsPerSquare);
+        g.setColor(new Color(255, 255, 255, 200));
+        if (paused) {
+            // render pause symbol
+            g.fillRect(xOffset + pixelsPerSquare * renderWidth - pixelsPerSquare * 2, yOffset + pixelsPerSquare * renderHeight - pixelsPerSquare * 4, pixelsPerSquare, pixelsPerSquare * 3);
+            g.fillRect(xOffset + pixelsPerSquare * renderWidth - pixelsPerSquare * 4, yOffset + pixelsPerSquare * renderHeight - pixelsPerSquare * 4, pixelsPerSquare, pixelsPerSquare * 3);
         }
     }
 
