@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Stone extends Pixel {
 
+    private static final long serialVersionUID = -3219559650091745892L;
+
     public Stone() {
         super("stone", Color.gray);
 

@@ -30,13 +30,13 @@ public class Person implements Serializable {
     private boolean showInventory = false;
     private boolean dragged = false;
     private String currentActivity = "doing nothing";
-    public String job = "";
+    public String[] job = {};
 
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
     HashMap<String, Integer> desiredResources = new HashMap<>();
 
-    public Person(int x, int y, String job) {
+    public Person(int x, int y, String[] job) {
         rootX = x;
         rootY = y;
         foot1X = x - 1;
@@ -56,8 +56,11 @@ public class Person implements Serializable {
                 .setDesire("stone", 0);
 
         this.job = job;
-        if (desiredResources.containsKey(job)) {
-            setDesire(job, 200);
+        if(job.length == 0){
+            job = new String[]{"none"};
+        }
+        if (job[0].equals("gatherer") && desiredResources.containsKey(job[1])) {
+            setDesire(job[1], 200);
         }
     }
 
@@ -280,7 +283,7 @@ public class Person implements Serializable {
             this.setResource("stone", this.getResource("stone")-30);
             this.setDesireCheckJob("wood", 0).setDesireCheckJob("stone", 0);
         }
-        else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && this.getResourceOrDefault("tool", 0) < 2){
+        else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && job[0].equals("crafter") && job[1].equals("tool")&& this.getResourceOrDefault("tool", 0) < 2){
             this.changeResource("tool", 2);
             return true;
         } else if (this.getResource("wood") >= 20 && this.getResourceOrDefault("tool", 0) < 1) {
@@ -442,12 +445,22 @@ public class Person implements Serializable {
         double distY = rootY - other.getRoot()[1];
         //distance between the two people
         if(distX*distX+distY*distY<maxStep*maxStep) {
-            int surplus = getResource(job) - getDesire(job)/2;  //extra resources collected from the job
-            int needed = other.getDesire(job) - other.getResource(job);
-            if(needed > 0 && surplus > 0){
-                int shared = Math.min(surplus, needed);
-                changeResource(job, getResource(job)-shared);
-                other.changeResource(job, other.getResource(job)+shared);
+            if(job[0].equals("gatherer")){
+                int surplus = getResource(job[1]) - getDesire(job[1])/2;  //extra resources collected from the job
+                int needed = other.getDesire(job[1]) - other.getResource(job[1]);
+                if(needed > 0 && surplus > 0){
+                    int shared = Math.min(surplus, needed);
+                    changeResource(job[1], getResource(job[1])-shared);
+                    other.changeResource(job[1], other.getResource(job[1])+shared);
+                }
+            }
+            else if(job[1].equals("crafter")){
+                int tool = getResource("tool");
+                int otherTool = other.getResource("tool");
+                if(tool > otherTool){
+                    setResource("tool", tool-1);
+                    other.setResource("tool", otherTool+1);
+                }
             }
         }
     }

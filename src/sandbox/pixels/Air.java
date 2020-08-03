@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 public class Air extends Pixel {
 
+    private static final long serialVersionUID = -892575887066476821L;
+
     public Air() {
         super("air", new Color(127, 200, 227));
 

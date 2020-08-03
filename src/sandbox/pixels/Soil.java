@@ -3,6 +3,9 @@ package sandbox.pixels;
 import java.awt.*;
 
 public class Soil extends Pixel {
+
+    private static final long serialVersionUID = 3010850396806268278L;
+
     public Soil() {
         super("soil", Color.orange.darker().darker());
 

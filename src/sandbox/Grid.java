@@ -265,8 +265,8 @@ public class Grid {
         loaded = false;
 
         // Test person
-        people.add(new Person(50, 25, "wood"));
-        people.add(new Person(50, 25, "stone"));
+        people.add(new Person(50, 25, new String[]{"gatherer","wood"}));
+        people.add(new Person(50, 25, new String[]{"crafter","tool"}));
         // Test goal
         goals.add(new MaxHouse(new WoodAFrame()));
     }
