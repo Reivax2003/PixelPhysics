@@ -37,8 +37,8 @@ public class Person implements Serializable{
     HashMap<String, Integer> desiredResources = new HashMap<>();
 
     public Person(int x, int y) {
-        rootX = (double) x;
-        rootY = (double) y;
+        rootX = x;
+        rootY = y;
         foot1X = x - 1;
         foot1Y = y + 2;
         foot2X = x + 1;
@@ -308,10 +308,10 @@ public class Person implements Serializable{
         return false;
     }
     public int[] getFoot1(){
-        return (new int[]{(int) foot1X, (int) foot1Y});
+        return (new int[]{foot1X, foot1Y});
     }
     public int[] getFoot2(){
-        return (new int[]{(int) foot2X, (int) foot2Y});
+        return (new int[]{foot2X, foot2Y});
     }
     public int[] getRoot(){
         return (new int[]{(int) rootX, (int) rootY});
