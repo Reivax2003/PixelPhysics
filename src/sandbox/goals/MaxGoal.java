@@ -3,7 +3,7 @@ package sandbox.goals;
 import sandbox.*;
 import sandbox.people.*;
 
-abstract class MaxGoal implements Goal { // Whether the best house of the people is at a set level or better
+abstract class MaxGoal implements Goal { // Whether atleast one person fits the requirement
 
     protected boolean valid = false;
 
@@ -13,12 +13,12 @@ abstract class MaxGoal implements Goal { // Whether the best house of the people
             // people.Person testPerson;
             for (Person each : grid.getPeople()) {
                 valid = idividualTest(each);
-                if(valid) {return true;}
+                if(valid) {return valid;}
             }
         }
 
         return valid; // If not goal house or equal
     }
 
-    protected abstract boolean idividualTest(Person person);
+    protected abstract boolean idividualTest(Person person); // Test determined by goal function
 }
