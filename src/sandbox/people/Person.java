@@ -108,14 +108,14 @@ public class Person implements Serializable{
             //next pixel is ground(1)
             else if (x+direction >= 0 && x+direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x+direction, y).getPropOrDefault(("walkable"), 0) == 1){
                 blocked = true;
-                //scan upwards for a background(0) pixel
+                //scan upwards for a background(0) pixel         
                 for (int v = 1; v <= maxStepHeight; v++){
-                    if (x+direction >= 0 && x+direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x+direction, y-v).getPropOrDefault(("walkable"), 0) == 0){
+                    if (x+direction >= 0 && x+direction < grid.getWidth() && y >= v && grid.getPixel(x+direction, y-v).getPropOrDefault(("walkable"), 0) == 0){
                         blocked = false;
                         x += direction;
                         y -= v;
                         break;
-                    }else if(x+direction >= 0 && x+direction < grid.getWidth() && (y < grid.getHeight() && grid.getPixel(x+direction, y-v).getPropOrDefault(("walkable"), 0) == -1 || grid.getPixel(x, y + 1).getPropOrDefault(("temperature"), 50) > 90)){
+                    }else if(x+direction >= 0 && x+direction < grid.getWidth() && y >= v && (grid.getPixel(x+direction, y-v).getPropOrDefault(("walkable"), 0) == -1 || grid.getPixel(x, y-v).getPropOrDefault(("temperature"), 50) > 90)){
                         break;
                     }
                 }
