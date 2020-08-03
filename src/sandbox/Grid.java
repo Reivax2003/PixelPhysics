@@ -224,7 +224,7 @@ public class Grid {
                     goals.add((Goal)in.readObject());
                 }
 
-                levelName = in.writeObject();
+                levelName = (String)in.readObject();
             }
 
             in.close();
