@@ -3,7 +3,7 @@ package sandbox.goals;
 import sandbox.*;
 import sandbox.people.*;
 
-public class TestHouse { // Whether the house the person is at a set level or better
+public class TestHouse { // Whether the house of the person is at a set level or better
 
     private static final long serialVersionUID = 8087987;
 
