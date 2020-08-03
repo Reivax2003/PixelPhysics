@@ -242,7 +242,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         }
     }
 
-    private void displayInfo() {
+    public void displayInfo() {
         String[] info = grid.getInfo();
         int type = Integer.parseInt(info[0]);
         String message = "<html><center>Sandbox initially";

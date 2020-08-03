@@ -120,5 +120,8 @@ public class PixelSandbox {
 
         //start game loop
         timer.scheduleAtFixedRate(gameLogic, 0, 100);
+
+        //Display controls and information
+        menuBar.displayInfo();
     }
 }
