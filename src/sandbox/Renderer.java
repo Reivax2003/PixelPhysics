@@ -111,10 +111,10 @@ public class Renderer extends JPanel {
                 g.fillRect((person.getRoot()[0] - gridStartOffsetX) * pixelsPerSquare + xOffset, (person.getRoot()[1] - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
             }
             //render head
-            for (int x = (int) -person.getR(); x < person.getR(); x++){
-                for (int y = (int) -person.getR(); y < person.getR(); y++){
-                    if ((x*x)+(y*y) < person.getR()*person.getR() && x + person.getRoot()[0] >= gridStartOffsetX && x + person.getRoot()[0] < gridStartOffsetX + renderWidth && y + person.getRoot()[1] > gridStartOffsetY && y + person.getRoot()[1] <= gridStartOffsetY + renderHeight){
-                        g.fillRect(((x+person.getRoot()[0]) - gridStartOffsetX) * pixelsPerSquare + xOffset, (int) ((y+person.getRoot()[1]-person.getR()+1) - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
+            for (int x = (int) -person.getHeadRadius(); x < person.getHeadRadius(); x++){
+                for (int y = (int) -person.getHeadRadius(); y < person.getHeadRadius(); y++){
+                    if ((x*x)+(y*y) < person.getHeadRadius()*person.getHeadRadius() && x + person.getRoot()[0] >= gridStartOffsetX && x + person.getRoot()[0] < gridStartOffsetX + renderWidth && y + person.getRoot()[1] > gridStartOffsetY && y + person.getRoot()[1] <= gridStartOffsetY + renderHeight){
+                        g.fillRect(((x+person.getRoot()[0]) - gridStartOffsetX) * pixelsPerSquare + xOffset, (int) ((y+person.getRoot()[1]-person.getHeadRadius()+1) - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
                     }
                 }
             }
@@ -147,7 +147,7 @@ public class Renderer extends JPanel {
                 }
             }
             //inventory
-            if(person.getShowInv()) {
+            if(person.getShowInventory()) {
                 int xPosition = person.getRoot()[0] - gridStartOffsetX;
                 int yPosition = person.getRoot()[1] - gridStartOffsetY;
 
@@ -165,15 +165,15 @@ public class Renderer extends JPanel {
                     }
 
                     g.setColor(new Color(100, 100, 100, 150));
-                    g.fillRoundRect((xPosition - 1) * pixelsPerSquare + xOffset, (yPosition - (int) person.getR() - size * 2 - 4) * pixelsPerSquare + yOffset, 15 * pixelsPerSquare, (size * 2 + 4) * pixelsPerSquare, 5, 5);
+                    g.fillRoundRect((xPosition - 1) * pixelsPerSquare + xOffset, (yPosition - (int) person.getHeadRadius() - size * 2 - 4) * pixelsPerSquare + yOffset, 15 * pixelsPerSquare, (size * 2 + 4) * pixelsPerSquare, 5, 5);
                     g.setColor(new Color(255, 255, 255));
 
                     //current task
-                    g.drawString(person.getCurActivity(), xPosition * pixelsPerSquare + xOffset, (yPosition - (int) person.getR() - size * 2 - 2) * pixelsPerSquare + yOffset);
+                    g.drawString(person.getCurrentActivity(), xPosition * pixelsPerSquare + xOffset, (yPosition - (int) person.getHeadRadius() - size * 2 - 2) * pixelsPerSquare + yOffset);
                     //items
                     int j = 0;
                     for (Entry<String, Integer> entry : inventoryItems) {
-                        g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xPosition * pixelsPerSquare + xOffset, (yPosition - (int) person.getR() - size * 2 + j) * pixelsPerSquare + yOffset);
+                        g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xPosition * pixelsPerSquare + xOffset, (yPosition - (int) person.getHeadRadius() - size * 2 + j) * pixelsPerSquare + yOffset);
                         j += 2;
                     }
                 }
