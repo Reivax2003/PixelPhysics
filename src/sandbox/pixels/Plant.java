@@ -7,7 +7,7 @@ public class Plant extends Pixel {
     private static final long serialVersionUID = 650213227462159597L;
 
     public Plant() {
-        super("plant", Color.green.darker());
+        super("plant", new Color(0,200,0));
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 50)
