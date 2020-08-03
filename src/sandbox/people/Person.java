@@ -31,14 +31,15 @@ public class Person implements Serializable{
     private boolean showInv = false;
     private boolean dragged = false;
     private String curActivity = "doing nothing";
+    public String job = "";
 
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
     HashMap<String, Integer> desiredResources = new HashMap<>();
 
-    public Person(int x, int y) {
-        rootX = x;
-        rootY = y;
+    public Person(int x, int y, String job) {
+        rootX = (double) x;
+        rootY = (double) y;
         foot1X = x - 1;
         foot1Y = y + 2;
         foot2X = x + 1;
@@ -49,12 +50,16 @@ public class Person implements Serializable{
                 .setResource("stone", 0)
                 .setResource("wood", 0)
                 .setResource("tool", 0)
-                .setResource("energy", 100);
-        this
+                .setResource("energy", 100)
                 .setDesire("nutrients", 100)
                 .setDesire("energy", 100)
                 .setDesire("wood", 50)
                 .setDesire("stone", 50);
+
+        this.job = job;
+        if(desiredResources.containsKey(job)){
+            setDesire(job, 200);
+        }
     }
 
     //valid pixel cannot have fluidity property nor temp above 80
@@ -221,13 +226,13 @@ public class Person implements Serializable{
     }
     public boolean gather(Grid grid){
         String lookingFor = "";
-        if (this.getResource("nutrients") < 100){
+        if (this.getResource("nutrients") < getDesire("nutrients")){
             lookingFor = "nutrients";
         }
-        else if (this.getResource("wood") < 40){
+        else if (this.getResource("wood") < getDesire("wood")){
             lookingFor = "wood";
         }
-        else if (this.getResource("stone") < 30){
+        else if (this.getResource("stone") < getDesire("stone")){
             lookingFor = "stone";
         }
 
