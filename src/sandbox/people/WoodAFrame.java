@@ -28,6 +28,25 @@ public class WoodAFrame extends Blueprint {
         Pixel d = new Wood(); //dark for plank
         d.setColor(new Color(135, 94, 49));
 
+        /*
+                      hh
+                     hwww
+                     hssw
+                    hwbdww
+                   hwsbdsww
+                   hwpbdpww
+                  hwspbdpsww
+                 hwsdpbdpbsww
+                 hwbdpbdpbdww
+                hwsbdssssbdsww
+               hwspbswwwwwdpsww
+               hwdpswwwwwwwpbww
+              hwsdpswwwwwwwpbsww
+             hwsbdpswwwwdwwpbdsww
+             hwpbdpswwwwwwwpbdpww
+            hwspbdpbwwwwwwdpbdpsww
+            hsdddddddwwwwdddddddsw
+         */
         structure = new Pixel[][]{
                 {a, a, a, a, a, a, a, a, a, a, h, h, a, a, a, a, a, a, a, a, a, a},
                 {a, a, a, a, a, a, a, a, a, h, w, w, w, a, a, a, a, a, a, a, a, a},
@@ -47,6 +66,8 @@ public class WoodAFrame extends Blueprint {
                 {h, w, s, p, b, d, p, b, w, w, w, w, w, w, d, p, b, d, p, s, w, w},
                 {h, s, d, d, d, d, d, d, d, w, w, w, w, d, d, d, d, d, d, d, s, w}
         };
+
+        comfort = 100;
 
         super.setStructure(structure);
     }

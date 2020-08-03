@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Grass extends Pixel {
 
+    private static final long serialVersionUID = 7738786594793561850L;
+
     public Grass() {
         super("grass", Color.green.darker());
         this

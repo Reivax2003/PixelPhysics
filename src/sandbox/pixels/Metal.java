@@ -3,6 +3,9 @@ package sandbox.pixels;
 import java.awt.*;
 
 public class Metal extends Pixel {
+
+    private static final long serialVersionUID = -5400208934527088023L;
+
     public Metal() {
         super("metal", Color.lightGray);
 

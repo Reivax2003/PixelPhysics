@@ -265,7 +265,8 @@ public class Grid {
         loaded = false;
 
         // Test person
-        people.add(new Person(50, 25));
+        people.add(new Person(50, 25, new String[]{"gatherer","wood"}));
+        people.add(new Person(50, 25, new String[]{"crafter","tool"}));
         // Test goal
         goals.add(new MaxHouse(new WoodAFrame()));
     }
@@ -466,5 +467,9 @@ public class Grid {
 
     public ArrayList<Goal> getGoals() {
         return goals;
+    }
+
+    public void setName(String name) {
+        levelName = name;
     }
 }
