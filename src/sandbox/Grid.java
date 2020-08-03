@@ -266,6 +266,7 @@ public class Grid {
 
         // Test person
         people.add(new Person(50, 25, "wood"));
+        people.add(new Person(50, 25, "stone"));
         // Test goal
         goals.add(new MaxHouse(new WoodAFrame()));
     }
