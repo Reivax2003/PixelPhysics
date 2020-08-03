@@ -4,7 +4,7 @@ import sandbox.*;
 import sandbox.people.*;
 import java.io.Serializable;
 
-public class TestHouse extends Serializable { // Whether the house of the person is at a set level or better
+public class TestHouse implements Serializable { // Whether the house of the person is at a set level or better
 
     private static final long serialVersionUID = 987;
 
