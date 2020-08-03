@@ -52,6 +52,7 @@ public class PixelSandbox {
           }
         }
 
+        //new CampaignBuild(grid);
         initializeComponents();
         initializeFrame();
         initializeLogic();
