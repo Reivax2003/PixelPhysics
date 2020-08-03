@@ -56,7 +56,7 @@ public class Person implements Serializable {
                 .setDesire("stone", 0);
 
         this.job = job;
-        if(job.length == 0){
+        if(job == null || job.length == 0){
             job = new String[]{"none"};
         }
         if (job[0].equals("gatherer") && desiredResources.containsKey(job[1])) {
@@ -394,7 +394,7 @@ public class Person implements Serializable {
     }
     private Person setDesireCheckJob(String resource, int amount){
         //this sets the desire only if it's not the current job
-        if(!job.equals(resource))
+        if(!job[1].equals(resource))
             desiredResources.put(resource, amount);
 
         return this;
@@ -444,7 +444,7 @@ public class Person implements Serializable {
         double distX = rootX - other.getRoot()[0];
         double distY = rootY - other.getRoot()[1];
         //distance between the two people
-        if(distX*distX+distY*distY<maxStep*maxStep) {
+        if(distX*distX+distY*distY<maxStep*maxStep && job != null) {
             if(job[0].equals("gatherer")){
                 int surplus = getResource(job[1]) - getDesire(job[1])/2;  //extra resources collected from the job
                 int needed = other.getDesire(job[1]) - other.getResource(job[1]);
