@@ -5,6 +5,7 @@ import sandbox.people.Person;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -190,7 +191,8 @@ public class Renderer extends JPanel {
         //needed resources
         g.drawString("needed resources:", xOffset, (int) (3.5 * pixelsPerSquare + yOffset));
         needed.remove("energy");  //don't display energy
-        needed.values().remove(0);  //don't display needs that are satisfied
+        
+        needed.values().removeAll(Collections.singleton(0));  //don't display needs that are satisfied
         int k = 5;
         for (Entry<String,Integer> entry : needed.entrySet()) {
             g.drawString(String.format("%s: %d", entry.getKey(), entry.getValue()), xOffset, (int) ((k + 0.5) * pixelsPerSquare + yOffset));
