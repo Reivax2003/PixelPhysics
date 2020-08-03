@@ -7,7 +7,7 @@ public class Charcoal extends Pixel {
     private static final long serialVersionUID = 8126228318857844044L;
 
     public Charcoal() {
-        super("charcoal", Color.darkGray);
+        super("charcoal", new Color(58, 43, 28));
         this
                 .setProperty("flammable", 1)
                 .setProperty("fuel", 500)
