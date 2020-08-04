@@ -14,6 +14,7 @@ public class FirePit extends Blueprint {
         name = "Fire Pit";
         Pixel a = new Air();
         Pixel f = new Fire();
+        f.changeProperty("spreads", 0);
 
         Pixel w = new Wood(); //wood (dark)
         w.setColor(new Color(113, 63, 5));
