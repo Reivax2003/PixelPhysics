@@ -60,7 +60,7 @@ public class Blueprint implements Serializable{
         //scan and check for other buildings
         for(int xmod = 0; xmod < structure[0].length; xmod++){
             for(int ymod = 0; ymod < structure.length; ymod++) {
-                if(!structure[(structure.length - 1) - ymod][xmod].hasProperty("overwritable") && grid.getPixel(x + xmod, y - ymod).hasProperty("structure")){
+                if(/*!structure[(structure.length - 1) - ymod][xmod].hasProperty("overwritable") &&*/ grid.getPixel(x + xmod, y - ymod).hasProperty("structure")){
                     return false;
                 }
             }

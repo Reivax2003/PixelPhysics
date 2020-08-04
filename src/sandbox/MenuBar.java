@@ -282,7 +282,27 @@ public class MenuBar extends JMenuBar implements ActionListener {
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(this), messageLabel, "Sandbox Info", JOptionPane.PLAIN_MESSAGE);
+        Object[] options = {"Show People Tutorial" , "Close"};
+
+        int c = JOptionPane.showOptionDialog(JOptionPane.getFrameForComponent(this), messageLabel, "Sandbox Info",JOptionPane.YES_NO_OPTION , JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
+
+        if (c == 0) {
+            peopleTutorial();
+        }
+    }
+
+    private void peopleTutorial() {
+        String message = "<html><center> People's happiness is controlled by two things:<br>" +
+                         "Their Desires and Their Homes<br><br>" +
+                         "Their Desires are fufilled by gathering needed resources.<br>" +
+                         "    Wood and Stone are used in crafting in contruction.<br>" +
+                         "    Plants are converted into Nutrients to feed themselves.<br><br>" +
+                         "Their Homes are improved by using resources to build them.<br>" ;
+        JLabel messageLabel = (new JLabel(message));
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        messageLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+        JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(this), messageLabel, "People Tutorial", JOptionPane.PLAIN_MESSAGE);
     }
 
     private void quitToMenu() {
