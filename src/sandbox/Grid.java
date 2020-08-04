@@ -245,6 +245,7 @@ public class Grid {
             e.printStackTrace();
 
             // repairPixels();
+            // repairPeople();
         }
     }
     public void worldGen(long seed, String worldType){
@@ -521,6 +522,7 @@ public class Grid {
         //so only use this for old savefiles and check if anything broke 
         //(especially things that change state/properties like plants or fire)
 
+        System.out.println("repairing pixels");
         for (int x = 0; x < grid.length; x++) {
             for (int y = 0; y < grid[0].length; y++) {
                 try {
@@ -535,11 +537,15 @@ public class Grid {
                             break;
                         case "Wet sand":
                             name = "WetSand";
-                            break;                    
+                            break;  
+                        case "Soil":
+                            break;
                         default:
                             break;
                     }
-					grid[x][y] = (Pixel)Class.forName("sandbox.pixels."+name).getDeclaredConstructor().newInstance();
+                    Pixel p = (Pixel)Class.forName("sandbox.pixels."+name).getDeclaredConstructor().newInstance();
+                    p.setColor(grid[x][y].getColor());
+                    grid[x][y] = p;
 				} catch (Exception e) {
                     System.out.println("An error occured while repairing grid at pixel ("+x+","+y+")");
 					e.printStackTrace();
@@ -547,6 +553,14 @@ public class Grid {
             }
         }
     }
+    public void repairPeople(){
+        System.out.println("repairing people");
+        for (int i = 0; i < people.size(); i++) {
+            Person p = new Person(people.get(i).getRoot()[0], people.get(i).getRoot()[1], people.get(i).job);
+            people.set(i, p);
+        }
+    }
+
     public boolean checkRedraw() { // Checks redraw and resets it if true
         if (needsRedraw) {
             needsRedraw = false;
