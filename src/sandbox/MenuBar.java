@@ -3,6 +3,8 @@ package sandbox;
 import sandbox.pixels.*;
 
 import javax.swing.*;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -35,6 +37,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
             new Steam(),
             new Fire(),
             new Electricity(),
+            new ColorChanger(),
             new Wood(),
             new Plant(),
             new AlienPlant(true),
@@ -68,6 +71,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
     private final Pixel[] property = {
             new Fire(),
             new Electricity(),
+            new ColorChanger(),
     };
     private final Pixel[] living = {
             new Wood(),
@@ -81,6 +85,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
     private ButtonGroup elementButtons;
 
     public int chosen = 1; //currently selected substance
+    private JRadioButtonMenuItem chosenBtn;
 
     public MenuBar(Grid grid) {
         this.grid = grid;
@@ -210,7 +215,26 @@ public class MenuBar extends JMenuBar implements ActionListener {
     public void actionPerformed(ActionEvent a) { // Detects interaction with menu
         String action = a.getActionCommand();
         try { //Assumes all numeric action events are chosing type
-            chosen = Integer.parseInt(action);
+            int newChoice = Integer.parseInt(action);
+
+            //color changer
+            if(pixels[newChoice].getType().equals("color changer")){
+                //use the current pixel's color and see if user wants to change it
+                Color col = JColorChooser.showDialog(this, "Choose a color. Use #000001 for default", pixels[chosen].getColor());
+                if(col != null){ //null means canceled
+                    if(col.getRed() == 0 && col.getGreen() == 0 && col.getBlue() == 1) {  //special number to reset to default color
+                        pixels[chosen].setColor(pixels[chosen].getOriginalColor());
+                        // elementButtons.clearSelection();
+                        // chosenBtn.setSelected(true);
+                    }else{
+                        pixels[chosen].setColor(col);
+                    }
+                }
+            }
+            else{
+                chosen = newChoice;
+                chosenBtn = (JRadioButtonMenuItem)a.getSource();
+            }
         } catch (NumberFormatException e) {
 
             if (action.startsWith("save")) { //Save and load special case
@@ -328,6 +352,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
             if (p + indexMod == 1) { // Button one is by default selected as the first option
                 button.setSelected(true);
+                chosenBtn = button;
             }
 
             if (p + indexMod < 10)
