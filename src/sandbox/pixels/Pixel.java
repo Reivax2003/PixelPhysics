@@ -14,6 +14,7 @@ public class Pixel implements Serializable {
     private static final long serialVersionUID = -812730393170643872L;
     public String type;
     protected Color color;
+    private Color originalColor;
     protected boolean moved;
     HashMap<String, Integer> properties = new HashMap<>();
     HashMap<String, Integer> state = new HashMap<>();
@@ -23,6 +24,7 @@ public class Pixel implements Serializable {
     public Pixel(String type, Color color) {
         this.type = type;
         this.color = color;
+        this.originalColor = color;
         this.moved = false;
         this.setProperty("temperature", 50)
             .setProperty("heatConduct", 100)
@@ -41,6 +43,10 @@ public class Pixel implements Serializable {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public Color getOriginalColor() {
+        return originalColor;
     }
 
     public String getType() {
