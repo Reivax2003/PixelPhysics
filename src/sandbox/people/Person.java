@@ -221,7 +221,7 @@ public class Person implements Serializable {
             currentActivity = "doing nothing";
         }
 
-        if (!isStanding(grid)) {
+        if (!isStanding(grid) && !dragged) {
             foot1Y += 1;
             foot2Y += 1;
             foot1Xgoal = -1;
