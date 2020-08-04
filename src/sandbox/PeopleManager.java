@@ -47,7 +47,7 @@ public class PeopleManager {
         return happiness/count;  //may return NaN if no people, or if people have no desires
     }
 
-    public int getMaxStruct(String structure){return (int) Math.ceil(this.getPopulation()/popPerStructure.get(structure))+1;}
+    public int getMaxStruct(String structure){return (int) Math.ceil(this.getPopulation()/popPerStructure.get(structure));}
     public boolean belowMaxStruct(String structure) {
         return getStructure(structure) < getMaxStruct(structure);
     }
