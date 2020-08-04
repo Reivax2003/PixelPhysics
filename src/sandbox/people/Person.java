@@ -40,6 +40,7 @@ public class Person implements Serializable {
     //currently looks for nutrients, tools, and building properties
     HashMap<String, Integer> inventory = new HashMap<>();
     HashMap<String, Integer> desiredResources = new HashMap<>();
+    HashMap<String, Integer> structureNumbers = new HashMap<>();
 
     public Person(int x, int y, String[] job) {
         rootX = x;
@@ -71,6 +72,9 @@ public class Person implements Serializable {
         if (job[0].equals("gatherer") && desiredResources.containsKey(job[1])) {
             setDesire(job[1], 200);
         }
+        structureNumbers.put("Well", 0);
+        structureNumbers.put("Fire Pit", 0);
+        structureNumbers.put("Garden", 0);
     }
 
     //valid pixel cannot have fluidity property nor temp above 80
@@ -325,7 +329,7 @@ public class Person implements Serializable {
             if(structures[0].tryBuild(grid, foot1X, foot1Y+1)){
                 this.setResource("wood", this.getResource("wood")-5);
                 this.setResource("stone", this.getResource("stone")-5);
-                peopleManager.addStructure("Fire Pit");
+                addStructure("Fire Pit");
                 this.setDesireCheckJob("wood", 40);
             }
         }
@@ -340,7 +344,7 @@ public class Person implements Serializable {
         else if (this.getResource("wood") >= 20 && peopleManager.belowMaxStruct("Garden")){
             if(structures[1].tryBuild(grid, foot1X, foot1Y+1)){
                 this.setResource("wood", this.getResource("wood")-20);
-                peopleManager.addStructure("Garden");
+                addStructure("Garden");
                 this.setDesireCheckJob("wood", 40).setDesireCheckJob("stone", 30);
             }
         }
@@ -357,7 +361,7 @@ public class Person implements Serializable {
             if(structures[2].tryBuild(grid, foot1X, foot1Y+1)){
                 this.setResource("wood", this.getResource("wood")-10);
                 this.setResource("stone", this.getResource("stone")-25);
-                peopleManager.addStructure("Well");
+                addStructure("Well");
                 this.setDesireCheckJob("wood", 0).setDesireCheckJob("stone", 0);
             }
         }
@@ -546,5 +550,12 @@ public class Person implements Serializable {
                 }
             }
         }
+    }
+
+    private void addStructure(String name){
+        structureNumbers.replace(name, structureNumbers.get(name)+1);
+    }
+    public int getStructure(String name){
+        return structureNumbers.get(name);
     }
 }

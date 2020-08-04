@@ -14,16 +14,21 @@ public class Garden extends Blueprint {
         name = "Garden";
         Pixel a = new Air();
 
-        Pixel s = new Soil();
+        Pixel s = new Soil();  //it seems s is not used in the blueprint
+        s.addProperty("walkable", 0);
 
         Pixel g = new Grass();
+        g.addProperty("walkable", 0);
 
         Pixel b = new Wood(); //bright for plank
         b.setColor(new Color(176, 123, 70));
+        b.addProperty("walkable", 0);
         Pixel p = new Wood(); //plank (light wood)
         p.setColor(new Color(163, 113, 57));
+        p.addProperty("walkable", 0);
         Pixel d = new Wood(); //dark for plank
         d.setColor(new Color(135, 94, 49));
+        d.addProperty("walkable", 0);
 
 
         structure = new Pixel[][]{

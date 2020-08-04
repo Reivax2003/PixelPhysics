@@ -22,12 +22,14 @@ public class FirePit extends Blueprint {
         w.changeProperty("ash", 0);
         w.changeProperty("charcoal", 0);
         w.changeProperty("burnspeed", 0);
+        w.addProperty("walkable", 0);
         Pixel s = new Wood(); //shadow for wood
         s.setColor(new Color(84, 48, 8));
         s.changeProperty("fuel", Integer.MAX_VALUE);
         s.changeProperty("ash", 0);
         s.changeProperty("charcoal", 0);
         s.changeProperty("burnspeed", 0);
+        s.addProperty("walkable", 0);
 
         Pixel l = new Stone(); //light gray
         l.setColor(new Color(138, 138, 138));
