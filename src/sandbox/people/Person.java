@@ -240,7 +240,7 @@ public class Person implements Serializable {
 
         moveHead();
     }
-    private void moveHead(){
+    public void moveHead(){
         rootX = (foot1X+foot2X)/2;
         rootY = foot1Y - height;
 
