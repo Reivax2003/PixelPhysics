@@ -837,7 +837,7 @@ public class GameLogic extends TimerTask {
         boolean fuel = !needsFuel;
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
-                if (x + xpos >= 0 && x + xpos < grid.getWidth() && y + ypos >= 0 && y + ypos < grid.getHeight() && grid.getPixel(x + xpos, y + ypos).hasProperty(spreadable) && grid.getPixel(x + xpos, y + ypos).getProperty(spreadable) >= min && grid.getPixel(x + xpos, y + ypos).getProperty(spreadable) <= max) {
+                if (x + xpos >= 0 && x + xpos < grid.getWidth() && y + ypos >= 0 && y + ypos < grid.getHeight() && grid.getPixel(x + xpos, y + ypos).hasProperty(spreadable) && grid.getPixel(x + xpos, y + ypos).getPropOrDefault(spreadable, min-1) >= min && grid.getPixel(x + xpos, y + ypos).getPropOrDefault(spreadable, max+1) <= max) {
                     if (grid.getPixel(x + xpos, y + ypos - 1).hasProperty("overwritable") && Math.random() < 0.1) {
                         grid.setPixel(x + xpos, y + ypos - 1, original.duplicate());
                     }
