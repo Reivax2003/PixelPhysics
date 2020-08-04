@@ -16,17 +16,23 @@ public class WoodAFrame extends Blueprint {
 
         Pixel h = new Wood(); //highlight for wood
         h.setColor(new Color(138, 77, 11));
+        h.addProperty("walkable", 0);
         Pixel w = new Wood(); //wood (dark)
         w.setColor(new Color(113, 63, 5));
+        w.addProperty("walkable", 0);
         Pixel s = new Wood(); //shadow for wood
         s.setColor(new Color(84, 48, 8));
+        s.addProperty("walkable", 0);
 
         Pixel b = new Wood(); //bright for plank
         b.setColor(new Color(176, 123, 70));
+        b.addProperty("walkable", 0);
         Pixel p = new Wood(); //plank (light wood)
         p.setColor(new Color(163, 113, 57));
+        p.addProperty("walkable", 0);
         Pixel d = new Wood(); //dark for plank
         d.setColor(new Color(135, 94, 49));
+        d.addProperty("walkable", 0);
 
         /*
                       hh
