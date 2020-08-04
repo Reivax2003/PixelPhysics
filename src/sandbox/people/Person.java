@@ -433,7 +433,7 @@ public class Person implements Serializable {
     }
     private Person setDesireCheckJob(String resource, int amount){
         //this sets the desire only if it's not the current job
-        if(!job[1].equals(resource))
+        if(job == null || !job[1].equals(resource))
             desiredResources.put(resource, amount);
 
         return this;
