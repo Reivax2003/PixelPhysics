@@ -121,7 +121,8 @@ public class PixelSandbox {
         //start game loop
         timer.scheduleAtFixedRate(gameLogic, 0, 100);
 
-        //Display controls and information
+        //Display controls and information and passes down timer to kill
+        menuBar.setTimer(timer);
         menuBar.displayInfo();
     }
 }
