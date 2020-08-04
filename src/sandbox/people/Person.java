@@ -26,6 +26,7 @@ public class Person implements Serializable {
     private final double headRadius = 2;
     private final double legLen;
     private final double height = 5;
+    private boolean isWalking = true;
     private int direction = -1; //-1 left 1 right
     private Blueprint[] houses = new Blueprint[]{new WoodShack(), new WoodAFrame(), new WoodHouse()};
     private Blueprint house = null;
@@ -46,6 +47,10 @@ public class Person implements Serializable {
         foot2X = x + 1;
         foot2Y = y + 2;
         legLen = Math.sqrt(Math.pow(height, 2)+Math.pow(maxStep/2, 2));
+        direction = -1;
+        if (Math.random() < 0.5){
+            direction = 1;
+        }
         this
                 .setResource("nutrients", 25)
                 .setResource("stone", 0)
@@ -202,11 +207,18 @@ public class Person implements Serializable {
             this.changeResource("energy", this.getResource("energy") - 5);
         } else if (eatFood()) {
             currentActivity = "eating";
-        } else if (move(grid)) {
+        } else if (isWalking && move(grid)) {
             this.changeResource("energy", this.getResource("energy") - 1);
             currentActivity = "wandering";
         } else {
             currentActivity = "doing nothing";
+        }
+
+        if (Math.random() < 0.01) {
+            isWalking = !isWalking;
+            if (Math.random() < 0.5){
+                direction *= -1;
+            }
         }
 
         rootX = (foot1X + foot2X) / 2;
