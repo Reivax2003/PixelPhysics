@@ -13,6 +13,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
     private final Grid grid;
     private boolean campaign;
     private Timer timerToKill;
+    private JMenu loadMenu;
 
     public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
             new WetSand(),
@@ -160,14 +161,15 @@ public class MenuBar extends JMenuBar implements ActionListener {
         // }
         // controlMenu.add(camSaveMenu); // Commented out as we have campaign build which does job
 
-        saveMenu = new JMenu("Load");
+        loadMenu = new JMenu("Load");
         for (int i = 0; i < 10; i++) {  //add 10 save slots
             menuItem = new JMenuItem("slot " + i);
             menuItem.setActionCommand("load" + i);
             menuItem.addActionListener(this);
-            saveMenu.add(menuItem);
+            menuItem.setEnabled(new File("save/slot"+i+".lvl").exists());
+            loadMenu.add(menuItem);
         }
-        controlMenu.add(saveMenu);
+        controlMenu.add(loadMenu);
 
         if (!campaign) {
             menuItem = new JMenuItem("Energy");
@@ -213,6 +215,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
             if (action.startsWith("save")) { //Save and load special case
                 grid.saveGrid(new File("save/slot"+action.substring(4)+".lvl"));
+                checkSaveSlots();
             }else if (action.startsWith("camp")) { //Save as campaign
                 grid.saveGrid(new File("campaign/level"+action.substring(4)+".lvl"), true); //Saves as a campaign file
             }else if (action.startsWith("load")) {
@@ -338,6 +341,13 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
             button.setActionCommand(index);
             button.addActionListener(this);
+        }
+    }
+
+    public void checkSaveSlots(){
+        for (int i = 0; i < 10; i++) {  //add 10 save slots
+            JMenuItem menuItem = loadMenu.getItem(i);
+            menuItem.setEnabled(new File("save/slot"+i+".lvl").exists());            
         }
     }
 }
