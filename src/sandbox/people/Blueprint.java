@@ -10,6 +10,7 @@ public class Blueprint implements Serializable{
     private static final long serialVersionUID = 01334;
 
     private Pixel[][] structure;
+    private Pixel[][] terrain;
     private int x;
     private int y;
     protected int comfort = 0; //comfort (0-100)
@@ -19,6 +20,14 @@ public class Blueprint implements Serializable{
     public Blueprint(){ }
     public void setStructure(Pixel[][] structure){
         this.structure = structure;
+        this.terrain = new Pixel[structure.length][structure[0].length];
+    }
+    private void initTerrain(){
+        for (int x = 0; x < terrain.length; x++){
+            for (int y = 0; y < terrain[0].length; y++){
+                terrain[x][y] = new Lava();
+            }
+        }
     }
 
     public void build(Grid grid, int x, int y){
@@ -31,6 +40,7 @@ public class Blueprint implements Serializable{
                     pixel.changeProperty("density", -10000);
                     pixel.addProperty("structure", 1);
                     pixel.setBuilding(this);
+                    terrain[ymod][xmod] = grid.getPixel(x+xmod, y-ymod).duplicate();
                     grid.setPixel(x + xmod, y - ymod, pixel);
                 }
             }
@@ -63,6 +73,7 @@ public class Blueprint implements Serializable{
                     pixel.changeProperty("density", -10000);
                     pixel.addProperty("structure", 1);
                     pixel.setBuilding(this);
+                    terrain[ymod][xmod] = grid.getPixel(x+xmod, y-ymod).duplicate();
                     grid.setPixel(x + xmod, y - ymod, pixel);
                 }
             }
@@ -85,8 +96,13 @@ public class Blueprint implements Serializable{
         this.y = y;
         for(int xmod = 0; xmod < structure[0].length; xmod++){
             for(int ymod = 0; ymod < structure.length; ymod++){
-                if (x+xmod>=0 && x+xmod<grid.getWidth() && y-ymod>=0 && y-ymod<grid.getHeight() && structure[(structure.length-1)-ymod][xmod].getType() == grid.getPixel(x+xmod, y-ymod).getType())
-                    grid.setPixel(x+xmod, y-ymod, new Air());
+                if (x+xmod>=0 && x+xmod<grid.getWidth() && y-ymod>=0 && y-ymod<grid.getHeight() && structure[(structure.length-1)-ymod][xmod].getType() == grid.getPixel(x+xmod, y-ymod).getType()) {
+                    if (terrain[ymod][xmod] != null) {
+                        grid.setPixel(x + xmod, y - ymod, terrain[ymod][xmod]);
+                    }else{
+                        grid.setPixel(x + xmod, y - ymod, new Air());
+                    }
+                }
             }
         }
         isBuilt = false;
