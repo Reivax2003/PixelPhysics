@@ -10,7 +10,7 @@ import java.io.File;
 
 public class MainMenu extends JPanel implements ActionListener {
 
-    private Object[] allSaveSlots = { // All possible save slots
+    private Object[] saveSlots = {
       "slot 0",
       "slot 1",
       "slot 2",
@@ -23,8 +23,6 @@ public class MainMenu extends JPanel implements ActionListener {
       "slot 9",
       "load from file",
     };
-    private Object[] saveSlots; // Array that contains only active slots
-    private int slots; // Total number of save slots in active list
 
     private Object[] campaignLevels = {
       "level 1",
@@ -128,22 +126,6 @@ public class MainMenu extends JPanel implements ActionListener {
 
       frame.add(menu);
 
-      slots = 1;
-      for (int i = 0; i < 10; i++) {  // Find number of active save slots
-          if (new File("save/slot"+i+".lvl").exists()) {
-              slots ++;
-          }
-      }
-      saveSlots = new Object[slots];
-      int saveSlotsLoc = 0;
-      for (int i = 0; i < 10; i++) {  // Build active save slot array
-          if (new File("save/slot"+i+".lvl").exists()) {
-              saveSlots[saveSlotsLoc] = allSaveSlots[i];
-              saveSlotsLoc ++;
-          }
-      }
-      saveSlots[slots-1] = allSaveSlots[10];
-
       frame.setVisible(true);
     }
 
@@ -178,7 +160,7 @@ public class MainMenu extends JPanel implements ActionListener {
     }
 
     private String[] loadChoice() {
-      Object choiceObj = JOptionPane.showInputDialog(frame,"Choose save slot:","Load Saved Sandbox",JOptionPane.PLAIN_MESSAGE,null,saveSlots,saveSlots[slots-1]);
+      Object choiceObj = JOptionPane.showInputDialog(frame,"Choose save slot:","Load Saved Sandbox",JOptionPane.PLAIN_MESSAGE,null,saveSlots,saveSlots[10]);
       if (choiceObj == null) { // Cancelled or closed
           return null; // Returns null if no choice
       }
