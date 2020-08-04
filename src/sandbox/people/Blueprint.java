@@ -38,6 +38,39 @@ public class Blueprint implements Serializable{
         isBuilt = true;
     }
 
+    public boolean tryBuild(Grid grid, int x, int y){
+        this.x = x;
+        this.y = y;
+        
+        //boundary check
+        if (x < 0 || x + structure[0].length >= grid.getWidth() || y - structure.length < 0 && y >= grid.getHeight()) {
+            return false;
+        }
+
+        //scan and check for other buildings
+        for(int xmod = 0; xmod < structure[0].length; xmod++){
+            for(int ymod = 0; ymod < structure.length; ymod++) {
+                if(!structure[(structure.length - 1) - ymod][xmod].hasProperty("overwritable") && grid.getPixel(x + xmod, y - ymod).hasProperty("structure")){
+                    return false;
+                }
+            }
+        }
+
+        for(int xmod = 0; xmod < structure[0].length; xmod++){
+            for(int ymod = 0; ymod < structure.length; ymod++) {
+                if (x + xmod >= 0 && x + xmod < grid.getWidth() && y - ymod >= 0 && y - ymod < grid.getHeight() && !structure[(structure.length - 1) - ymod][xmod].hasProperty("overwritable")) {
+                    Pixel pixel = structure[(structure.length - 1) - ymod][xmod];
+                    pixel.changeProperty("density", -10000);
+                    pixel.addProperty("structure", 1);
+                    pixel.setBuilding(this);
+                    grid.setPixel(x + xmod, y - ymod, pixel);
+                }
+            }
+        }
+        isBuilt = true;
+        return true;
+    }
+
     public int getX(){
         return x;
     }
