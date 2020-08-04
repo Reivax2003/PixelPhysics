@@ -21,7 +21,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
     private int lastGridOffsetY = 0;
 
     private int selectedPerson = -1;
-    private Blueprint selectedbuilding = null;
+    private Blueprint selectedBuilding = null;
 
     public MouseHandler(Renderer panel, Grid grid, MenuBar menuBar, PeopleManager peopleManager){
         this.panel = panel;
@@ -111,16 +111,16 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
                             peopleManager.getPerson(person).setShowInventory(!peopleManager.getPerson(person).getShowInventory());
                             peopleManager.getPerson(person).setDragged(true);
                             // System.out.println("person"+person+" happiness: "+peopleManager.getPerson(person).getHappiness());
-                        } else if (grid.getPixel(squareX, squareY).getBuilding() != null && selectedbuilding == null) {
-                            selectedbuilding = grid.getPixel(squareX, squareY).getBuilding();
-                        } else if (selectedbuilding != null) {
-                            if(!selectedbuilding.isBuilt){
-                                selectedbuilding = null;
+                        } else if (grid.getPixel(squareX, squareY).getBuilding() != null && selectedBuilding == null) {
+                            selectedBuilding = grid.getPixel(squareX, squareY).getBuilding();
+                        } else if (selectedBuilding != null) {
+                            if(!selectedBuilding.isBuilt){
+                                selectedBuilding = null;
                             }
                             else if (grid.getPixel(squareX, squareY).getBuilding() == null) {
-                                selectedbuilding.destroy(grid);
-                                selectedbuilding.build(grid, squareX, squareY);
-                                selectedbuilding = null;
+                                selectedBuilding.destroy(grid);
+                                selectedBuilding.build(grid, squareX, squareY);
+                                selectedBuilding = null;
                             }
                         } else {
                             Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
@@ -142,6 +142,7 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
                     case MouseEvent.BUTTON1:
                         if (selectedPerson != -1) {
                             peopleManager.getPerson(selectedPerson).setRoot(squareX, squareY);
+                            peopleManager.getPerson(selectedPerson).moveHead();
                         } else {
                             Pixel pixel = menuBar.pixels[menuBar.chosen].duplicate();
                             grid.drawLine(squareX, squareY, lastMouseX, lastMouseY, pixel);
