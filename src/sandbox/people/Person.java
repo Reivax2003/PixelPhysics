@@ -106,16 +106,25 @@ public class Person implements Serializable {
             //check if next pixel is background(0)
             if (x + direction >= 0 && x + direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x + direction, y).getPropOrDefault(("walkable"), 0) == 0) {//DON'T FORGET TO ADD OTHER CONDITIONS LATER
                 x += direction;
-                blocked = true;
-                //scan downwards for a ground(1) pixel
-                for (int v = 1; v <= maxStepHeight; v++) {
-                    if (y < grid.getHeight() - 1 && grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == 0) {
-                        y += 1;
-                    } else if (y < grid.getHeight() - 1 && (grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == -1 || grid.getPixel(x, y + 1).getPropOrDefault(("temperature"), 50) > 90)) {
-                        //too dangerous to walk here(-1 or temp too high)
+                //scan upwards for large enough space to walk
+                for (int v = 1; v <= height+3; v++) {
+                    if (y-v > 0 && grid.getPixel(x, y-v).getPropOrDefault(("walkable"), 0) != 0){
+                        blocked = true;
                         break;
-                    } else {
-                        blocked = false;
+                    }
+                }
+                if (!blocked) {
+                    blocked = true;
+                    //scan downwards for a ground(1) pixel
+                    for (int v = 1; v <= maxStepHeight; v++) {
+                        if (y < grid.getHeight() - 1 && grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == 0) {
+                            y += 1;
+                        } else if (y < grid.getHeight() - 1 && (grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == -1 || grid.getPixel(x, y + 1).getPropOrDefault(("temperature"), 50) > 90)) {
+                            //too dangerous to walk here(-1 or temp too high)
+                            break;
+                        } else {
+                            blocked = false;
+                        }
                     }
                 }
             }
@@ -164,10 +173,6 @@ public class Person implements Serializable {
         if (dragged) {
             return false;
         } else if (!isStanding(grid)) {
-            foot1Y += 1;
-            foot2Y += 1;
-            foot1Xgoal = -1;
-            foot2Xgoal = -1;
             return false;
         } else if (foot1Xgoal != -1 || foot2Xgoal != -1) {
             if (foot1X != foot1Xgoal || foot1Y != foot1Ygoal) {
@@ -212,6 +217,13 @@ public class Person implements Serializable {
             currentActivity = "wandering";
         } else {
             currentActivity = "doing nothing";
+        }
+
+        if (!isStanding(grid)) {
+            foot1Y += 1;
+            foot2Y += 1;
+            foot1Xgoal = -1;
+            foot2Xgoal = -1;
         }
 
         if (Math.random() < 0.01) {
@@ -433,7 +445,7 @@ public class Person implements Serializable {
     }
     private Person setDesireCheckJob(String resource, int amount){
         //this sets the desire only if it's not the current job
-        if(!job[1].equals(resource))
+        if(job == null || !job[1].equals(resource))
             desiredResources.put(resource, amount);
 
         return this;
