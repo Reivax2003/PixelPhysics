@@ -178,6 +178,7 @@ public class Person implements Serializable {
             if (foot1X != foot1Xgoal || foot1Y != foot1Ygoal) {
                 if (foot1X != foot1Xgoal) {
                     foot1Y = foot1Ygoal - 1;
+                    direction = (foot1Xgoal-foot1X)/Math.abs(foot1Xgoal-foot1X);
                     foot1X += direction;
                 } else {
                     foot1Y = foot1Ygoal;
@@ -186,6 +187,7 @@ public class Person implements Serializable {
             } else if (foot2X != foot2Xgoal || foot2Y != foot2Ygoal) {
                 if (foot2X != foot2Xgoal) {
                     foot2Y = foot2Ygoal - 1;
+                    direction = (foot2Xgoal-foot2X)/Math.abs(foot2Xgoal-foot2X);
                     foot2X += direction;
                 } else {
                     foot2Y = foot2Ygoal;
@@ -193,7 +195,7 @@ public class Person implements Serializable {
                 return true;
             } else {
                 takeNextStep(grid);
-                return false;
+                return true;
             }
         } else {
             foot2Xgoal = foot2X;
