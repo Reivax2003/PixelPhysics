@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainMenu extends JPanel implements ActionListener {
 
@@ -160,37 +161,59 @@ public class MainMenu extends JPanel implements ActionListener {
     }
 
     private String[] loadChoice() {
-      Object choiceObj = JOptionPane.showInputDialog(frame,"Choose save slot:","Load Saved Sandbox",JOptionPane.PLAIN_MESSAGE,null,saveSlots,saveSlots[10]);
-      if (choiceObj == null) { // Cancelled or closed
-          return null; // Returns null if no choice
-      }
+        ArrayList<Object> validChoices = new ArrayList<>();
+        for (Object choice : saveSlots) {
+            try {
+                Integer.parseInt(((String)choice).substring(5));
+                if(new File("save/slot"+((String)choice).substring(5)+".lvl").exists()){
+                    validChoices.add(choice);
+                }
+            } catch (NumberFormatException e) {
+                validChoices.add(choice);
+            }
+        }
+        Object[] validChoicesAr = validChoices.toArray();
 
-      String choice = (String) choiceObj;
+        Object choiceObj = JOptionPane.showInputDialog(frame,"Choose save slot:","Load Saved Sandbox",JOptionPane.PLAIN_MESSAGE,null,validChoicesAr,validChoicesAr[validChoicesAr.length-1]);
+        if (choiceObj == null) { // Cancelled or closed
+            return null; // Returns null if no choice
+        }
 
-      try {
-          Integer.parseInt(choice.substring(5)); // Tests whether save slot is chosen
-          return new String[] {"save/slot"+choice.substring(5)+".lvl"}; // Returns chosen file
-      }
-      catch (NumberFormatException e) {
-          int option = fileChooser.showOpenDialog(this);
-          if( option == JFileChooser.APPROVE_OPTION) {
-              return new String[] {fileChooser.getSelectedFile().getPath()}; // Returns chosen file
-          }
-          else {
-              return null; // Returns null if no choice
-          }
-      }
+        String choice = (String) choiceObj;
+
+        try {
+            Integer.parseInt(choice.substring(5)); // Tests whether save slot is chosen
+            return new String[] {"save/slot"+choice.substring(5)+".lvl"}; // Returns chosen file
+        }
+        catch (NumberFormatException e) {
+            int option = fileChooser.showOpenDialog(this);
+            if( option == JFileChooser.APPROVE_OPTION) {
+                return new String[] {fileChooser.getSelectedFile().getPath()}; // Returns chosen file
+            }
+            else {
+                return null; // Returns null if no choice
+            }
+        }
 
     }
 
     private String[] campaignChoice() {
-      Object choiceObj = JOptionPane.showInputDialog(frame,"Choose level:","Start Campaign Level",JOptionPane.PLAIN_MESSAGE,null,campaignLevels,campaignLevels[0]);
-      if (choiceObj == null) { // Cancelled or closed
-          return null; // Returns null if no choice
-      }
+        ArrayList<Object> validChoices = new ArrayList<>();
+        for (Object choice : campaignLevels) {
+            Integer.parseInt(((String)choice).substring(6));
+            if(new File("campaign/level"+((String)choice).substring(6)+".lvl").exists()){
+                validChoices.add(choice);
+            }
+        }
+        Object[] validChoicesAr = validChoices.toArray();
 
-      String choice = (String) choiceObj;
-      return new String[] {"campaign/level"+choice.substring(6)+".lvl"}; // Returns chosen level
+        Object choiceObj = JOptionPane.showInputDialog(frame,"Choose level:","Start Campaign Level",JOptionPane.PLAIN_MESSAGE,null,validChoicesAr,validChoicesAr[0]);
+        if (choiceObj == null) { // Cancelled or closed
+            return null; // Returns null if no choice
+        }
+
+        String choice = (String) choiceObj;
+        return new String[] {"campaign/level"+choice.substring(6)+".lvl"}; // Returns chosen level
     }
 
     private String[] creativeDialog() {
