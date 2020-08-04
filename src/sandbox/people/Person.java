@@ -311,25 +311,28 @@ public class Person implements Serializable {
 
     public boolean craft(Grid grid) {
         if (house == null && this.getResource("wood") >= 20) {
-            house = houses[0];
-            house.build(grid, foot1X, foot1Y+1);
-            this.setResource("wood", this.getResource("wood")-20);
-            this.setDesireCheckJob("wood", 40);
+            if(houses[0].tryBuild(grid, foot1X, foot1Y+1)){
+                house = houses[0];
+                this.setResource("wood", this.getResource("wood")-20);
+                this.setDesireCheckJob("wood", 40);
+            }
         }
         else if (house == houses[0] && this.getResource("wood") >= 40){
             house.destroy(grid);
-            houses[1].build(grid, house.getX(), house.getY());
-            house = houses[1];
-            this.setResource("wood", this.getResource("wood")-40);
-            this.setDesireCheckJob("wood", 40).setDesireCheckJob("stone", 30);
+            if(houses[1].tryBuild(grid, house.getX(), house.getY())){   
+                house = houses[1];
+                this.setResource("wood", this.getResource("wood")-40);
+                this.setDesireCheckJob("wood", 40).setDesireCheckJob("stone", 30);
+            }
         }
         else if (house == houses[1] && this.getResource("wood") >= 40 && this.getResource("stone") >= 30){
             house.destroy(grid);
-            houses[2].build(grid, house.getX(), house.getY());
-            house = houses[2];
-            this.setResource("wood", this.getResource("wood")-40);
-            this.setResource("stone", this.getResource("stone")-30);
-            this.setDesireCheckJob("wood", 0).setDesireCheckJob("stone", 0);
+            if(houses[2].tryBuild(grid, house.getX(), house.getY())){
+                house = houses[2];
+                this.setResource("wood", this.getResource("wood")-40);
+                this.setResource("stone", this.getResource("stone")-30);
+                this.setDesireCheckJob("wood", 0).setDesireCheckJob("stone", 0);
+            }
         }
         else if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && job[0].equals("crafter") && job[1].equals("tool")&& this.getResourceOrDefault("tool", 0) < 2){
             this.changeResource("tool", 2);
