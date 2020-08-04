@@ -8,6 +8,7 @@ public class PeopleManager {
     private final Grid grid;
     private ArrayList<Person> people;
     HashMap<String, Integer> structures = new HashMap<>();
+    HashMap<String, Integer> popPerStructure = new HashMap<>();
 
     public PeopleManager(Grid grid){
         this.grid = grid;
@@ -16,6 +17,9 @@ public class PeopleManager {
         structures.put("Well", 0);
         structures.put("Fire Pit", 0);
         structures.put("Garden", 0);
+        popPerStructure.put("Well", 10);
+        popPerStructure.put("Fire Pit", 5);
+        popPerStructure.put("Garden", 2);
     }
 
     public void updatePeople(){
@@ -42,9 +46,11 @@ public class PeopleManager {
         }
         return happiness/count;  //may return NaN if no people, or if people have no desires
     }
-    public int getMaxWells(){return (int) Math.ceil(this.getPopulation()/10)+1;}
-    public int getMaxFirePits(){return (int) Math.ceil(this.getPopulation()/5)+1;}
-    public int getMaxGardens(){return (int) Math.ceil(this.getPopulation()/2)+1;}
+
+    public int getMaxStruct(String structure){return (int) Math.ceil(this.getPopulation()/popPerStructure.get(structure))+1;}
+    public boolean belowMaxStruct(String structure) {
+        return getStructure(structure) < getMaxStruct(structure);
+    }
     public int getStructure(String name){
         return structures.get(name);
     }
