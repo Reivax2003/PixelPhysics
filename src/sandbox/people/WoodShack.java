@@ -16,8 +16,10 @@ public class WoodShack extends Blueprint {
         name = "Wood Shack";
         Pixel a = new Air();
         Pixel w = new Wood();
+        w.addProperty("walkable", 0);
         Pixel r = new Wood();
         r.setColor(new Color(138, 99, 54));
+        r.addProperty("walkable", 0);
 
         /*
                          rwrww
