@@ -37,7 +37,6 @@ public class MenuBar extends JMenuBar implements ActionListener {
             new Steam(),
             new Fire(),
             new Electricity(),
-            new ColorChanger(),
             new Wood(),
             new Plant(),
             new AlienPlant(true),
@@ -71,7 +70,6 @@ public class MenuBar extends JMenuBar implements ActionListener {
     private final Pixel[] property = {
             new Fire(),
             new Electricity(),
-            new ColorChanger(),
     };
     private final Pixel[] living = {
             new Wood(),
@@ -127,6 +125,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
         viewMenu.add(menuItem);
         menuItem = new JMenuItem("Heat");
         menuItem.setActionCommand("heat");
+        menuItem.addActionListener(this);
+        viewMenu.add(menuItem);
+        menuItem = new JMenuItem("Color Changer");
+        menuItem.setActionCommand("changeColor");
         menuItem.addActionListener(this);
         viewMenu.add(menuItem);
 
@@ -216,25 +218,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
         String action = a.getActionCommand();
         try { //Assumes all numeric action events are chosing type
             int newChoice = Integer.parseInt(action);
-
-            //color changer
-            if(pixels[newChoice].getType().equals("color changer")){
-                //use the current pixel's color and see if user wants to change it
-                Color col = JColorChooser.showDialog(this, "Choose a color. Use #000001 for default", pixels[chosen].getColor());
-                if(col != null){ //null means canceled
-                    if(col.getRed() == 0 && col.getGreen() == 0 && col.getBlue() == 1) {  //special number to reset to default color
-                        pixels[chosen].setColor(pixels[chosen].getOriginalColor());
-                        // elementButtons.clearSelection();
-                        // chosenBtn.setSelected(true);
-                    }else{
-                        pixels[chosen].setColor(col);
-                    }
-                }
-            }
-            else{
-                chosen = newChoice;
-                chosenBtn = (JRadioButtonMenuItem)a.getSource();
-            }
+            chosen = newChoice;
+            chosenBtn = (JRadioButtonMenuItem)a.getSource();
         } catch (NumberFormatException e) {
 
             if (action.startsWith("save")) { //Save and load special case
@@ -273,6 +258,19 @@ public class MenuBar extends JMenuBar implements ActionListener {
                         break;
                     case "heat":
                         grid.setView(1);
+                        break;
+                    case "changeColor":
+                        //use the current pixel's color and see if user wants to change it
+                        Color col = JColorChooser.showDialog(this, "Choose a color. Use color code 000001 for default", pixels[chosen].getColor());
+                        if(col != null){ //null means canceled
+                            if(col.getRed() == 0 && col.getGreen() == 0 && col.getBlue() == 1) {  //special number to reset to default color
+                                pixels[chosen].setColor(pixels[chosen].getOriginalColor());
+                                chosenBtn.setForeground(pixels[chosen].getOriginalColor().darker());
+                            }else{
+                                pixels[chosen].setColor(col);
+                                chosenBtn.setForeground(col.darker());
+                            }
+                        }
                         break;
                 }
             }
