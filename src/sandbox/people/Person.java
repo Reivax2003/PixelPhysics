@@ -318,7 +318,7 @@ public class Person implements Serializable {
             if(houses[0].tryBuild(grid, foot1X, foot1Y+1)){
                 house = houses[0];
                 this.setResource("wood", this.getResource("wood")-20);
-                this.setDesireCheckJob("wood", 40);
+                this.setDesireCheckJob("wood", 5).setDesireCheckJob("stone", 5);
             }
         }
         else if (this.getResource("wood") >= 5 && this.getResource("stone") > 5 && peopleManager.belowMaxStruct("Fire Pit")){
@@ -326,6 +326,7 @@ public class Person implements Serializable {
                 this.setResource("wood", this.getResource("wood")-5);
                 this.setResource("stone", this.getResource("stone")-5);
                 peopleManager.addStructure("Fire Pit");
+                this.setDesireCheckJob("wood", 40);
             }
         }
         else if (house == houses[0] && this.getResource("wood") >= 40){
@@ -333,13 +334,14 @@ public class Person implements Serializable {
             if(houses[1].tryBuild(grid, house.getX(), house.getY())){
                 house = houses[1];
                 this.setResource("wood", this.getResource("wood")-40);
-                this.setDesireCheckJob("wood", 40).setDesireCheckJob("stone", 30);
+                this.setDesireCheckJob("wood", 20);
             }
         }
         else if (this.getResource("wood") >= 20 && peopleManager.belowMaxStruct("Garden")){
             if(structures[1].tryBuild(grid, foot1X, foot1Y+1)){
                 this.setResource("wood", this.getResource("wood")-20);
                 peopleManager.addStructure("Garden");
+                this.setDesireCheckJob("wood", 40).setDesireCheckJob("stone", 30);
             }
         }
         else if (house == houses[1] && this.getResource("wood") >= 40 && this.getResource("stone") >= 30){
@@ -348,7 +350,7 @@ public class Person implements Serializable {
                 house = houses[2];
                 this.setResource("wood", this.getResource("wood")-40);
                 this.setResource("stone", this.getResource("stone")-30);
-                this.setDesireCheckJob("wood", 0).setDesireCheckJob("stone", 0);
+                this.setDesireCheckJob("wood", 10).setDesireCheckJob("stone", 25);
             }
         }
         else if (this.getResource("wood") >= 10 && this.getResource("stone") > 25 && peopleManager.belowMaxStruct("Well")){
@@ -356,6 +358,7 @@ public class Person implements Serializable {
                 this.setResource("wood", this.getResource("wood")-10);
                 this.setResource("stone", this.getResource("stone")-25);
                 peopleManager.addStructure("Well");
+                this.setDesireCheckJob("wood", 0).setDesireCheckJob("stone", 0);
             }
         }
         if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && job[0].equals("crafter") && job[1].equals("tool")&& this.getResourceOrDefault("tool", 0) < 2){
