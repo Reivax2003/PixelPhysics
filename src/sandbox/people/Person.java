@@ -173,10 +173,6 @@ public class Person implements Serializable {
         if (dragged) {
             return false;
         } else if (!isStanding(grid)) {
-            foot1Y += 1;
-            foot2Y += 1;
-            foot1Xgoal = -1;
-            foot2Xgoal = -1;
             return false;
         } else if (foot1Xgoal != -1 || foot2Xgoal != -1) {
             if (foot1X != foot1Xgoal || foot1Y != foot1Ygoal) {
@@ -221,6 +217,13 @@ public class Person implements Serializable {
             currentActivity = "wandering";
         } else {
             currentActivity = "doing nothing";
+        }
+
+        if (!isStanding(grid)) {
+            foot1Y += 1;
+            foot2Y += 1;
+            foot1Xgoal = -1;
+            foot2Xgoal = -1;
         }
 
         if (Math.random() < 0.01) {

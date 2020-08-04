@@ -36,8 +36,8 @@ public class Grid {
     private ArrayList<Person> people = new ArrayList<Person>();
 
     private int viewMode = 0;
-    public boolean needsRedraw;
-    public boolean saving = false;
+    private boolean needsRedraw;
+    public int saving = 0;
 
     public Grid(int width, int height) {
         grid = new Pixel[width][height];
@@ -158,7 +158,7 @@ public class Grid {
     }
 
     public void saveGrid(File file, boolean toCampaign){
-        saving = true;
+        saving = -1; // Signals grid to display saved icon, it cannot update while saving
         File directory = file.getParentFile();
         if(!directory.exists()){
             directory.mkdirs();
@@ -195,7 +195,8 @@ public class Grid {
             System.out.println("An error occured while saving grid.");
             e.printStackTrace();
         }
-        saving = false;
+        saving = 10; // Saved icon appears for this many frames
+        needsRedraw = true;
     }
 
     public void loadGrid(File file){
@@ -546,5 +547,12 @@ public class Grid {
 				}
             }
         }
+    }
+    public boolean checkRedraw() { // Checks redraw and resets it if true
+        if (needsRedraw) {
+            needsRedraw = false;
+            return true;
+        }
+        return false;
     }
 }
