@@ -51,10 +51,21 @@ public class GameLogic extends TimerTask {
     @Override
     public void run() {
         panel.hOffset += 0.075f;
-        if ((isPaused && !(steps > 0)) || grid.saving) { // Paused or saving
-            if(grid.needsRedraw){  //check if visual update needed
+
+        if (grid.saving == -1) { //If the grid is saving
+            panel.setSaving(true);
+            return;
+        } else if (grid.saving > 1) { //If it has finished saving count down the frames to display the saved icon
+            grid.saving --;
+        } else if (grid.saving == 1) { //At 1 remove the saved icon
+            grid.saving = 0;
+            panel.setSaving(false);
+            panel.repaint();
+        }
+
+        if ((isPaused && !(steps > 0))) { // Paused
+            if (grid.checkRedraw()) {  //check if visual update needed
                 panel.repaint();
-                grid.needsRedraw = false;
             }
 
             return;

@@ -22,6 +22,7 @@ public class Renderer extends JPanel {
     public boolean bool = false;
 
     private boolean paused = false;
+    private boolean saving = false;
 
     // width and height of the renderer in grid pixels - i.e. how much of the grid to show
     private int renderWidth;
@@ -176,7 +177,7 @@ public class Renderer extends JPanel {
         //needed resources
         g.drawString("needed resources:", xOffset, (int) (3.5 * pixelsPerSquare + yOffset));
         needed.remove("energy");  //don't display energy
-        
+
         needed.values().removeAll(Collections.singleton(0));  //don't display needs that are satisfied
         int k = 5;
         if(needed.isEmpty()){
@@ -214,6 +215,14 @@ public class Renderer extends JPanel {
             // render pause symbol
             g.fillRect(xOffset + pixelsPerSquare * renderWidth - pixelsPerSquare * 2, yOffset + pixelsPerSquare * renderHeight - pixelsPerSquare * 4, pixelsPerSquare, pixelsPerSquare * 3);
             g.fillRect(xOffset + pixelsPerSquare * renderWidth - pixelsPerSquare * 4, yOffset + pixelsPerSquare * renderHeight - pixelsPerSquare * 4, pixelsPerSquare, pixelsPerSquare * 3);
+        }
+
+        if (saving) {
+            // render saving text
+            Font gFont = g.getFont();
+            g.setFont(new Font(gFont.getName(), Font.PLAIN, pixelsPerSquare * 2));
+            g.drawString("SAVED", xOffset + pixelsPerSquare * renderWidth - pixelsPerSquare * 12, (int) (pixelsPerSquare * 3.5 + yOffset));
+            g.setFont(gFont);
         }
     }
     public void drawLineOnGrid(int x1, int y1, int x2, int y2, Graphics g, int xOffset, int yOffset, int gridStartOffsetX, int gridStartOffsetY, int renderWidth, int renderHeight, int pixelsPerSquare){
@@ -282,6 +291,10 @@ public class Renderer extends JPanel {
 
     public void setPaused(boolean paused) {
         this.paused = paused;
+    }
+
+    public void setSaving(boolean saving) {
+        this.saving = saving;
     }
 
     private Color nudgeColor(Color color) {
