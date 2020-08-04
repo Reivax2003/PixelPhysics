@@ -6,11 +6,13 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Timer;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
     private final Grid grid;
     private boolean campaign;
+    private Timer timerToKill;
 
     public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
             new WetSand(),
@@ -285,7 +287,12 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     private void quitToMenu() {
         JOptionPane.getFrameForComponent(this).dispose(); // Closes frame
+        timerToKill.cancel(); // Kills game loop
         MainMenu.main(new String[] {}); // Opens menu
+    }
+
+    public void setTimer(Timer timer) { // For main to pass down the timer to be killed
+       timerToKill = timer;
     }
 
     public void populateMenu(JMenu menu, Pixel[] list, int indexMod) {
