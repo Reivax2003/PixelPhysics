@@ -143,6 +143,10 @@ public class Grid {
     public void clearGrid() { // This specific pair is used enough to have its own method
         fillGrid(new Air());
         energy = curMaxEnergy;
+        for (Person person : people) {
+            if(person.getHouse()!=null)
+                person.getHouse().destroy(this);
+        }
         people.clear();
         goals.clear();
         needsRedraw = true;
@@ -195,6 +199,10 @@ public class Grid {
     }
 
     public void loadGrid(File file){
+        for (Person person : people) {
+            if(person.getHouse()!=null)
+                person.getHouse().destroy(this);
+        }
         people.clear();
         goals.clear();
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
