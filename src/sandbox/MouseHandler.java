@@ -114,7 +114,10 @@ public class MouseHandler implements MouseMotionListener, MouseListener, MouseWh
                         } else if (grid.getPixel(squareX, squareY).getBuilding() != null && selectedbuilding == null) {
                             selectedbuilding = grid.getPixel(squareX, squareY).getBuilding();
                         } else if (selectedbuilding != null) {
-                            if (grid.getPixel(squareX, squareY).getBuilding() == null) {
+                            if(!selectedbuilding.isBuilt){
+                                selectedbuilding = null;
+                            }
+                            else if (grid.getPixel(squareX, squareY).getBuilding() == null) {
                                 selectedbuilding.destroy(grid);
                                 selectedbuilding.build(grid, squareX, squareY);
                                 selectedbuilding = null;
