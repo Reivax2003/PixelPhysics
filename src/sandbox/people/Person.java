@@ -106,16 +106,25 @@ public class Person implements Serializable {
             //check if next pixel is background(0)
             if (x + direction >= 0 && x + direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x + direction, y).getPropOrDefault(("walkable"), 0) == 0) {//DON'T FORGET TO ADD OTHER CONDITIONS LATER
                 x += direction;
-                blocked = true;
-                //scan downwards for a ground(1) pixel
-                for (int v = 1; v <= maxStepHeight; v++) {
-                    if (y < grid.getHeight() - 1 && grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == 0) {
-                        y += 1;
-                    } else if (y < grid.getHeight() - 1 && (grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == -1 || grid.getPixel(x, y + 1).getPropOrDefault(("temperature"), 50) > 90)) {
-                        //too dangerous to walk here(-1 or temp too high)
+                //scan upwards for large enough space to walk
+                for (int v = 1; v <= height+3; v++) {
+                    if (y-v > 0 && grid.getPixel(x, y-v).getPropOrDefault(("walkable"), 0) != 0){
+                        blocked = true;
                         break;
-                    } else {
-                        blocked = false;
+                    }
+                }
+                if (!blocked) {
+                    blocked = true;
+                    //scan downwards for a ground(1) pixel
+                    for (int v = 1; v <= maxStepHeight; v++) {
+                        if (y < grid.getHeight() - 1 && grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == 0) {
+                            y += 1;
+                        } else if (y < grid.getHeight() - 1 && (grid.getPixel(x, y + 1).getPropOrDefault(("walkable"), 0) == -1 || grid.getPixel(x, y + 1).getPropOrDefault(("temperature"), 50) > 90)) {
+                            //too dangerous to walk here(-1 or temp too high)
+                            break;
+                        } else {
+                            blocked = false;
+                        }
                     }
                 }
             }
