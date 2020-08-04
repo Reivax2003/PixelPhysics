@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -35,8 +36,8 @@ public class Grid {
     private ArrayList<Person> people = new ArrayList<Person>();
 
     private int viewMode = 0;
-    public boolean needsRedraw;
-    public boolean saving = false;
+    private boolean needsRedraw;
+    public int saving = 0;
 
     public Grid(int width, int height) {
         grid = new Pixel[width][height];
@@ -157,7 +158,7 @@ public class Grid {
     }
 
     public void saveGrid(File file, boolean toCampaign){
-        saving = true;
+        saving = -1; // Signals grid to display saved icon, it cannot update while saving
         File directory = file.getParentFile();
         if(!directory.exists()){
             directory.mkdirs();
@@ -194,7 +195,8 @@ public class Grid {
             System.out.println("An error occured while saving grid.");
             e.printStackTrace();
         }
-        saving = false;
+        saving = 10; // Saved icon appears for this many frames
+        needsRedraw = true;
     }
 
     public void loadGrid(File file){
@@ -242,6 +244,8 @@ public class Grid {
         } catch (Exception e){
             System.out.println("An error occured while loading grid.");
             e.printStackTrace();
+
+            // repairPixels();
         }
     }
     public void worldGen(long seed, String worldType){
@@ -511,5 +515,44 @@ public class Grid {
 
     public void setName(String name) {
         levelName = name;
+    }
+
+    public void repairPixels(){
+        //note: this only takes the pixels and recreates an instance of them with default values, 
+        //so only use this for old savefiles and check if anything broke 
+        //(especially things that change state/properties like plants or fire)
+
+        for (int x = 0; x < grid.length; x++) {
+            for (int y = 0; y < grid[0].length; y++) {
+                try {
+                    String name = grid[x][y].getType();
+                    name = Character.toUpperCase(name.charAt(0))+name.substring(1);
+                    switch (name){
+                        case "Alien plant":
+                            name = "AlienPlant";
+                            break;
+                        case "Fuse Powder":
+                            name = "FusePowder";
+                            break;
+                        case "Wet sand":
+                            name = "WetSand";
+                            break;                    
+                        default:
+                            break;
+                    }
+					grid[x][y] = (Pixel)Class.forName("sandbox.pixels."+name).getDeclaredConstructor().newInstance();
+				} catch (Exception e) {
+                    System.out.println("An error occured while repairing grid at pixel ("+x+","+y+")");
+					e.printStackTrace();
+				}
+            }
+        }
+    }
+    public boolean checkRedraw() { // Checks redraw and resets it if true
+        if (needsRedraw) {
+            needsRedraw = false;
+            return true;
+        }
+        return false;
     }
 }
