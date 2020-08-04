@@ -3,7 +3,7 @@ package sandbox.goals;
 import sandbox.*;
 import sandbox.people.*;
 
-public class AllEnergy extends AllGoal { // Whether all tool levels of the people are at a set level or better
+public class AllEnergy extends AllGoal { // Whether all energy amounts of the people are at a set amount or better
 
     private static final long serialVersionUID = 43110;
 
