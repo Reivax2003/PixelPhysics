@@ -149,14 +149,14 @@ public class MenuBar extends JMenuBar implements ActionListener {
         }
         controlMenu.add(saveMenu);
 
-        JMenu camSaveMenu = new JMenu("CampaignSave"); // Comment out on release, for creating campaigns only
-        for (int i = 1; i < 10; i++) {  //add 10 save slots
-            menuItem = new JMenuItem("slot " + i);
-            menuItem.setActionCommand("camp" + i);
-            menuItem.addActionListener(this);
-            camSaveMenu.add(menuItem);
-        }
-        controlMenu.add(camSaveMenu);
+        // JMenu camSaveMenu = new JMenu("CampaignSave"); // Comment out on release, for creating campaigns only
+        // for (int i = 1; i < 10; i++) {  //add 10 save slots
+        //     menuItem = new JMenuItem("slot " + i);
+        //     menuItem.setActionCommand("camp" + i);
+        //     menuItem.addActionListener(this);
+        //     camSaveMenu.add(menuItem);
+        // }
+        // controlMenu.add(camSaveMenu); // Commented out as we have campaign build which does job
 
         saveMenu = new JMenu("Load");
         for (int i = 0; i < 10; i++) {  //add 10 save slots
@@ -176,6 +176,11 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         menuItem = new JMenuItem("Info"); // Modify this for campaign (Goals?)
         menuItem.setActionCommand("info");
+        menuItem.addActionListener(this);
+        controlMenu.add(menuItem);
+
+        menuItem = new JMenuItem("Main Menu");
+        menuItem.setActionCommand("quit2menu");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
 
@@ -228,6 +233,9 @@ public class MenuBar extends JMenuBar implements ActionListener {
                     case "info":
                         displayInfo();
                         break;
+                    case "quit2menu":
+                        quitToMenu();
+                        break;
                     case "quit":
                         System.exit(0); // Ends the process
                     //View Menu
@@ -273,6 +281,11 @@ public class MenuBar extends JMenuBar implements ActionListener {
         messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(this), messageLabel, "Sandbox Info", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void quitToMenu() {
+        JOptionPane.getFrameForComponent(this).dispose(); // Closes frame
+        MainMenu.main(new String[] {}); // Opens menu
     }
 
     public void populateMenu(JMenu menu, Pixel[] list, int indexMod) {
