@@ -135,23 +135,23 @@ public class MainMenu extends JPanel implements ActionListener {
         String[] args = new String[] {}; // By default has grid create its new file
 
         switch (action) {
-            case "exit":
-                System.exit(0); // Ends the process
-            case "load":
+            case "exit": // Ends the process
+                System.exit(0); 
+            case "load": // Load a saved file
                 args = loadChoice();
                 if (args == null) {
                     return; // Return if no file is chosen
                 }
                 break;
-            case "campaign":
+            case "campaign": // Load a premade level with goals
                 args = campaignChoice();
                 if (args == null) {
                     return; // Return if no file is chosen
                 }
                 break;
-            case "creative":
+            case "creative": // Create a freeplay world
                 args = creativeDialog();
-                if (args.length == 0) {return;} // Cancelled
+                if (args == null) {return;} // Cancelled
                 if (args[0] == null && args[1] == null && args[2] == "Random") {args = new String[] {};} // No args if no inputs
                 break;
         }
@@ -162,7 +162,7 @@ public class MainMenu extends JPanel implements ActionListener {
 
     private String[] loadChoice() {
         ArrayList<Object> validChoices = new ArrayList<>();
-        for (Object choice : saveSlots) {
+        for (Object choice : saveSlots) { // Checks whether saves exist in slots
             try {
                 Integer.parseInt(((String)choice).substring(5));
                 if(new File("save/slot"+((String)choice).substring(5)+".lvl").exists()){
@@ -199,7 +199,7 @@ public class MainMenu extends JPanel implements ActionListener {
 
     private String[] campaignChoice() {
         ArrayList<Object> validChoices = new ArrayList<>();
-        for (Object choice : campaignLevels) {
+        for (Object choice : campaignLevels) { // Checks whether levels exist in slots
             Integer.parseInt(((String)choice).substring(6));
             if(new File("campaign/level"+((String)choice).substring(6)+".lvl").exists()){
                 validChoices.add(choice);
@@ -216,13 +216,13 @@ public class MainMenu extends JPanel implements ActionListener {
         return new String[] {"campaign/level"+choice.substring(6)+".lvl"}; // Returns chosen level
     }
 
-    private String[] creativeDialog() {
+    private String[] creativeDialog() { // Displays menu allowing options for a creative level
 
         CreativeOptions optionDialog = new CreativeOptions(frame, this);
         String[] options = optionDialog.getOptions();
 
-        if(options[3] != "y") {
-          return new String[] {};
+        if(options[3] != "y") { // If the menu is closed and the create button is not pressed
+          return null; // Returns null if cancelled
         }
 
         return new String[] {options[0],options[1], options[2]};

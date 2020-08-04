@@ -15,7 +15,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
     private Timer timerToKill;
     private JMenu loadMenu;
 
-    public final Pixel[] pixels = { //List of elements in order, 0 and 10 are at ends of lists
+    public final Pixel[] pixels = { //List of elements in order
             new WetSand(),
             new Sand(),
             new Soil(),
@@ -178,7 +178,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
             controlMenu.add(menuItem);
         }
 
-        menuItem = new JMenuItem("Info"); // Modify this for campaign (Goals?)
+        menuItem = new JMenuItem("Info");
         menuItem.setActionCommand("info");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
@@ -226,23 +226,23 @@ public class MenuBar extends JMenuBar implements ActionListener {
             } else {
                 switch (action) {
                     //Control Menu
-                    case "reload":
+                    case "reload": // Restores grid to how it was from file or world generation
                         grid.reloadGrid();
                         break;
-                    case "clear":
+                    case "clear": // Clears grid, people, and goals and leaves and empty air
                         grid.clearGrid();
                         break;
-                    case "energy":
+                    case "energy": // Sets energy to infinite
                         grid.setInfEnergy();
                         break;
-                    case "info":
+                    case "info": // Displays info and controls
                         displayInfo();
                         break;
-                    case "quit2menu":
+                    case "quit2menu": // Exits sandbox and opens menu
                         quitToMenu();
                         break;
-                    case "quit":
-                        System.exit(0); // Ends the process
+                    case "quit": // Ends the process
+                        System.exit(0);
                     //View Menu
                     case "normal":
                         grid.setView(0);
@@ -255,7 +255,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         }
     }
 
-    public void displayInfo() {
+    public void displayInfo() { // Displays info about currently loaded sandbox and controls
         String[] info = grid.getInfo();
         int type = Integer.parseInt(info[0]);
         String message = "<html><center>Sandbox initially";
@@ -270,7 +270,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
             case 2: // Generated from seed
                 message = message + " generated from seed " + info[1] + ".<br>";
                 break;
-            case 3:
+            case 3: // Campaign level
                 message = "<html><center>Mission: " + info[1] + "<br>";
                 for (int i = 2; i < info.length; i++) {
                     message = message + info[i] + "<br>";
@@ -289,7 +289,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         int c = JOptionPane.showOptionDialog(JOptionPane.getFrameForComponent(this), messageLabel, "Sandbox Info",JOptionPane.YES_NO_OPTION , JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
 
-        if (c == 0) {
+        if (c == 0) { // If chosen display tutorial on people
             peopleTutorial();
         }
     }
@@ -298,7 +298,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         String message = "<html><center> People's happiness is controlled by two things:<br>" +
                          "Their Desires and Their Homes<br><br>" +
                          "Their Desires are fufilled by gathering needed resources.<br>" +
-                         "    Wood and Stone are used in crafting in contruction.<br>" +
+                         "    Wood and Stone are used in crafting and contruction.<br>" +
                          "    Plants are converted into Nutrients to feed themselves.<br><br>" +
                          "Their Homes are improved by using resources to build them.<br>" ;
         JLabel messageLabel = (new JLabel(message));
@@ -347,7 +347,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
     public void checkSaveSlots(){
         for (int i = 0; i < 10; i++) {  //add 10 save slots
             JMenuItem menuItem = loadMenu.getItem(i);
-            menuItem.setEnabled(new File("save/slot"+i+".lvl").exists());            
+            menuItem.setEnabled(new File("save/slot"+i+".lvl").exists());
         }
     }
 }
