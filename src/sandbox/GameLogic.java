@@ -4,6 +4,9 @@ import sandbox.pixels.*;
 import sandbox.people.*;
 
 import java.awt.*;
+import javax.swing.JOptionPane;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -22,6 +25,7 @@ public class GameLogic extends TimerTask {
     Reactions reactions = new Reactions();
     private boolean isPaused = false;
     private int steps = 0;
+    private boolean winMessage = true;
     private int energyGainRate = 3;
     private ArrayList<ArrayList<Integer>> slimeEdges = new ArrayList<ArrayList<Integer>>();
     private ArrayList<ArrayList<Integer>> slimeEdgesEmpty = new ArrayList<ArrayList<Integer>>();
@@ -71,8 +75,10 @@ public class GameLogic extends TimerTask {
             return;
         }
 
-        //System.out.println(
-        goalManager.validate();//);
+
+        if (goalManager.validate() && grid.campaign) {
+            if (winMessage) {winMessage();} // Only display the message once
+        } else if (!winMessage) {winMessage = true;} // Resets message if objectives no longer complete
 
         //increase and check max energy
         grid.changeEnergy(energyGainRate);
@@ -915,5 +921,23 @@ public class GameLogic extends TimerTask {
                 grid.setPixel(x, y, new Air());
             }
         }
+    }
+
+
+    private void winMessage() { // Only fired on compaigns, so imitates case 3 from MenuBar.displayInfo
+        String[] info = grid.getInfo();
+        String message = "<html><center>Mission: " + info[1] + "<br>";
+        for (int i = 2; i < info.length; i++) {
+            message = message + info[i] + "<br>";
+        }
+
+        message = message + "<br>All Goals are Completed!.";
+
+        JLabel messageLabel = (new JLabel(message));
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        messageLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+        JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(panel), messageLabel, "Mission Complete", JOptionPane.PLAIN_MESSAGE);
+        winMessage = false;
     }
 }
