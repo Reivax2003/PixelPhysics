@@ -199,12 +199,7 @@ public class Grid {
     }
 
     public void loadGrid(File file){
-        for (Person person : people) {
-            if(person.getHouse()!=null)
-                person.getHouse().destroy(this);
-        }
-        people.clear();
-        goals.clear();
+        clearGrid();
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
             //iterate through each pixel
             for (int x = 0; x < getWidth(); x++) {
@@ -518,8 +513,8 @@ public class Grid {
     }
 
     public void repairPixels(){
-        //note: this only takes the pixels and recreates an instance of them with default values, 
-        //so only use this for old savefiles and check if anything broke 
+        //note: this only takes the pixels and recreates an instance of them with default values,
+        //so only use this for old savefiles and check if anything broke
         //(especially things that change state/properties like plants or fire)
 
         System.out.println("repairing pixels");
@@ -537,7 +532,7 @@ public class Grid {
                             break;
                         case "Wet sand":
                             name = "WetSand";
-                            break;  
+                            break;
                         case "Soil":
                             break;
                         default:

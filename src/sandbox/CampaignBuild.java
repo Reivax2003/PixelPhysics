@@ -37,7 +37,7 @@ public class CampaignBuild { //Hardwrite this to create campaign level
         ArrayList<Person> people = grid.getPeople();
         // Test person
         people.add(new Person(50, 25, new String[]{"gatherer","wood"}));
-        people.add(new Person(50, 25, new String[]{"crafter","tool"}));
+        people.add(new Person(60, 15, new String[]{"crafter","tool"}));
     }
 
     private void setUpGoals() {
