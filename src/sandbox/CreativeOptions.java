@@ -6,11 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 
 
 
-public class CreativeOptions extends JDialog implements ActionListener {
+public class CreativeOptions extends JDialog implements ActionListener, FocusListener {
 
     private CreativeOptions options;
 
@@ -59,6 +61,7 @@ public class CreativeOptions extends JDialog implements ActionListener {
         subPanel.add(sLabel);
         seedField = new JTextField("Random",7); //Not really now but it runs default
         seedField.addActionListener(this);
+        seedField.addFocusListener(this);
         subPanel.add(seedField);
         subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.PAGE_AXIS));
         c.gridx = 0;
@@ -212,4 +215,23 @@ public class CreativeOptions extends JDialog implements ActionListener {
             setVisible(false);
         }
     }
+
+	@Override
+	public void focusGained(FocusEvent e) {}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+        Object source = e.getSource();
+
+        if (source == seedField) {
+            String tSeed = seedField.getText();
+            try {
+                Integer.parseInt(tSeed);
+                seed = tSeed;
+            } catch (NumberFormatException ex) {
+                seedField.setText("Invalid Seed");
+                seed = null;
+            }
+        }
+	}
 }
