@@ -7,15 +7,15 @@ import java.util.HashMap;
 public class PeopleManager {
     private final Grid grid;
     private ArrayList<Person> people;
-    HashMap<String, Integer> popPerStructure = new HashMap<>();
+    HashMap<String, Double> popPerStructure = new HashMap<>();
 
     public PeopleManager(Grid grid){
         this.grid = grid;
         people = grid.getPeople();
 
-        popPerStructure.put("Well", 10);
-        popPerStructure.put("Fire Pit", 5);
-        popPerStructure.put("Garden", 2);
+        popPerStructure.put("Well", 10.0);
+        popPerStructure.put("Fire Pit", 5.0);
+        popPerStructure.put("Garden", 2.0);
     }
 
     public void updatePeople(){
