@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.Serializable;
 import sandbox.*;
 import sandbox.pixels.*;
+import java.util.ArrayList;
 
 public class Blueprint implements Serializable{
 
@@ -94,16 +95,26 @@ public class Blueprint implements Serializable{
     public void destroy(Grid grid){
         this.x = x;
         this.y = y;
+        ArrayList<Blueprint> intersections = new ArrayList<Blueprint>();
         for(int xmod = 0; xmod < structure[0].length; xmod++){
             for(int ymod = 0; ymod < structure.length; ymod++){
-                if (x+xmod>=0 && x+xmod<grid.getWidth() && y-ymod>=0 && y-ymod<grid.getHeight() && structure[(structure.length-1)-ymod][xmod].getType() == grid.getPixel(x+xmod, y-ymod).getType()) {
+                if (x + xmod >= 0 && x + xmod < grid.getWidth() && y - ymod >= 0 && y - ymod < grid.getHeight() && structure[(structure.length - 1) - ymod][xmod].getType() == grid.getPixel(x + xmod, y - ymod).getType()) {
+                    if (grid.getPixel(x+xmod, y+ymod).getBuilding() != null && grid.getPixel(x+xmod, y+ymod).getBuilding() != this){
+                        if (!intersections.contains(grid.getPixel(x+xmod, y+ymod).getBuilding()))
+                            intersections.add(grid.getPixel(x+xmod, y+ymod).getBuilding());
+                    }
                     if (terrain[ymod][xmod] != null) {
-                        grid.setPixel(x + xmod, y - ymod, terrain[ymod][xmod]);
-                    }else{
+                        if (terrain[ymod][xmod].getBuilding() == null)
+                            grid.setPixel(x + xmod, y - ymod, terrain[ymod][xmod]);
+                    } else{
                         grid.setPixel(x + xmod, y - ymod, new Air());
                     }
                 }
             }
+        }
+        for (Blueprint each : intersections){
+            each.destroy(grid);
+            each.build(grid, each.getX(), each.getY());
         }
         isBuilt = false;
     }
@@ -122,6 +133,9 @@ public class Blueprint implements Serializable{
             }
         }
         return (remaining/original);
+    }
+    public void setTerrain(int x, int y, Pixel pixel){
+        terrain[x][y] = pixel;
     }
 
     public String getName() {
