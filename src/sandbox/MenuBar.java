@@ -260,17 +260,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                         grid.setView(1);
                         break;
                     case "changeColor":
-                        //use the current pixel's color and see if user wants to change it
-                        Color col = JColorChooser.showDialog(this, "Choose a color. Use color code 000001 for default", pixels[chosen].getColor());
-                        if(col != null){ //null means canceled
-                            if(col.getRed() == 0 && col.getGreen() == 0 && col.getBlue() == 1) {  //special number to reset to default color
-                                pixels[chosen].setColor(pixels[chosen].getOriginalColor());
-                                chosenBtn.setForeground(pixels[chosen].getOriginalColor().darker());
-                            }else{
-                                pixels[chosen].setColor(col);
-                                chosenBtn.setForeground(col.darker());
-                            }
-                        }
+                        colorChanger();
                         break;
                 }
             }
@@ -328,6 +318,20 @@ public class MenuBar extends JMenuBar implements ActionListener {
         messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(this), messageLabel, "People Tutorial", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void colorChanger() {
+        //use the current pixel's color and see if user wants to change it
+        Color col = JColorChooser.showDialog(JOptionPane.getFrameForComponent(this), "Choose a color. Use color code 000001 for default", pixels[chosen].getColor());
+        if(col != null){ //null means canceled
+            if(col.getRed() == 0 && col.getGreen() == 0 && col.getBlue() == 1) {  //special number to reset to default color
+                pixels[chosen].setColor(pixels[chosen].getOriginalColor());
+                chosenBtn.setForeground(pixels[chosen].getOriginalColor().darker());
+            }else{
+                pixels[chosen].setColor(col);
+                chosenBtn.setForeground(col.darker());
+            }
+        }
     }
 
     private void quitToMenu() {
