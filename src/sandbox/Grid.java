@@ -148,6 +148,7 @@ public class Grid {
                 person.getHouse().destroy(this);
         }
         people.clear();
+        campaign = false; // Prevents 0 goals being incomplete from completeing the mission
         goals.clear();
         needsRedraw = true;
     }
