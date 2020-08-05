@@ -948,9 +948,15 @@ public class GameLogic extends TimerTask {
         });
         close.setHorizontalAlignment(SwingConstants.CENTER);
 
+        JPanel controlPanel = new JPanel(); // Neaten button
+        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.LINE_AXIS));
+        controlPanel.add(Box.createHorizontalGlue());
+        controlPanel.add(close);
+        controlPanel.add(Box.createHorizontalGlue());
+
         Container contentPane = missionComplete.getContentPane(); // Add components
         contentPane.add(messageLabel, BorderLayout.CENTER);
-        contentPane.add(close, BorderLayout.PAGE_END);
+        contentPane.add(controlPanel, BorderLayout.PAGE_END);
 
         missionComplete.pack(); // Prepare and display dialog
         missionComplete.setLocationRelativeTo(panel);
