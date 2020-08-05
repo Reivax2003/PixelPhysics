@@ -1,6 +1,7 @@
 package sandbox;
 
 import sandbox.pixels.*;
+import sandbox.people.Person;
 
 import javax.swing.*;
 
@@ -187,6 +188,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
             menuItem.setActionCommand("energy");
             menuItem.addActionListener(this);
             controlMenu.add(menuItem);
+            menuItem = new JMenuItem("Person");
+            menuItem.setActionCommand("people");
+            menuItem.addActionListener(this);
+            controlMenu.add(menuItem);
         }
 
         menuItem = new JMenuItem("Info");
@@ -249,6 +254,9 @@ public class MenuBar extends JMenuBar implements ActionListener {
                         break;
                     case "energy": // Sets energy to infinite
                         grid.setInfEnergy();
+                        break;
+                    case "people": // Adds person
+                        grid.getPeople().add(new Person(50, 25, new String[]{"gatherer","wood"}));
                         break;
                     case "info": // Displays info and controls
                         displayInfo();
