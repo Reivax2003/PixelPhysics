@@ -32,6 +32,7 @@ public class Person implements Serializable {
     private Blueprint[] houses = new Blueprint[]{new WoodShack(), new WoodAFrame(), new WoodHouse()};
     private Blueprint house = null;
     private Blueprint[] structures = new Blueprint[]{new FirePit(), new Garden(), new Well()};
+    private boolean[] structureBuilt = new boolean[]{false, false, false}; //correlates to structures to know if they're built
     private boolean showInventory = false;
     private boolean dragged = false;
     private String currentActivity = "doing nothing";
@@ -213,6 +214,8 @@ public class Person implements Serializable {
     }
 
     public void update(Grid grid, PeopleManager peopleManager) {
+        this.checkDesires(peopleManager);
+
         if (craft(grid, peopleManager)) {
             this.changeResource("energy", this.getResource("energy") - 10);
             currentActivity = "crafting";  //move inside craft and describe what it's crafting
@@ -245,6 +248,21 @@ public class Person implements Serializable {
         rootY = (foot1Y + foot2Y) / 2 - 5;
 
         moveHead();
+    }
+    public void checkDesires(PeopleManager peopleManager){
+        setDesire("wood", 0).setDesire("stone", 0);
+        if (house == null)
+            setDesire("wood", 20);
+        else if (house == houses[0])
+            setDesire("wood", 40);
+        else if (house == houses[1])
+            this.setDesire("wood", 40).setDesire("stone", 30);
+        if (house != null && !structureBuilt[0] && peopleManager.belowMaxStruct("Fire Pit"))
+            this.setDesire("wood", getDesire("wood")+5).setDesire("stone", getDesire("stone")+5);
+        else if (house != null && house != houses[0] && !structureBuilt[1] && peopleManager.belowMaxStruct("Garden"))
+            this.setDesire("wood", getDesire("wood")+20);
+        else if (house != null && house != houses[0] && house != houses[1] && !structureBuilt[2] && peopleManager.belowMaxStruct("Well"))
+            this.setDesire("wood", getDesire("wood")+10).setDesire("stone", getDesire("stone")+25);
     }
     public void moveHead(){
         rootX = (foot1X+foot2X)/2;
@@ -321,48 +339,45 @@ public class Person implements Serializable {
         if (house == null && this.getResource("wood") >= 20) {
             if(houses[0].tryBuild(grid, foot1X, foot1Y+1)){
                 house = houses[0];
-                this.setResource("wood", this.getResource("wood")-20);
-                this.setDesireCheckJob("wood", 5).setDesireCheckJob("stone", 5);
+                this.changeResource("wood", this.getResource("wood")-20);
             }
         }
-        else if (this.getResource("wood") >= 5 && this.getResource("stone") > 5 && peopleManager.belowMaxStruct("Fire Pit")){
+        else if (house != null && this.getResource("wood") >= 5 && this.getResource("stone") >= 5 && peopleManager.belowMaxStruct("Fire Pit")){
             if(structures[0].tryBuild(grid, foot1X, foot1Y+1)){
-                this.setResource("wood", this.getResource("wood")-5);
-                this.setResource("stone", this.getResource("stone")-5);
+                this.changeResource("wood", this.getResource("wood")-5);
+                this.changeResource("stone", this.getResource("stone")-5);
                 addStructure("Fire Pit");
-                this.setDesireCheckJob("wood", 40);
+                structureBuilt[0] = true;
             }
         }
         else if (house == houses[0] && this.getResource("wood") >= 40){
             house.destroy(grid);
             if(houses[1].tryBuild(grid, house.getX(), house.getY())){
                 house = houses[1];
-                this.setResource("wood", this.getResource("wood")-40);
-                this.setDesireCheckJob("wood", 20);
+                this.changeResource("wood", this.getResource("wood")-40);
             }
         }
-        else if (this.getResource("wood") >= 20 && peopleManager.belowMaxStruct("Garden")){
+        else if (house != null && house != houses[0] && this.getResource("wood") >= 20 && peopleManager.belowMaxStruct("Garden")){
             if(structures[1].tryBuild(grid, foot1X, foot1Y+1)){
-                this.setResource("wood", this.getResource("wood")-20);
+                this.changeResource("wood", this.getResource("wood")-20);
                 addStructure("Garden");
-                this.setDesireCheckJob("wood", 40).setDesireCheckJob("stone", 30);
+                structureBuilt[1] = true;
             }
         }
         else if (house == houses[1] && this.getResource("wood") >= 40 && this.getResource("stone") >= 30){
             house.destroy(grid);
             if(houses[2].tryBuild(grid, house.getX(), house.getY())){
                 house = houses[2];
-                this.setResource("wood", this.getResource("wood")-40);
-                this.setResource("stone", this.getResource("stone")-30);
-                this.setDesireCheckJob("wood", 10).setDesireCheckJob("stone", 25);
+                this.changeResource("wood", this.getResource("wood")-40);
+                this.changeResource("stone", this.getResource("stone")-30);
             }
         }
-        else if (this.getResource("wood") >= 10 && this.getResource("stone") > 25 && peopleManager.belowMaxStruct("Well")){
+        else if (house != null && house != houses[0] && house != houses[1] && this.getResource("wood") >= 10 && this.getResource("stone") >= 25 && peopleManager.belowMaxStruct("Well")){
             if(structures[2].tryBuild(grid, foot1X, foot1Y+1)){
-                this.setResource("wood", this.getResource("wood")-10);
-                this.setResource("stone", this.getResource("stone")-25);
+                this.changeResource("wood", this.getResource("wood")-10);
+                this.changeResource("stone", this.getResource("stone")-25);
                 addStructure("Well");
-                this.setDesireCheckJob("wood", 0).setDesireCheckJob("stone", 0);
+                structureBuilt[2] = true;
             }
         }
         if (this.getResource("wood") >= 10 && this.getResource("stone") > 10 && job[0].equals("crafter") && job[1].equals("tool")&& this.getResourceOrDefault("tool", 0) < 2){
