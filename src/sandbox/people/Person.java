@@ -112,9 +112,9 @@ public class Person implements Serializable {
             //check if next pixel is background(0)
             if (x + direction >= 0 && x + direction < grid.getWidth() && y < grid.getHeight() && grid.getPixel(x + direction, y).getPropOrDefault(("walkable"), 0) == 0) {//DON'T FORGET TO ADD OTHER CONDITIONS LATER
                 x += direction;
-                //scan upwards for large enough space to walk
+                //scan upwards for large enough space to walk, also check for water so the humans don't drown
                 for (int v = 1; v <= height+3; v++) {
-                    if (y-v > 0 && grid.getPixel(x, y-v).getPropOrDefault(("walkable"), 0) != 0){
+                    if (y-v > 0 && grid.getPixel(x, y-v).getPropOrDefault(("walkable"), 0) != 0 || v >= height && grid.getPixel(x, y-v).getType().equals("water")){
                         blocked = true;
                         break;
                     }
