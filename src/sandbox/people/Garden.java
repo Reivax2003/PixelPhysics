@@ -33,8 +33,8 @@ public class Garden extends Blueprint {
 
         structure = new Pixel[][]{
                 {a, a, a, g, g, g, a, g, a, a, g, g, g, g, g, g, a, a, a, g, g, a, a, a},
-                {a, g, g, d, d, d, g, d, g, g, d, d, d, d, d, d, g, g, g, d, d, g, g, a},
-                {g, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, d, g},
+                {a, g, g, s, s, s, g, s, g, g, s, s, s, s, s, s, g, g, g, s, s, g, g, a},
+                {g, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, s, g},
                 {b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, d, d},
                 {b, b, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, p, d, d}
         };

@@ -300,7 +300,7 @@ public class GameLogic extends TimerTask {
                     if (currentPixel.getProperty("spreads") == 1) {
                         if (currentPixel.getType().equals("fire")) {
                             boolean extinguished = flicker(currentPixel, pixelX, pixelY);
-                            if (currentPixel.getProperty("strength") == 100) {
+                            if (currentPixel.getProperty("strength") == 100 && currentPixel.getProperty("spreads") != -1) {
                                 extinguished = spread(currentPixel, true, pixelX, pixelY) || extinguished;
                             }
                             if(extinguished)
@@ -312,7 +312,7 @@ public class GameLogic extends TimerTask {
                                 coldSpread(new Grass(), pixelX, pixelY, "fertile", 2, 2, true);
                                 currentPixel.changeProperty("gravity", 0);
                             }
-                    } else {
+                    } else if (currentPixel.getProperty("spreads") == 0){
                         currentPixel.changeProperty("spreads", 1);
                     }
                 }
