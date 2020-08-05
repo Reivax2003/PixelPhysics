@@ -143,7 +143,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         // Build settings/control/options decide later menu
         JMenu controlMenu = new JMenu("Control");
 
-        menuItem = new JMenuItem("Reload"); //Reloads world as it was intitialy
+        menuItem = new JMenuItem("Reset World"); //Reloads world as it was intitialy
         menuItem.setActionCommand("reload");
         menuItem.addActionListener(this);
         controlMenu.add(menuItem);
