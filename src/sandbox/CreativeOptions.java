@@ -4,13 +4,12 @@ import sandbox.pixels.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.File;
 
 
 
-public class CreativeOptions extends JDialog implements ActionListener {
+public class CreativeOptions extends JDialog implements ActionListener, FocusListener{
 
     private CreativeOptions options;
 
@@ -59,6 +58,7 @@ public class CreativeOptions extends JDialog implements ActionListener {
         subPanel.add(sLabel);
         seedField = new JTextField("Random",7); //Not really now but it runs default
         seedField.addActionListener(this);
+        seedField.addFocusListener(this);
         subPanel.add(seedField);
         subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.PAGE_AXIS));
         c.gridx = 0;
@@ -83,6 +83,7 @@ public class CreativeOptions extends JDialog implements ActionListener {
         subPanel.add(eLabel);
         energyField = new JTextField("1000",7);
         energyField.addActionListener(this);
+        energyField.addFocusListener(this);
         subPanel.add(energyField);
         subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.PAGE_AXIS));
         c.gridx = 2;
@@ -152,7 +153,9 @@ public class CreativeOptions extends JDialog implements ActionListener {
                 Integer.parseInt(tSeed);
                 seed = tSeed;
             } catch (NumberFormatException e) {
-                seedField.setText("Invalid Seed");
+                if(!tSeed.equals("Random")) { // Assume default is not attempted seed
+                    seedField.setText("Invalid Seed");
+                }
                 seed = null;
             }
         } else if (source == energyField) {
@@ -210,6 +213,35 @@ public class CreativeOptions extends JDialog implements ActionListener {
 
             confirm = "y";
             setVisible(false);
+        }
+    }
+
+    public void focusGained(FocusEvent f) {}
+
+    public void focusLost(FocusEvent f) { // Runs action code when deselected
+        Object source = f.getSource();
+        if (source == seedField) {
+            String tSeed = seedField.getText();
+            try {
+                Integer.parseInt(tSeed);
+                seed = tSeed;
+            } catch (NumberFormatException e) {
+                if(!tSeed.equals("Random")) { // Assume default is not attempted seed
+                    seedField.setText("Invalid Seed");
+                }
+                seed = null;
+            }
+        } else if (source == energyField) {
+            String tEnergy = energyField.getText();
+            try {
+                int e = Integer.parseInt(tEnergy);
+                if(e < 0) { Integer.parseInt("A");} //Throws exception to trigger catch
+                energy = tEnergy;
+            } catch (NumberFormatException e) {
+                energyField.setText("Invalid Value");
+                energy = null;
+            }
+
         }
     }
 }
