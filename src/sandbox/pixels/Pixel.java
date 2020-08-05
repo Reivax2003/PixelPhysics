@@ -34,6 +34,7 @@ public class Pixel implements Serializable {
     public Pixel duplicate() {
         Pixel copy = new Pixel(type, color);
         copy.properties = new HashMap<>(this.properties);
+        copy.building = building;
         return (copy);
     }
 
