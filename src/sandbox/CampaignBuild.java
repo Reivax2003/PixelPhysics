@@ -28,6 +28,9 @@ public class CampaignBuild { //Hardwrite this to create campaign level
     private void setUpWorld() {
         //grid.loadGrid("Placeholder"); // Load from pregened world
         grid.worldGen((long) 12321, "Earth"); // 1st arg seed (long) (Math.floor(Math.random() * 100000) + 1)2nd arg Earth Alien or any text for random type
+        // grid.setInfEnergy();
+        // grid.setMaxEnergy(1000));
+        // grid.setEnergy(1000);
     }
 
     private void setUpPeople() {
