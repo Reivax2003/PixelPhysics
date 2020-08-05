@@ -87,6 +87,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     public MenuBar(Grid grid) {
         this.grid = grid;
+        refreshMenu();
+    }
+    private void refreshMenu() {
+        this.removeAll();
         this.campaign = grid.campaign;
 
         JMenu solidsMenu = new JMenu("Solid");
@@ -211,6 +215,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         // Add control menu to bar
         this.add(controlMenu);
+        validate();
     }
 
 
@@ -229,6 +234,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 grid.saveGrid(new File("campaign/level"+action.substring(4)+".lvl"), true); //Saves as a campaign file
             }else if (action.startsWith("load")) {
                 grid.loadGrid(new File("save/slot"+action.substring(4)+".lvl"));
+                refreshMenu();
             }else if (action.startsWith("qsave")) { //Save and quit
                 grid.saveGrid(new File("save/slot"+action.substring(5)+".lvl"));
                 System.exit(0); // Ends the process
@@ -260,17 +266,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                         grid.setView(1);
                         break;
                     case "changeColor":
-                        //use the current pixel's color and see if user wants to change it
-                        Color col = JColorChooser.showDialog(this, "Choose a color. Use color code 000001 for default", pixels[chosen].getColor());
-                        if(col != null){ //null means canceled
-                            if(col.getRed() == 0 && col.getGreen() == 0 && col.getBlue() == 1) {  //special number to reset to default color
-                                pixels[chosen].setColor(pixels[chosen].getOriginalColor());
-                                chosenBtn.setForeground(pixels[chosen].getOriginalColor().darker());
-                            }else{
-                                pixels[chosen].setColor(col);
-                                chosenBtn.setForeground(col.darker());
-                            }
-                        }
+                        colorChanger();
                         break;
                 }
             }
@@ -328,6 +324,15 @@ public class MenuBar extends JMenuBar implements ActionListener {
         messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(this), messageLabel, "People Tutorial", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void colorChanger() {
+        //use the current pixel's color and see if user wants to change it
+        Color col = JColorChooser.showDialog(JOptionPane.getFrameForComponent(this), "Choose a color", pixels[chosen].getOriginalColor());
+        if(col != null){ //null means canceled
+            pixels[chosen].setColor(col);
+            chosenBtn.setForeground(col.darker());
+        }
     }
 
     private void quitToMenu() {

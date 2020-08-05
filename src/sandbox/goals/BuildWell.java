@@ -2,22 +2,22 @@ package sandbox.goals;
 
 import sandbox.*;
 
-public class AverageHappiness implements Goal { // Whether the average happiness of the people is above a set level
+public class BuildWell implements Goal { // Whether the average happiness of the people is above a set level
 
     private static final long serialVersionUID = 12323232;
 
-    private double happinessGoal;
+    private int wellGoal;
     private boolean valid = false;
 
 
-    public AverageHappiness(double happinessGoal) {
-        this.happinessGoal = happinessGoal;
+    public BuildWell(int wellGoal) {
+        this.wellGoal = wellGoal;
     }
 
     public boolean validate(Grid grid, PeopleManager peopleManager) {
 
         if (peopleManager.getPopulation() > 0) { //If there are people
-            if (peopleManager.getAverageHappiness() >= happinessGoal) {
+            if (peopleManager.getStructure("Well") >= wellGoal) {
                 valid = true;
                 return valid;
             }
@@ -27,6 +27,6 @@ public class AverageHappiness implements Goal { // Whether the average happiness
     }
 
     public String getInfo() {
-        return "The average happiness must be " + happinessGoal + " or better: " + ((valid) ? "Complete" : "Incomplete");
+        return "There must be " + wellGoal + " well" + ((wellGoal > 1) ? "s" : "") + " or more: " + ((valid) ? "Complete" : "Incomplete");
     }
 }

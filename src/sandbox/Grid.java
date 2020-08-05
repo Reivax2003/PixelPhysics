@@ -245,8 +245,8 @@ public class Grid {
             e.printStackTrace();
 
             // repairPixels();
-            // repairPeople();
         }
+        // repairPeople();
     }
     public void worldGen(long seed, String worldType){
         this.seed = seed;
@@ -386,15 +386,15 @@ public class Grid {
 
         //place starting spots
         for (int i = 0; i < spawnSteps; i++) {
-            x = (int)(Math.random()*grid.length);
-            y = (int)(Math.random()*grid[0].length);
+            x = (int)(r.nextDouble()*grid.length);
+            y = (int)(r.nextDouble()*grid[0].length);
             if(grid[x][y].getType().equals(override.getType()))
                 grid[x][y] = type.duplicate();
         }
         //spread pixels
         for (int i = 0; i < spreadSteps; i++) {
-            x = (int)(Math.random()*grid.length);
-            y = (int)(Math.random()*grid[0].length);
+            x = (int)(r.nextDouble()*grid.length);
+            y = (int)(r.nextDouble()*grid[0].length);
             if(grid[x][y].getType().equals(type.getType())){
                 if(x>0 && grid[x-1][y].getType().equals(override.getType())){
                     grid[x-1][y] = type.duplicate();
