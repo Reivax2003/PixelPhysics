@@ -4,9 +4,9 @@ import sandbox.pixels.*;
 import sandbox.people.*;
 
 import java.awt.*;
-import javax.swing.JOptionPane;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -925,7 +925,8 @@ public class GameLogic extends TimerTask {
 
 
     private void winMessage() { // Only fired on compaigns, so imitates case 3 from MenuBar.displayInfo
-        String[] info = grid.getInfo();
+
+        String[] info = grid.getInfo(); // Create Text
         String message = "<html><center>Mission: " + info[1] + "<br>";
         for (int i = 2; i < info.length; i++) {
             message = message + info[i] + "<br>";
@@ -933,11 +934,28 @@ public class GameLogic extends TimerTask {
 
         message = message + "<br>All Goals are Completed!.";
 
-        JLabel messageLabel = (new JLabel(message));
+        JDialog missionComplete = new JDialog(JOptionPane.getFrameForComponent(panel),"Mission Complete",false);
+
+        JLabel messageLabel = (new JLabel(message)); // Setup label
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(panel), messageLabel, "Mission Complete", JOptionPane.PLAIN_MESSAGE);
+        JButton close = new JButton("Ok"); // Setup button
+        close.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              missionComplete.dispose();
+          }
+        });
+        close.setHorizontalAlignment(SwingConstants.CENTER);
+
+        Container contentPane = missionComplete.getContentPane(); // Add components
+        contentPane.add(messageLabel, BorderLayout.CENTER);
+        contentPane.add(close, BorderLayout.PAGE_END);
+
+        missionComplete.pack(); // Prepare and display dialog
+        missionComplete.setLocationRelativeTo(panel);
+        missionComplete.setVisible(true);
+
         winMessage = false;
     }
 }
