@@ -67,7 +67,7 @@ public class PixelSandbox {
     private void initializeGrid() {
 
         // initialize a new grid
-        grid = new Grid(300, 150);
+        grid = new Grid(200, 100);
 
         // set all spaces to air
         grid.fillGrid(new Air());
@@ -96,7 +96,7 @@ public class PixelSandbox {
         //calculations for people
         peopleManager = new PeopleManager(grid);
         //simulation
-        renderer = new Renderer(grid, peopleManager, 150, 75);
+        renderer = new Renderer(grid, peopleManager, 100, 50);
     }
 
     private void initializeLogic() {
