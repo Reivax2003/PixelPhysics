@@ -377,7 +377,7 @@ public class Person implements Serializable {
         }
         else if (house == houses[1] && this.getResource("wood") >= 40 && this.getResource("stone") >= 30){
             house.destroy(grid);
-            houses[2].build(grid, house.getX(), house.getY())){
+            houses[2].build(grid, house.getX(), house.getY());
             house = houses[2];
             this.changeResource("wood", this.getResource("wood")-40);
             this.changeResource("stone", this.getResource("stone")-30);
