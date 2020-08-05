@@ -114,7 +114,7 @@ public class Person implements Serializable {
                 x += direction;
                 //scan upwards for large enough space to walk, also check for water so the humans don't drown
                 for (int v = 1; v <= height+3; v++) {
-                    if (y-v > 0 && grid.getPixel(x, y-v).getPropOrDefault(("walkable"), 0) != 0 || v >= height && grid.getPixel(x, y-v).getType().equals("water")){
+                    if (y-v > 0 && (grid.getPixel(x, y-v).getPropOrDefault(("walkable"), 0) != 0 || v >= height && grid.getPixel(x, y-v).getType().equals("water"))){
                         blocked = true;
                         break;
                     }
@@ -265,10 +265,17 @@ public class Person implements Serializable {
             knee1Y = (rootY + foot1Y) / 2 + deltaY;
         }
 
+        // if(Double.isNaN(knee1X) || Double.isNaN(knee1Y)){
+        //     System.out.println("knee1 NaN");
+        // }
+
         l2 = Math.sqrt(Math.pow(rootX - foot2X, 2) + Math.pow(rootY - foot2Y, 2))/2;
         l3 = Math.sqrt(Math.pow(legLen/2, 2)-Math.pow(l2, 2));
         if (legLen/2 > l2) {
             c = Math.sqrt(Math.pow(rootX - foot2X, 2) + Math.pow(foot2Y - rootY, 2));
+            if(c == 0){
+                c+=0.1;
+            }
             deltaX = (l3 / c) * (foot2Y - rootY);
             deltaY = (l3 / c) * (rootX - foot2X);
         }
@@ -279,6 +286,10 @@ public class Person implements Serializable {
         else {
             knee2X = (rootX + foot2X) / 2 + deltaX;
             knee2Y = (rootY + foot2Y) / 2 + deltaY;
+        }
+
+        if(Double.isNaN(knee2X) || Double.isNaN(knee2Y)){
+            System.out.println("knee2 NaN");
         }
     }
 
