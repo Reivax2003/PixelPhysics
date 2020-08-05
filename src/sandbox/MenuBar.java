@@ -87,6 +87,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     public MenuBar(Grid grid) {
         this.grid = grid;
+        refreshMenu();
+    }
+    private void refreshMenu() {
+        this.removeAll();
         this.campaign = grid.campaign;
 
         JMenu solidsMenu = new JMenu("Solid");
@@ -211,6 +215,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         // Add control menu to bar
         this.add(controlMenu);
+        validate();
     }
 
 
@@ -229,6 +234,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 grid.saveGrid(new File("campaign/level"+action.substring(4)+".lvl"), true); //Saves as a campaign file
             }else if (action.startsWith("load")) {
                 grid.loadGrid(new File("save/slot"+action.substring(4)+".lvl"));
+                refreshMenu();
             }else if (action.startsWith("qsave")) { //Save and quit
                 grid.saveGrid(new File("save/slot"+action.substring(5)+".lvl"));
                 System.exit(0); // Ends the process
