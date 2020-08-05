@@ -322,15 +322,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     private void colorChanger() {
         //use the current pixel's color and see if user wants to change it
-        Color col = JColorChooser.showDialog(JOptionPane.getFrameForComponent(this), "Choose a color. Use color code 000001 for default", pixels[chosen].getColor());
+        Color col = JColorChooser.showDialog(JOptionPane.getFrameForComponent(this), "Choose a color", pixels[chosen].getOriginalColor());
         if(col != null){ //null means canceled
-            if(col.getRed() == 0 && col.getGreen() == 0 && col.getBlue() == 1) {  //special number to reset to default color
-                pixels[chosen].setColor(pixels[chosen].getOriginalColor());
-                chosenBtn.setForeground(pixels[chosen].getOriginalColor().darker());
-            }else{
-                pixels[chosen].setColor(col);
-                chosenBtn.setForeground(col.darker());
-            }
+            pixels[chosen].setColor(col);
+            chosenBtn.setForeground(col.darker());
         }
     }
 
