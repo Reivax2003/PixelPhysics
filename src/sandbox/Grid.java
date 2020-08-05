@@ -245,8 +245,8 @@ public class Grid {
             e.printStackTrace();
 
             // repairPixels();
-            // repairPeople();
         }
+        // repairPeople();
     }
     public void worldGen(long seed, String worldType){
         this.seed = seed;
