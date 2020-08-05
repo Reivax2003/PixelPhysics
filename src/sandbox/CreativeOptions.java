@@ -9,7 +9,7 @@ import java.io.File;
 
 
 
-public class CreativeOptions extends JDialog implements ActionListener, FocusListener{
+public class CreativeOptions extends JDialog implements ActionListener, FocusListener {
 
     private CreativeOptions options;
 
