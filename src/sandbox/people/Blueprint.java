@@ -4,7 +4,6 @@ import java.awt.*;
 import java.io.Serializable;
 import sandbox.*;
 import sandbox.pixels.*;
-import java.util.ArrayList;
 
 public class Blueprint implements Serializable{
 
@@ -52,7 +51,7 @@ public class Blueprint implements Serializable{
     public boolean tryBuild(Grid grid, int x, int y){
         this.x = x;
         this.y = y;
-        
+
         //boundary check
         if (x < 0 || x + structure[0].length >= grid.getWidth() || y - structure.length < 0 && y >= grid.getHeight()) {
             return false;
@@ -95,26 +94,23 @@ public class Blueprint implements Serializable{
     public void destroy(Grid grid){
         this.x = x;
         this.y = y;
-        ArrayList<Blueprint> intersections = new ArrayList<Blueprint>();
         for(int xmod = 0; xmod < structure[0].length; xmod++){
             for(int ymod = 0; ymod < structure.length; ymod++){
-                if (x + xmod >= 0 && x + xmod < grid.getWidth() && y - ymod >= 0 && y - ymod < grid.getHeight() && structure[(structure.length - 1) - ymod][xmod].getType() == grid.getPixel(x + xmod, y - ymod).getType()) {
-                    if (grid.getPixel(x+xmod, y-ymod).getBuilding() != null && grid.getPixel(x+xmod, y-ymod).getBuilding() != this){
-                        if (!intersections.contains(grid.getPixel(x+xmod, y-ymod).getBuilding()))
-                            intersections.add(grid.getPixel(x+xmod, y-ymod).getBuilding());
-                    }
-                    if (terrain[ymod][xmod] != null) {
-                        if (terrain[ymod][xmod].getBuilding() == null)
+                if (x + xmod >= 0 && x + xmod < grid.getWidth() && y - ymod >= 0 && y - ymod < grid.getHeight() && grid.getPixel(x+xmod, y-ymod).getBuilding() != null) { // Only if this is part of the building
+                    if (grid.getPixel(x+xmod, y-ymod).getBuilding() == this) { // If this is on top
+                        if (terrain[ymod][xmod] != null) { // If there is terrain
                             grid.setPixel(x + xmod, y - ymod, terrain[ymod][xmod]);
-                    } else{
-                        grid.setPixel(x + xmod, y - ymod, new Air());
+                        } else{ // If there is no terrain, but it is coverved by the building
+                            grid.setPixel(x + xmod, y - ymod, new Air());
+                        }
+                    } else { // Another building is on top and it's under terrain needs to be set to this's underterrain
+                        // x + xmod - grid.getPixel(x+xmod, y-ymod).getBuilding().getX(); // Derive xmod and ymod of upper building
+                        // - y + ymod + grid.getPixel(x+xmod, y-ymod).getBuilding().getY();
+                        grid.getPixel(x+xmod, y-ymod).getBuilding().setTerrain(- y + ymod + grid.getPixel(x+xmod, y-ymod).getBuilding().getY(), x + xmod - grid.getPixel(x+xmod, y-ymod).getBuilding().getX(), terrain[ymod][xmod]);
                     }
+
                 }
             }
-        }
-        for (Blueprint each : intersections){
-            each.destroy(grid);
-            each.build(grid, each.getX(), each.getY());
         }
         isBuilt = false;
     }
