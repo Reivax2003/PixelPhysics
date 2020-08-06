@@ -241,7 +241,7 @@ public class Renderer extends JPanel {
             for (int y = smallY; y <= bigY; y++) {
                 if (yChange != 0 && xChange != 0 && y != smallY)
                     x += (xChange / yChange);
-                if (x > gridStartOffsetX && x < gridStartOffsetX + renderWidth && y >= gridStartOffsetY && y < gridStartOffsetY + renderHeight) {
+                if (Math.round(x) >= gridStartOffsetX && Math.round(x) < gridStartOffsetX + renderWidth && y >= gridStartOffsetY && y < gridStartOffsetY + renderHeight) {
                     g.fillRect(((int) Math.round(x) - gridStartOffsetX) * pixelsPerSquare + xOffset, (y - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
                 }
             }
@@ -258,7 +258,7 @@ public class Renderer extends JPanel {
             for (int x = smallX; x <= bigX; x++) {
                 if (yChange != 0 && xChange != 0)
                     y += (yChange / xChange);
-                if (x > gridStartOffsetX && x < gridStartOffsetX + renderWidth && y >= gridStartOffsetY && y < gridStartOffsetY + renderHeight) {
+                if (x > gridStartOffsetX && x < gridStartOffsetX + renderWidth && Math.round(y) >= gridStartOffsetY && Math.round(y) < gridStartOffsetY + renderHeight) {
                     g.fillRect((x - gridStartOffsetX) * pixelsPerSquare + xOffset, ((int) Math.round(y) - gridStartOffsetY) * pixelsPerSquare + yOffset, pixelsPerSquare, pixelsPerSquare);
                 }
             }
