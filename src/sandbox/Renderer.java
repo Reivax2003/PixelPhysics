@@ -138,16 +138,21 @@ public class Renderer extends JPanel {
                 int yPosition = person.getRoot()[1] - gridStartOffsetY;
 
                 // if person is out of bounds, don't draw their inventory
-                if (xPosition < renderWidth && xPosition > 0 && yPosition < renderHeight && yPosition > person.getResources().size() * 2 + 5) {
+                if (xPosition < renderWidth && xPosition > 0 && yPosition < renderHeight && yPosition > 0) {
 
                     Set<Entry<String, Integer>> inventoryItems = person.getResources();
                     int size = inventoryItems.size();
 
                     int endPointX = xPosition + 15;
+                    int beginPointY = yPosition - (int) person.getHeadRadius() - size * 2 - 4;
 
                     // push against right side
                     if (endPointX > renderWidth) {
                         xPosition -= endPointX - renderWidth - 1;
+                    }
+                    // push against top side
+                    if (beginPointY < 0) {
+                        yPosition -= beginPointY;
                     }
 
                     g.setColor(new Color(100, 100, 100, 150));
