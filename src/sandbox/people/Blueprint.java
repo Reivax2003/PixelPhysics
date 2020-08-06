@@ -99,9 +99,9 @@ public class Blueprint implements Serializable{
         for(int xmod = 0; xmod < structure[0].length; xmod++){
             for(int ymod = 0; ymod < structure.length; ymod++){
                 if (x + xmod >= 0 && x + xmod < grid.getWidth() && y - ymod >= 0 && y - ymod < grid.getHeight() && structure[(structure.length - 1) - ymod][xmod].getType() == grid.getPixel(x + xmod, y - ymod).getType()) {
-                    if (grid.getPixel(x+xmod, y+ymod).getBuilding() != null && grid.getPixel(x+xmod, y+ymod).getBuilding() != this){
-                        if (!intersections.contains(grid.getPixel(x+xmod, y+ymod).getBuilding()))
-                            intersections.add(grid.getPixel(x+xmod, y+ymod).getBuilding());
+                    if (grid.getPixel(x+xmod, y-ymod).getBuilding() != null && grid.getPixel(x+xmod, y-ymod).getBuilding() != this){
+                        if (!intersections.contains(grid.getPixel(x+xmod, y-ymod).getBuilding()))
+                            intersections.add(grid.getPixel(x+xmod, y-ymod).getBuilding());
                     }
                     if (terrain[ymod][xmod] != null) {
                         if (terrain[ymod][xmod].getBuilding() == null)

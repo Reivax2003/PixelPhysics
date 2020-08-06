@@ -15,6 +15,7 @@ public class FirePit extends Blueprint {
         Pixel a = new Air();
         Pixel f = new Fire();
         f.changeProperty("spreads", -1);
+        f.changeProperty("heating", 0);
 
         Pixel w = new Wood(); //wood (dark)
         w.setColor(new Color(113, 63, 5));
