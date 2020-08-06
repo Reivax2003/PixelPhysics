@@ -53,7 +53,7 @@ public class Blueprint implements Serializable{
         this.y = y;
 
         //boundary check
-        if (x < 0 || x + structure[0].length >= grid.getWidth() || y - structure.length < 0 && y >= grid.getHeight()) {
+        if (x < 0 || x + structure[0].length >= grid.getWidth() || y - structure.length < 0 || y >= grid.getHeight()) {
             return false;
         }
 
