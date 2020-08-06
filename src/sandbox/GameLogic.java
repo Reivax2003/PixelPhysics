@@ -81,6 +81,7 @@ public class GameLogic extends TimerTask {
         } else if (!winMessage) {winMessage = true;} // Resets message if objectives no longer complete
 
         //increase and check max energy
+        energyGainRate = (int) Math.max(Math.round(4*peopleManager.getAverageHappiness()), 1);
         grid.changeEnergy(energyGainRate);
         // System.out.println("next frame "+frameNum++);
         // System.out.println(peopleManager.getAverageHappiness());
